@@ -1,9 +1,10 @@
-import { React } from 'react';
-import { createAppContainer, createStackNavigator} from 'react-navigation';
+import React from 'react';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-import Welcome from '../screens/Welcome';
-import ProductDetails from '../screens/ProductDetails';
-import Products from '../screens/Products';
+import { Welcome } from '../screens/Welcome';
+import { ProductDetails } from '../screens/ProductDetails';
+import { Products } from '../screens/Products';
 
 const screens = {
     Welcome,
@@ -17,4 +18,4 @@ const options = {
 
 const stack = createStackNavigator(screens, options)
 
-export default createAppContainer(stack);
+export const AppContainer = createAppContainer(stack);
