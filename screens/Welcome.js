@@ -35,7 +35,7 @@ export class Welcome extends React.Component {
         return (
             <ThemeProvider theme={theme}>
                 <View style={[globalStyles.screen, styles.container]}>
-                    <Text h2 style={styles.title}>Welcome</Text>
+                    <Text h2 style={styles.title}>Добро пожаловать в Proof!</Text>
                     <Input
                         placeholder="Логин"
                         onChange={this.handleLoginChange}
