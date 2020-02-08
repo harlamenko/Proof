@@ -21,8 +21,21 @@ export default class App extends React.Component {
               headerShown: false
             }}
           />
-          <Stack.Screen name='ProductDetails' component={ProductDetails} />
-          <Stack.Screen name='Products' component={Products} />
+          <Stack.Screen
+            name='Products'
+            component={Products}
+            options={{
+              headerTitle: 'Объявления',
+              headerStatusBarHeight: 20
+            }}
+          />
+          <Stack.Screen
+            name='ProductDetails'
+            component={ProductDetails}
+            options={{
+              headerStatusBarHeight: 20
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
