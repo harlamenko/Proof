@@ -1,21 +1,18 @@
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, ThemeProvider } from 'react-native-elements';
+import { View } from 'react-native';
+import { theme } from './../constants/theme';
+import { globalStyles } from './../constants/styles'
 
 export class Welcome extends React.Component {
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Welcome</Text>
-            </View>
+            <ThemeProvider theme={theme}>
+                <View style={globalStyles.screen}>
+                    <Text h2>Welcome</Text>
+                </View>
+            </ThemeProvider>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
