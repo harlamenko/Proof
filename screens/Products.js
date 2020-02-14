@@ -21,7 +21,7 @@ export class Products extends React.Component {
         )
     }
 
-    keyExtractor = ({id}) => id;
+    keyExtractor = ({id}) => `${id}`;
 
     renderItem = ({item}) => (
         <Card
