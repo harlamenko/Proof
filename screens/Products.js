@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import { Card, ThemeProvider, Image } from 'react-native-elements';
 
@@ -9,6 +9,10 @@ import { theme } from './../constants/theme';
 
 
 export class Products extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    
     render() {
         return (
             <ThemeProvider theme={theme}>
@@ -24,23 +28,32 @@ export class Products extends React.Component {
     keyExtractor = ({id}) => `${id}`;
 
     renderItem = ({item}) => (
-        <Card
-            title={item.name}
-            titleStyle={{textAlign: 'left'}}
+        <TouchableOpacity
+            onPress={this.redirectToDetails}
+            activeOpacity={0.5}
         >
-            <View style={styles.card}>
-                <Image
-                    style={{width: 100, height: 180}}
-                    resizeMode="contain"
-                    source={{ uri: item.photo }}
-                />
-                <View style={styles.characteristics}>
-                    {this.getCharacteristics(item)}
+            <Card
+                title={item.name}
+                titleStyle={{textAlign: 'left'}}
+            >
+                <View style={styles.card}>
+                    <Image
+                        style={{width: 100, height: 180}}
+                        resizeMode="contain"
+                        source={{ uri: item.photo }}
+                    />
+                    <View style={styles.characteristics}>
+                        {this.getCharacteristics(item)}
+                    </View>
                 </View>
-            </View>
-        </Card>
+            </Card>
+        </TouchableOpacity>
     )
 
+    redirectToDetails = () => {
+        this.props.navigation.navigate('ProductDetails');
+    }
+    
     getCharacteristics = (item) =>
         Object.entries(item.characteristics).map(([k, v]) => (
             <View style={styles.characteristic}>
