@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, ThemeProvider, Input, Button } from 'react-native-elements';
 import { View, StyleSheet } from 'react-native';
-import { theme } from './../constants/theme';
+import { welcomeScreen } from './../constants/theme';
 import { globalStyles } from './../constants/styles'
 
 export class Welcome extends React.Component {
@@ -33,7 +33,7 @@ export class Welcome extends React.Component {
 
     render() {
         return (
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={welcomeScreen}>
                 <View style={[globalStyles.screen, styles.container]}>
                     <Text h2 style={styles.title}>Добро пожаловать в Proof!</Text>
                     <Input

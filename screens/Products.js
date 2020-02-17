@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Card, ThemeProvider, Image } from 'react-native-elements';
+import { Card, ThemeProvider, Image, Button } from 'react-native-elements';
 import { products } from './../constants/mocks';
-import { theme } from './../constants/theme';
+import { productsScreen } from './../constants/theme';
 
 
 export class Products extends React.Component {
@@ -13,11 +13,14 @@ export class Products extends React.Component {
     
     render() {
         return (
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={productsScreen}>
                 <FlatList
                     data={products}
                     renderItem={this.renderItem}
                     keyExtractor={this.keyExtractor}
+                />
+                <Button
+                    title="+"
                 />
             </ThemeProvider>
         )
