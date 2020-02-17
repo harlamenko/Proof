@@ -1,9 +1,7 @@
 
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-
 import { Card, ThemeProvider, Image } from 'react-native-elements';
-
 import { products } from './../constants/mocks';
 import { theme } from './../constants/theme';
 
@@ -29,7 +27,7 @@ export class Products extends React.Component {
 
     renderItem = ({item}) => (
         <TouchableOpacity
-            onPress={this.redirectToDetails}
+            onPress={this.redirectToDetails.bind(this, item.id)}
             activeOpacity={0.5}
         >
             <Card
@@ -42,6 +40,7 @@ export class Products extends React.Component {
                         resizeMode="contain"
                         source={{ uri: item.photo }}
                     />
+                    {/* TODO: заменить на listview */}
                     <View style={styles.characteristics}>
                         {this.getCharacteristics(item)}
                     </View>
@@ -50,13 +49,14 @@ export class Products extends React.Component {
         </TouchableOpacity>
     )
 
-    redirectToDetails = () => {
-        this.props.navigation.navigate('ProductDetails');
+    redirectToDetails = (id) => {
+        this.props.navigation.navigate('ProductDetails', {id});
     }
     
     getCharacteristics = (item) =>
-        Object.entries(item.characteristics).map(([k, v]) => (
-            <View style={styles.characteristic}>
+        Object.entries(item.characteristics).map(([k, v], i) => (
+            // TODO: заменить на listitem
+            <View key={i} style={styles.characteristic}>
                 <Text style={[styles.characteristicKey, styles.text]}>
                     {k}:
                 </Text>
