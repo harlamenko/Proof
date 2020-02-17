@@ -28,7 +28,7 @@ export class Welcome extends React.Component {
 
     login() {
         // login logic
-        this.props.navigation.navigate('Products');
+        this.props.navigation.navigate('Adverts');
     }
 
     render() {

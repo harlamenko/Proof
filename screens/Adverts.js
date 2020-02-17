@@ -2,20 +2,20 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Card, ThemeProvider, Image, Button } from 'react-native-elements';
-import { products } from './../constants/mocks';
-import { productsScreen } from './../constants/theme';
+import { adverts } from '../constants/mocks';
+import { advertsScreen } from '../constants/theme';
 
 
-export class Products extends React.Component {
+export class Adverts extends React.Component {
     constructor(props) {
         super(props);
     }
     
     render() {
         return (
-            <ThemeProvider theme={productsScreen}>
+            <ThemeProvider theme={advertsScreen}>
                 <FlatList
-                    data={products}
+                    data={adverts}
                     renderItem={this.renderItem}
                     keyExtractor={this.keyExtractor}
                 />
@@ -53,7 +53,7 @@ export class Products extends React.Component {
     )
 
     redirectToDetails = (id) => {
-        this.props.navigation.navigate('ProductDetails', {id});
+        this.props.navigation.navigate('AdvertDetails', {id});
     }
     
     getCharacteristics = (item) =>

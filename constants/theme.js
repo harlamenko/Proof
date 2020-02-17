@@ -16,7 +16,7 @@ export const welcomeScreen = {
     }
 };
 
-export const productsScreen = {
+export const advertsScreen = {
     Button: {
         containerStyle: {
             position: 'absolute',

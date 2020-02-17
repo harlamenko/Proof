@@ -2,14 +2,14 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Image } from 'react-native-elements';
-import { products } from './../constants/mocks';
+import { adverts } from '../constants/mocks';
 
 
-export class ProductDetails extends React.Component {
+export class AdvertDetails extends React.Component {
     constructor(props) {
         super(props);
         const { id } = this.props.route.params;
-        this.item = products.find(item => item.id === id);
+        this.item = adverts.find(item => item.id === id);
     }
     render() {
         return (

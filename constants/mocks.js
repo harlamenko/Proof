@@ -1,4 +1,4 @@
-export const products = [
+export const adverts = [
     {
         id: 1,
         name: 'Смартфон Vertex Impress City',

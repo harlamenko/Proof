@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Welcome } from './screens/Welcome';
-import { ProductDetails } from './screens/ProductDetails';
-import { Products } from './screens/Products';
+import { AdvertDetails } from './screens/AdvertDetails';
+import { Adverts } from './screens/Adverts';
 
 const Stack = createStackNavigator();
 
@@ -22,16 +22,16 @@ export default class App extends React.Component {
             }}
           />
           <Stack.Screen
-            name='Products'
-            component={Products}
+            name='Adverts'
+            component={Adverts}
             options={{
               headerTitle: 'Объявления',
               headerStatusBarHeight: 20
             }}
           />
           <Stack.Screen
-            name='ProductDetails'
-            component={ProductDetails}
+            name='AdvertDetails'
+            component={AdvertDetails}
             options={{
               headerStatusBarHeight: 20
             }}
