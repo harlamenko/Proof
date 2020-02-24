@@ -21,9 +21,14 @@ export class Adverts extends React.Component {
                 />
                 <Button
                     title="+"
+                    onPress={this.redirectToAddAdvert}
                 />
             </ThemeProvider>
         )
+    }
+
+    redirectToAddAdvert = () => {
+        this.props.navigation.navigate('AddAdvert');
     }
 
     keyExtractor = ({id}) => `${id}`;

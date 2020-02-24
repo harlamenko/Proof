@@ -6,6 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Welcome } from './screens/Welcome';
 import { AdvertDetails } from './screens/AdvertDetails';
 import { Adverts } from './screens/Adverts';
+import { AddAdvert } from './screens/AddAdvert';
+
 
 const Stack = createStackNavigator();
 
@@ -33,7 +35,15 @@ export default class App extends React.Component {
             name='AdvertDetails'
             component={AdvertDetails}
             options={{
+              // TODO: добавить название объявления
               headerStatusBarHeight: 20
+            }}
+          />
+          <Stack.Screen
+            name='AddAdvert'
+            component={AddAdvert}
+            options={{
+              headerTitle: 'Добавление объявления'
             }}
           />
         </Stack.Navigator>
