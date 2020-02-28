@@ -27,7 +27,7 @@ export class Welcome extends React.Component {
     }
 
     login() {
-        // login logic
+        // TODO: login logic
         this.props.navigation.navigate('Adverts');
     }
 
