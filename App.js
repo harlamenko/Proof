@@ -14,7 +14,8 @@ export default class App extends React.Component {
   render( ){
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Welcome">
+        <Stack.Navigator>
+        {/* <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen
             name='Welcome'
             component={Welcome}
@@ -62,7 +63,7 @@ export default class App extends React.Component {
                 }}
               />
             }}
-          />
+          /> */}
           <Stack.Screen
             name='AddAdvert'
             component={AddAdvert}
@@ -76,6 +77,12 @@ export default class App extends React.Component {
                 centerComponent={{
                   text: 'Добавление объявления',
                   style: { color: '#fff' }
+                }}
+                rightComponent={{
+                  icon: 'check',
+                  color: '#fff',
+                  // TODO: добавить логику добавления объявления
+                  onPress: () => console.log('check')
                 }}
               />
             }}
