@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Card, ThemeProvider, Image, Button } from 'react-native-elements';
+import { Card, ThemeProvider, Image } from 'react-native-elements';
 import { adverts } from '../constants/mocks';
 import { advertsScreen } from '../constants/theme';
 
