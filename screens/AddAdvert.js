@@ -14,34 +14,19 @@ import {
     Input,
     Button
 } from 'react-native-elements';
-import * as Device from 'expo-device';
 import * as ImagePicker from 'expo-image-picker';
+import { Device } from '../models/Device';
 
 export class AddAdvert extends Component {
     constructor(props) {
         super(props);
         this.keyInputRef = React.createRef();
         this.valueInputRef = React.createRef();
-        /*
-        TODO:
-            вынести в отдельный класс, который будет определять:
-            - тип устройства,
-            - ось
 
-            И на основе этих данных маппить инфу об устройсве
-        */
         this.state = {
             keyInput: null,
             valueInput: null,
-            item: {
-                osBuildId: Device.osBuildId,
-                modelName: Device.modelName,
-                brand: Device.brand,
-                deviceYearClass: Device.deviceYearClass,
-                osName: Device.osName,
-                photo: null,
-                customCharacteristics: []
-            }
+            item: new Device()
         }
     }
 
@@ -50,9 +35,9 @@ export class AddAdvert extends Component {
             if (!res.granted) { return; }
 
             ImagePicker.launchImageLibraryAsync().then(image => {
-                const { uri: photo } = image;
-                const item = Object.assign({}, this.state.item, { photo });
-                this.setState(Object.assign({}, this.state, { item }));
+                const { item } = this.state;
+                item.setPhoto(image.uri);
+                this.setState({ item });
             })
         })
     }
@@ -90,6 +75,12 @@ export class AddAdvert extends Component {
         )
     }
 
+    getDeviceInfo = () => (
+        this.state.item
+            .getVisibleInfo()
+            .map(([k, v], i) => <Text key={i}>{k}: {v}</Text>)
+    )
+
     render = () => (
         <KeyboardAvoidingView
             behavior="position"
@@ -100,20 +91,12 @@ export class AddAdvert extends Component {
                 showsVerticalScrollIndicator={false}
             >
                 {this.state.item.photo ? this.getImage() : this.getImagePicker()}
-
-                <Text>osBuildId: {this.state.item.osBuildId}</Text>
-                <Text>modelName: {this.state.item.modelName}</Text>
-                <Text>brand: {this.state.item.brand}</Text>
-                <Text>deviceYearClass: {this.state.item.deviceYearClass}</Text>
-                <Text>osName: {this.state.item.osName}</Text>
-
+                {this.getDeviceInfo()}
                 {this.getCharacteristics()}
-
                 <View style={styles.customCharacteristic}>
                     {this.getCustomCharInput({ placeholder: "Характеристика", propName: 'key' })}
                     {this.getCustomCharInput({ placeholder: "Значение", propName: 'value' })}
                 </View>
-
                 <Button
                     title='ДОБАВИТЬ ХАРАКТЕРИСТИКУ'
                     containerStyle={styles.addCharacteristicBtn}
@@ -124,7 +107,7 @@ export class AddAdvert extends Component {
     )
 
     addCharacteristic = () => {
-        const { keyInput, valueInput } = this.state;
+        const { keyInput, valueInput, item } = this.state;
 
         if (!keyInput || !valueInput) {
             return Alert.alert(
@@ -133,24 +116,22 @@ export class AddAdvert extends Component {
             );
         }
 
-        const customCharacteristics = this.state.item.customCharacteristics;
-        customCharacteristics.push({
-            name: keyInput,
-            value: valueInput
+        item.addCustomCharacteristics(keyInput, valueInput);
+        this.setState({
+            keyInput: null,
+            valueInput: null
         });
-        const item = Object.assign({}, this.state.item, { customCharacteristics });
-        this.setState({ item });
         this.keyInputRef.current.clear();
         this.valueInputRef.current.clear();
     }
 
     getCharacteristics = () => (
         this.state.item.customCharacteristics.length ?
-        <View>
-            <Text>Характеристики:</Text>
-            {this.state.item.customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
-        </View> :
-        null
+            <View>
+                <Text>Характеристики:</Text>
+                {this.state.item.customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
+            </View> :
+            null
     )
 }
 
