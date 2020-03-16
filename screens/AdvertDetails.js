@@ -9,7 +9,9 @@ export class AdvertDetails extends React.Component {
     constructor(props) {
         super(props);
         const { id } = this.props.route.params;
-        this.item = adverts.find(item => item.id === id);
+        this.state = {
+            item : adverts.find(item => item.id === id)
+        }
     }
     render() {
         return (
@@ -17,27 +19,20 @@ export class AdvertDetails extends React.Component {
                 <Image
                     style={{width: '100%', height: 280}}
                     resizeMode="contain"
-                    source={{ uri: this.item.photo }}
+                    source={{ uri: this.state.item.photo }}
                 />
-                <Text>Характеристики:</Text>
-                {/* добавить listview */}
                 {this.getCharacteristics()}
             </View>
         )
     }
 
-    getCharacteristics = () =>
-        Object.entries(this.item.characteristics).map(([k, v], i) => (
-            // TODO: заменить на listitem
-            <View key={i}>
-                <Text>
-                    {k}:
-                </Text>
-                <Text style={styles.text}>
-                    {v}
-                </Text>
-            </View>
-        )
+    getCharacteristics = () => (
+        this.state.item.customCharacteristics.length ?
+            <View>
+                <Text>Характеристики:</Text>
+                {this.state.item.customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
+            </View> :
+            null
     )
 }
 

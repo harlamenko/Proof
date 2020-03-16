@@ -22,7 +22,7 @@ export default class App extends React.Component {
             options={{
               headerShown: false
             }}
-          />
+          /> */}
           <Stack.Screen
             name='Adverts'
             component={Adverts}
@@ -63,7 +63,7 @@ export default class App extends React.Component {
                 }}
               />
             }}
-          /> */}
+          />
           <Stack.Screen
             name='AddAdvert'
             component={AddAdvert}

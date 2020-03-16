@@ -31,7 +31,7 @@ export class Adverts extends React.Component {
             activeOpacity={0.5}
         >
             <Card
-                title={item.name}
+                title={item.modelName}
                 titleStyle={{textAlign: 'left'}}
             >
                 <View style={styles.card}>
@@ -40,7 +40,6 @@ export class Adverts extends React.Component {
                         resizeMode="contain"
                         source={{ uri: item.photo }}
                     />
-                    {/* TODO: заменить на listview */}
                     <View style={styles.characteristics}>
                         {this.getCharacteristics(item)}
                     </View>
@@ -53,18 +52,10 @@ export class Adverts extends React.Component {
         this.props.navigation.navigate('AdvertDetails', {id});
     }
     
-    getCharacteristics = (item) =>
-        Object.entries(item.characteristics).map(([k, v], i) => (
-            // TODO: заменить на listitem
-            <View key={i} style={styles.characteristic}>
-                <Text style={[styles.characteristicKey, styles.text]}>
-                    {k}:
-                </Text>
-                <Text style={styles.text}>
-                    {v}
-                </Text>
-            </View>
-        )
+    getCharacteristics = ({customCharacteristics}) => (
+        customCharacteristics.length ?
+            customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>) :
+            null
     )
 }
 
