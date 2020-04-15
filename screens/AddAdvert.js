@@ -29,7 +29,7 @@ export class AddAdvert extends Component {
             item: new Device()
         }
     }
-
+    
     pickPhoto = () => {
         ImagePicker.requestCameraRollPermissionsAsync().then(res => {
             if (!res.granted) { return; }
@@ -91,7 +91,11 @@ export class AddAdvert extends Component {
                 showsVerticalScrollIndicator={false}
             >
                 {this.state.item.photo ? this.getImage() : this.getImagePicker()}
-                {this.getDeviceInfo()}
+                <View style={styles.deviceInfo}>
+                    <Text style={styles.deviceInfoTitle}>Информация о Вашем устройстве</Text>
+                    <Text style={styles.deviceInfoTitleHint}>(собрана автоматически)</Text>
+                    {this.getDeviceInfo()}
+                </View>
                 {this.getCharacteristics()}
                 <View style={styles.customCharacteristic}>
                     {this.getCustomCharInput({ placeholder: "Характеристика", propName: 'key' })}
@@ -164,5 +168,18 @@ const styles = StyleSheet.create({
     },
     deviceImageContainer: {
         height: 260
+    },
+    deviceInfo: {
+        marginBottom: 16,
+        marginTop: 16
+    },
+    deviceInfoTitle: {
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    deviceInfoTitleHint: {
+        fontSize: 16,
+        color: 'gray',
+        marginBottom: 8
     }
 })

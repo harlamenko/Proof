@@ -11,11 +11,11 @@ import { AddAdvert } from './screens/AddAdvert';
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
-  render( ){
+  render() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-        {/* <Stack.Navigator initialRouteName="Welcome">
+          {/* <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen
             name='Welcome'
             component={Welcome}
@@ -23,7 +23,7 @@ export default class App extends React.Component {
               headerShown: false
             }}
           /> */}
-          <Stack.Screen
+          {/* <Stack.Screen
             name='Adverts'
             component={Adverts}
             options={{
@@ -63,7 +63,7 @@ export default class App extends React.Component {
                 }}
               />
             }}
-          />
+          /> */}
           <Stack.Screen
             name='AddAdvert'
             component={AddAdvert}
@@ -81,8 +81,7 @@ export default class App extends React.Component {
                 rightComponent={{
                   icon: 'check',
                   color: '#fff',
-                  // TODO: добавить логику добавления объявления
-                  onPress: () => console.log('check')
+                  onPress: () => { }
                 }}
               />
             }}
