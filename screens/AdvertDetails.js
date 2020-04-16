@@ -26,12 +26,12 @@ export class AdvertDetails extends React.Component {
         )
     }
 
-    getCharacteristics = () => (
-        this.state.item.customCharacteristics.length ?
-            <View>
-                <Text>Характеристики:</Text>
-                {this.state.item.customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
-            </View> :
-            null
-    )
+    getCharacteristics = () => {
+        const info = this.state.item.getFullInfo();
+
+        return <View>
+            <Text>Характеристики:</Text>
+            {info.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
+        </View>
+    }
 }

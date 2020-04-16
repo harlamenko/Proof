@@ -12,8 +12,10 @@ import {
 import {
     Image,
     Input,
-    Button
+    Button,
+    Header
 } from 'react-native-elements';
+import { adverts } from '../constants/mocks';
 import * as ImagePicker from 'expo-image-picker';
 import { Device } from '../models/Device';
 
@@ -28,8 +30,38 @@ export class AddAdvert extends Component {
             valueInput: null,
             item: new Device()
         }
+
+        this.setHeader();
     }
-    
+
+    setHeader = () => {
+        this.props.navigation.setOptions({
+            header: props => <Header
+                leftComponent={{
+                    icon: 'arrow-back',
+                    color: '#fff',
+                    onPress: () => props.navigation.goBack()
+                }}
+                centerComponent={{
+                    text: 'Добавление объявления',
+                    style: { color: '#fff' }
+                }}
+                rightComponent={{
+                    icon: 'check',
+                    color: '#fff',
+                    onPress: this.publishItem.bind(this)
+                }}
+            />
+        });
+    }
+
+    publishItem = () => {
+        const { item } = this.state;
+        // TODO: send to BE
+        adverts.push(new Device(item));
+        this.props.navigation.navigate('Adverts');
+    }
+
     pickPhoto = () => {
         ImagePicker.requestCameraRollPermissionsAsync().then(res => {
             if (!res.granted) { return; }
@@ -48,8 +80,7 @@ export class AddAdvert extends Component {
             style={styles.deviceImage}
             resizeMode="center"
             source={{ uri: this.state.item.photo }}
-            PlaceholderContent={<ActivityIndicator />}
-        />
+            PlaceholderContent={<ActivityIndicator />} />
     )
 
     getImagePicker = () => (
@@ -70,26 +101,23 @@ export class AddAdvert extends Component {
                 containerStyle={styles.customCharacteristic_input}
                 placeholder={options.placeholder}
                 onChange={e => this.setState({ [type]: e.nativeEvent.text })}
-                value={this.state[type]}
-            />
+                value={this.state[type]} />
         )
     }
 
     getDeviceInfo = () => (
         this.state.item
-            .getVisibleInfo()
-            .map(([k, v], i) => <Text key={i}>{k}: {v}</Text>)
+            .getVisibleDeviceInfo()
+            .map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)
     )
 
     render = () => (
         <KeyboardAvoidingView
             behavior="position"
-            keyboardVerticalOffset={30}
-        >
+            keyboardVerticalOffset={30}>
             <ScrollView
                 style={styles.screen}
-                showsVerticalScrollIndicator={false}
-            >
+                showsVerticalScrollIndicator={false}>
                 {this.state.item.photo ? this.getImage() : this.getImagePicker()}
                 <View style={styles.deviceInfo}>
                     <Text style={styles.deviceInfoTitle}>Информация о Вашем устройстве</Text>
@@ -129,14 +157,16 @@ export class AddAdvert extends Component {
         this.valueInputRef.current.clear();
     }
 
-    getCharacteristics = () => (
-        this.state.item.customCharacteristics.length ?
+    getCharacteristics = () => {
+        const customCharacteristics = this.state.item.getCustomCharacteristics();
+
+        return customCharacteristics.length ?
             <View>
                 <Text>Характеристики:</Text>
-                {this.state.item.customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
+                {customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
             </View> :
             null
-    )
+    }
 }
 
 const styles = StyleSheet.create({

@@ -16,16 +16,26 @@ export class Device {
     }
 
     addCustomCharacteristics(name, value) {
-        this.customCharacteristics.push({name, value});
+        this.customCharacteristics.push({ name, value });
     }
     /**
      * Возвращает данные для отображения 
      * @returns {Array<Array<string|number>>}
      */
-    getVisibleInfo() {
-        return Object.entries(this).filter(([k, _]) => {
-            return !['photo', 'customCharacteristics'].includes(k);
-        });
+    getVisibleDeviceInfo() {
+        const excludedKeys = ['modelName', 'id', 'photo', 'customCharacteristics'];
+        return Object
+            .entries(this)
+            .filter(([k, _]) => !excludedKeys.includes(k))
+            .map(([name, value]) => ({ name, value }));
+    }
+
+    getCustomCharacteristics() {
+        return this.customCharacteristics;
+    }
+
+    getFullInfo() {
+        return [...this.getVisibleDeviceInfo(), ...this.getCustomCharacteristics()];
     }
 
     setPhoto(uri) {

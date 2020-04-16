@@ -10,7 +10,7 @@ export class Adverts extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
         return (
             <ThemeProvider theme={advertsScreen}>
@@ -23,25 +23,23 @@ export class Adverts extends React.Component {
         )
     }
 
-    keyExtractor = ({id}) => `${id}`;
+    keyExtractor = ({ id }) => `${id}`;
 
-    renderItem = ({item}) => (
+    renderItem = ({ item }) => (
         <TouchableOpacity
             onPress={this.redirectToDetails.bind(this, item.id)}
-            activeOpacity={0.5}
-        >
+            activeOpacity={0.5}>
             <Card
                 title={item.modelName}
-                titleStyle={{textAlign: 'left'}}
-            >
+                titleStyle={{ textAlign: 'left' }}>
                 <View style={styles.card}>
                     <Image
-                        style={{width: 100, height: 180}}
+                        style={{ width: 100, height: 180 }}
                         resizeMode="contain"
                         source={{ uri: item.photo }}
                     />
                     <View style={styles.characteristics}>
-                        {this.getCharacteristics(item)}
+                        {item.getFullInfo().map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>)}
                     </View>
                 </View>
             </Card>
@@ -49,14 +47,8 @@ export class Adverts extends React.Component {
     )
 
     redirectToDetails = (id) => {
-        this.props.navigation.navigate('AdvertDetails', {id});
+        this.props.navigation.navigate('AdvertDetails', { id });
     }
-    
-    getCharacteristics = ({customCharacteristics}) => (
-        customCharacteristics.length ?
-            customCharacteristics.map(({ name, value }, i) => <Text key={i}>{name}: {value}</Text>) :
-            null
-    )
 }
 
 const styles = StyleSheet.create({

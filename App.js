@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Header } from 'react-native-elements';
+// TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
 import { Welcome } from './screens/Welcome';
 import { AdvertDetails } from './screens/AdvertDetails';
 import { Adverts } from './screens/Adverts';
@@ -23,7 +24,7 @@ export default class App extends React.Component {
               headerShown: false
             }}
           /> */}
-          {/* <Stack.Screen
+          <Stack.Screen
             name='Adverts'
             component={Adverts}
             options={{
@@ -63,28 +64,10 @@ export default class App extends React.Component {
                 }}
               />
             }}
-          /> */}
+          />
           <Stack.Screen
             name='AddAdvert'
             component={AddAdvert}
-            options={{
-              header: props => <Header
-                leftComponent={{
-                  icon: 'arrow-back',
-                  color: '#fff',
-                  onPress: () => props.navigation.goBack()
-                }}
-                centerComponent={{
-                  text: 'Добавление объявления',
-                  style: { color: '#fff' }
-                }}
-                rightComponent={{
-                  icon: 'check',
-                  color: '#fff',
-                  onPress: () => { }
-                }}
-              />
-            }}
           />
         </Stack.Navigator>
       </NavigationContainer>
