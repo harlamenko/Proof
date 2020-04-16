@@ -18,6 +18,8 @@ import {
 import { adverts } from '../constants/mocks';
 import * as ImagePicker from 'expo-image-picker';
 import { Device } from '../models/Device';
+import { BackBtn } from '../components/BackBtn';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export class AddAdvert extends Component {
     constructor(props) {
@@ -37,26 +39,25 @@ export class AddAdvert extends Component {
     setHeader = () => {
         this.props.navigation.setOptions({
             header: props => <Header
-                leftComponent={{
-                    icon: 'arrow-back',
-                    color: '#fff',
-                    onPress: () => props.navigation.goBack()
-                }}
+                leftComponent={<BackBtn {...props} />}
                 centerComponent={{
                     text: 'Добавление объявления',
                     style: { color: '#fff' }
                 }}
-                rightComponent={{
-                    icon: 'check',
-                    color: '#fff',
-                    onPress: this.publishItem.bind(this)
-                }}
-            />
+                rightComponent={
+                    <TouchableOpacity
+                        onPress={this.publishItem.bind(this)}>
+                        <MaterialIcons
+                            name="done"
+                            size={28}
+                            color="white" />
+                    </TouchableOpacity>} />
         });
     }
 
     publishItem = () => {
         const { item } = this.state;
+        item.id = adverts.length + 1;
         // TODO: send to BE
         adverts.push(new Device(item));
         this.props.navigation.navigate('Adverts');

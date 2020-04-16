@@ -8,69 +8,56 @@ import { Welcome } from './screens/Welcome';
 import { AdvertDetails } from './screens/AdvertDetails';
 import { Adverts } from './screens/Adverts';
 import { AddAdvert } from './screens/AddAdvert';
+import { BackBtn } from './components/BackBtn';
+import { TouchableOpacity } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          {/* <Stack.Navigator initialRouteName="Welcome">
-          <Stack.Screen
-            name='Welcome'
-            component={Welcome}
-            options={{
-              headerShown: false
-            }}
-          /> */}
-          <Stack.Screen
-            name='Adverts'
-            component={Adverts}
-            options={{
-              headerTitle: 'Объявления',
-              header: props => <Header
-                leftComponent={{
-                  icon: 'arrow-back',
-                  color: '#fff',
-                  onPress: () => props.navigation.goBack()
-                }}
-                centerComponent={{
-                  text: 'Объявления',
-                  style: { color: '#fff' }
-                }}
-                rightComponent={{
-                  icon: 'add',
-                  color: '#fff',
-                  onPress: () => props.navigation.navigate('AddAdvert')
-                }}
-              />
-            }}
-          />
-          <Stack.Screen
-            name='AdvertDetails'
-            component={AdvertDetails}
-            options={{
-              header: props => <Header
-                leftComponent={{
-                  icon: 'arrow-back',
-                  color: '#fff',
-                  onPress: () => props.navigation.goBack()
-                }}
-                centerComponent={{
-                  // TODO: добавить название объявления
-                  text: 'Объявление',
-                  style: { color: '#fff' }
-                }}
-              />
-            }}
-          />
-          <Stack.Screen
-            name='AddAdvert'
-            component={AddAdvert}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
+    render() {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator>
+                    {/* <Stack.Navigator initialRouteName="Welcome">
+                    <Stack.Screen
+                        name='Welcome'
+                        component={Welcome}
+                        options={{
+                        headerShown: false
+                        }} /> */}
+                    <Stack.Screen
+                        name='Adverts'
+                        component={Adverts}
+                        options={{
+                            headerTitle: 'Объявления',
+                            header: props => (
+                                <Header
+                                    leftComponent={<BackBtn {...props} />}
+                                    centerComponent={{
+                                        text: 'Объявления',
+                                        style: { color: '#fff' }
+                                    }}
+                                    rightComponent={
+                                        <TouchableOpacity
+                                            onPress={() => props.navigation.navigate('AddAdvert')}>
+                                            <AntDesign
+                                                name="plus"
+                                                size={28}
+                                                color="white" />
+                                        </TouchableOpacity>
+                                    } />
+                            )
+                        }} />
+                    <Stack.Screen
+                        name='AdvertDetails'
+                        component={AdvertDetails} />
+
+                    <Stack.Screen
+                        name='AddAdvert'
+                        component={AddAdvert} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+    }
 }
