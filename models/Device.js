@@ -41,4 +41,22 @@ export class Device {
     setPhoto(uri) {
         this.photo = uri;
     }
+
+    getInfoForQR() {
+        const {
+            osBuildId,
+            modelName,
+            brand,
+            deviceYearClass,
+            osName
+        } = this;
+
+        return JSON.stringify({
+            osBuildId,
+            modelName,
+            brand,
+            deviceYearClass,
+            osName
+        });
+    }
 }

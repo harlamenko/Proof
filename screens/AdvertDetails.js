@@ -45,7 +45,7 @@ export class AdvertDetails extends React.Component {
                     {
                         this.checkIsMyAdvert() ?
                             <QRCode
-                                value={'poopdidiwoop'}
+                                value={this.state.item.getInfoForQR()}
                                 size={screenWidth - 80}
                                 bgColor='black'
                                 fgColor='white' /> :
@@ -95,7 +95,8 @@ export class AdvertDetails extends React.Component {
     }
 
     _onQRScanned = (data) => {
-        // TODO: добавить логику проверки соответствия характеристик сканируемого и текущего устройств
+        // TODO: обработать уведомление о результате проверки
+        console.log(data === this.state.item.getInfoForQR());
         this.toggleOverlayVisibility();
     }
 }
