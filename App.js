@@ -30,7 +30,6 @@ export default class App extends React.Component {
                         name='Adverts'
                         component={Adverts}
                         options={{
-                            headerTitle: 'Объявления',
                             header: props => (
                                 <Header
                                     leftComponent={<BackBtn {...props} />}
@@ -49,6 +48,7 @@ export default class App extends React.Component {
                                     } />
                             )
                         }} />
+
                     <Stack.Screen
                         name='AdvertDetails'
                         component={AdvertDetails} />
@@ -56,6 +56,7 @@ export default class App extends React.Component {
                     <Stack.Screen
                         name='AddAdvert'
                         component={AddAdvert} />
+
                 </Stack.Navigator>
             </NavigationContainer>
         );
