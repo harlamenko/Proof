@@ -11,54 +11,57 @@ import { AddAdvert } from './screens/AddAdvert';
 import { BackBtn } from './components/BackBtn';
 import { TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { Provider as AuthProvider } from './context/AuthContext';
 
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
     render() {
         return (
-            <NavigationContainer>
-                <Stack.Navigator>
-                    {/* <Stack.Navigator initialRouteName="Welcome">
+            <AuthProvider>
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        {/* <Stack.Navigator initialRouteName="Welcome">
                     <Stack.Screen
                         name='Welcome'
                         component={Welcome}
                         options={{
                         headerShown: false
                         }} /> */}
-                    <Stack.Screen
-                        name='Adverts'
-                        component={Adverts}
-                        options={{
-                            header: props => (
-                                <Header
-                                    leftComponent={<BackBtn {...props} />}
-                                    centerComponent={{
-                                        text: 'Объявления',
-                                        style: { color: '#fff' }
-                                    }}
-                                    rightComponent={
-                                        <TouchableOpacity
-                                            onPress={() => props.navigation.navigate('AddAdvert')}>
-                                            <AntDesign
-                                                name="plus"
-                                                size={28}
-                                                color="white" />
-                                        </TouchableOpacity>
-                                    } />
-                            )
-                        }} />
+                        <Stack.Screen
+                            name='Adverts'
+                            component={Adverts}
+                            options={{
+                                header: props => (
+                                    <Header
+                                        leftComponent={<BackBtn {...props} />}
+                                        centerComponent={{
+                                            text: 'Объявления',
+                                            style: { color: '#fff' }
+                                        }}
+                                        rightComponent={
+                                            <TouchableOpacity
+                                                onPress={() => props.navigation.navigate('AddAdvert')}>
+                                                <AntDesign
+                                                    name="plus"
+                                                    size={28}
+                                                    color="white" />
+                                            </TouchableOpacity>
+                                        } />
+                                )
+                            }} />
 
-                    <Stack.Screen
-                        name='AdvertDetails'
-                        component={AdvertDetails} />
+                        <Stack.Screen
+                            name='AdvertDetails'
+                            component={AdvertDetails} />
 
-                    <Stack.Screen
-                        name='AddAdvert'
-                        component={AddAdvert} />
+                        <Stack.Screen
+                            name='AddAdvert'
+                            component={AddAdvert} />
 
-                </Stack.Navigator>
-            </NavigationContainer>
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </AuthProvider>
         );
     }
 }
