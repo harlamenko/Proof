@@ -1,30 +1,26 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { Text, Input, Button } from "react-native-elements";
-import { useState } from "react";
+import React, { useContext } from "react";
+import { StyleSheet, View } from "react-native";
+import { Button } from "react-native-elements";
+import { Context as AuthContext } from '../context/AuthContext';
+import AuthForm from '../components/AuthForm';
 
-const SignUp = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+const SignUp = ({ navigation }) => {
+  const { state, signup, clearErrorMessage } = useContext(AuthContext);
 
   return (
-    <View>
-      <Text h3 style={styles.title}>
-        Зарегистрироваться
-      </Text>
-      <Input
-        style={styles.input}
-        label="Email"
-        value={email}
-        onChange={setEmail}
+    <View style={styles.container}>
+      <AuthForm
+        title="Зарегистрироваться"
+        errorMessage={state.errorMessage}
+        submitBtnText="Зарегистрироваться"
+        onSubmit={signup}
       />
-      <Input
-        style={styles.input}
-        label="Пароль"
-        value={password}
-        onChange={setPassword}
+      <Button
+        containerStyle={styles.toggleBtn}
+        title="ВХОД"
+        type="clear"
+        onPress={() => { clearErrorMessage(); navigation.navigate('SignIn'); }}
       />
-      <Button title="Зарегистрироваться" />
     </View>
   );
 };
@@ -32,15 +28,13 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    marginBottom: 200,
+    justifyContent: "space-between",
+    paddingTop: 150,
   },
-  input: {
-    marginVertical: 8,
-  },
-  title: {
-    marginBottom: 22,
-  },
+  toggleBtn: {
+    marginBottom: 20,
+    marginHorizontal: 10,
+  }
 });
 
 export default SignUp;
