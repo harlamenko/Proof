@@ -4,12 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Header } from "react-native-elements";
 // TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
-import { AdvertDetails } from "./screens/AdvertDetails";
-import { Adverts } from "./screens/Adverts";
-import { AddAdvert } from "./screens/AddAdvert";
-import SignIn from './screens/SingIn';
-import SignUp from './screens/SingUp';
-import ScreenResolver from './components/ScreenResolver';
+import { SignIn, SignUp, Adverts, AddAdvert, AdvertDetails } from './screens';
+import { ScreenResolver } from './components';
 import { TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Provider as AuthProvider, Context as AuthContext } from "./context/AuthContext";

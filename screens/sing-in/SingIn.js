@@ -1,25 +1,25 @@
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-elements";
-import { Context as AuthContext } from '../context/AuthContext';
-import AuthForm from '../components/AuthForm';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { AuthForm } from '../../components';
 
-const SignUp = ({ navigation }) => {
-  const { state, signup, clearErrorMessage } = useContext(AuthContext);
+const SignIn = ({ navigation }) => {
+  const { state, signin, clearErrorMessage } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
       <AuthForm
-        title="Зарегистрироваться"
+        title="Войти"
         errorMessage={state.errorMessage}
-        submitBtnText="Зарегистрироваться"
-        onSubmit={signup}
+        submitBtnText="Войти"
+        onSubmit={signin}
       />
       <Button
         containerStyle={styles.toggleBtn}
-        title="ВХОД"
+        title="РЕГИСТРАЦИЯ"
         type="clear"
-        onPress={() => { clearErrorMessage(); navigation.navigate('SignIn'); }}
+        onPress={() => { clearErrorMessage(); navigation.navigate('SignUp'); }}
       />
     </View>
   );
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignUp;
+export default SignIn;

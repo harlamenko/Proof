@@ -2,10 +2,10 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-export function BackBtn(props) {
+export function BackBtn({ navigation }) {
     return (
         <TouchableOpacity
-            onPress={() => props.navigation.canGoBack() && props.navigation.goBack()} >
+            onPress={() => navigation.canGoBack() && navigation.goBack()} >
             <SimpleLineIcons
                 name="arrow-left"
                 size={22}

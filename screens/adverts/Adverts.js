@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Card, ThemeProvider, Image } from "react-native-elements";
-import { adverts } from "../constants/mocks";
-import { advertsScreen } from "../constants/theme";
+import { adverts } from "../../constants/mocks";
+import { advertsScreen } from "../../constants/theme";
 
 export class Adverts extends React.Component {
   constructor(props) {

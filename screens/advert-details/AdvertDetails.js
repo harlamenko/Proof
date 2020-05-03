@@ -2,10 +2,9 @@ import React from "react";
 import QRCode from "react-native-qrcode-generator";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import { Image, Header, Overlay } from "react-native-elements";
-import { adverts } from "../constants/mocks";
+import { adverts } from "../../constants/mocks";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { BackBtn } from "../components/BackBtn";
-import { QRScanner } from "../components/QRScanner";
+import { BackBtn, QRScanner } from "../../components";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -51,8 +50,8 @@ export class AdvertDetails extends React.Component {
               fgColor="white"
             />
           ) : (
-            <QRScanner qrScanned={this._onQRScanned} />
-          )}
+              <QRScanner qrScanned={this._onQRScanned} />
+            )}
         </Overlay>
       </View>
     );

@@ -10,10 +10,10 @@ import {
   Alert,
 } from "react-native";
 import { Image, Input, Button, Header } from "react-native-elements";
-import { adverts } from "../constants/mocks";
+import { adverts } from "../../constants/mocks";
 import * as ImagePicker from "expo-image-picker";
-import { Device } from "../models/Device";
-import { BackBtn } from "../components/BackBtn";
+import { Device } from "../../models/Device";
+import { BackBtn } from "../../components";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export class AddAdvert extends Component {
