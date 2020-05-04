@@ -27,8 +27,15 @@ export default ({ title, errorMessage, submitBtnText, onSubmit }) => {
                 secureTextEntry
                 onChangeText={value => setPassword(value)}
             />
-            {errorMessage ? <Text style={[styles.errorMessage, styles.bounders]}>{errorMessage}</Text> : null}
+            {
+                errorMessage ?
+                    <Text testID="errMsg" style={[styles.errorMessage, styles.bounders]}>
+                        {errorMessage}
+                    </Text> :
+                    null
+            }
             <Button
+                testID="submitBtn"
                 containerStyle={[styles.bounders, styles.submitBtn]}
                 title={submitBtnText}
                 onPress={() => onSubmit({ email, password })}
