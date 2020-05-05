@@ -1,2 +1,2 @@
-cd ../
+cd ../mobile
 npm test
