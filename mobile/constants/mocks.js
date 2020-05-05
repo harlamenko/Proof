@@ -10,20 +10,7 @@ class MockDevice extends Device {
     deviceYearClass = 2010;
     osName = 'bluberry';
     photo = 'https://c.dns-shop.ru/thumb/st1/fit/320/250/71bb228d80898db5123334cb4b2e6a46/dec714edb54cfa63238a3e4edd9adca0764c4aec9a15c85a54505e164a1a6391.jpg';
-    customCharacteristics = [
-        {
-            name: 'model',
-            value: 'Смартфон Vertex Impress City',
-        },
-        {
-            name: 'color',
-            value: 'black',
-        },
-        {
-            name: 'price',
-            value: '10 000 ₽'
-        }
-    ];
+
     constructor() {
         super();
     }

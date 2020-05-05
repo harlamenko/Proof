@@ -21,20 +21,18 @@ export class Adverts extends React.Component {
         <FlatList
           data={adverts}
           renderItem={this.renderItem}
-          keyExtractor={this.keyExtractor}
+          keyExtractor={({ id }) => `${id}`}
         />
       </ThemeProvider>
     );
   }
-
-  keyExtractor = ({ id }) => `${id}`;
 
   renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={this.redirectToDetails.bind(this, item.id)}
       activeOpacity={0.5}
     >
-      <Card title={item.modelName} titleStyle={{ textAlign: "left" }}>
+      <Card title={item.name} titleStyle={{ textAlign: "left" }}>
         <View style={styles.card}>
           <Image
             style={{ width: 100, height: 180 }}

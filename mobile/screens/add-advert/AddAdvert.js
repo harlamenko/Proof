@@ -15,23 +15,20 @@ import * as ImagePicker from "expo-image-picker";
 import { Device } from "../../models/Device";
 import { BackBtn } from "../../components";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Form } from "../../shared/styles";
 
 export class AddAdvert extends Component {
   constructor(props) {
     super(props);
-    this.keyInputRef = React.createRef();
-    this.valueInputRef = React.createRef();
 
     this.state = {
-      keyInput: null,
-      valueInput: null,
       item: new Device(),
     };
 
     this.setHeader();
   }
-
   setHeader = () => {
+    // TODO вынести в свойство класса
     this.props.navigation.setOptions({
       header: (props) => (
         <Header
@@ -58,19 +55,14 @@ export class AddAdvert extends Component {
     this.props.navigation.navigate("Adverts");
   };
 
-  pickPhoto = () => {
-    ImagePicker.requestCameraRollPermissionsAsync().then((res) => {
-      if (!res.granted) {
-        return;
-      }
-
-      ImagePicker.launchImageLibraryAsync().then((image) => {
-        const { item } = this.state;
-        item.setPhoto(image.uri);
-        this.setState({ item });
-      });
-    });
-  };
+  pickPhoto = async () => {
+    const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
+    if (!granted) { return; }
+    const image = await ImagePicker.launchImageLibraryAsync();
+    const { item } = this.state;
+    item.setPhoto(image.uri);
+    this.setState({ item });
+  }
 
   getImage = () => (
     <Image
@@ -90,99 +82,61 @@ export class AddAdvert extends Component {
     </TouchableOpacity>
   );
 
-  getCustomCharInput = (options) => {
-    const type = `${options.propName}Input`;
-
-    return (
-      <Input
-        ref={this[`${type}Ref`]}
-        maxLength={128}
-        containerStyle={styles.customCharacteristic_input}
-        placeholder={options.placeholder}
-        onChange={(e) => this.setState({ [type]: e.nativeEvent.text })}
-        value={this.state[type]}
-      />
-    );
-  };
-
-  getDeviceInfo = () =>
-    this.state.item.getVisibleDeviceInfo().map(({ name, value }, i) => (
-      <Text key={i}>
-        {name}: {value}
-      </Text>
-    ));
-
   render = () => (
     <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
       <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
-        {this.state.item.photo ? this.getImage() : this.getImagePicker()}
-        <View style={styles.deviceInfo}>
-          <Text style={styles.deviceInfoTitle}>
-            Информация о Вашем устройстве
-          </Text>
-          <Text style={styles.deviceInfoTitleHint}>
-            (собрана автоматически)
-          </Text>
-          {this.getDeviceInfo()}
+        <View style={{ marginTop: 8 }} >
+          {this.state.item.photo ? this.getImage() : this.getImagePicker()}
         </View>
-        {this.getCharacteristics()}
-        <View style={styles.customCharacteristic}>
-          {this.getCustomCharInput({
-            placeholder: "Характеристика",
-            propName: "key",
-          })}
-          {this.getCustomCharInput({
-            placeholder: "Значение",
-            propName: "value",
-          })}
-        </View>
-        <Button
-          title="ДОБАВИТЬ ХАРАКТЕРИСТИКУ"
-          containerStyle={styles.addCharacteristicBtn}
-          onPress={this.addCharacteristic}
+        <Input
+          containerStyle={Form.input}
+          label="Название"
+          placeholder="Введите название устройства"
+          maxLength={20}
+          value={this.state.item.name}
+          autoCorrect={false}
+          onChangeText={name => this.setState(this.state.item.patch({ name }))}
+        />
+        <Input
+          containerStyle={Form.input}
+          keyboardType="numeric"
+          placeholder="Введите стоимость устройства"
+          maxLength={9}
+          label="Цена"
+          value={this.state.item.price}
+          autoCorrect={false}
+          onChangeText={price => this.setState(this.state.item.patch({ price }))}
+        />
+        <Input
+          containerStyle={Form.input}
+          label="Город"
+          placeholder="Город, в котором состоится сделка"
+          maxLength={20}
+          textContentType="addressCity"
+          value={this.state.item.address}
+          autoCorrect={false}
+          onChangeText={address => this.setState(this.state.item.patch({ address }))}
+        />
+        <Input
+          containerStyle={Form.input}
+          inputContainerStyle={Form.textarea}
+          placeholder="Опишите устройство"
+          label="Описание"
+          value={this.state.item.description}
+          autoCorrect={false}
+          maxLength={255}
+          spellCheck
+          multiline
+          onChangeText={description => this.setState(this.state.item.patch({ description }))}
         />
       </ScrollView>
     </KeyboardAvoidingView>
   );
-
-  addCharacteristic = () => {
-    const { keyInput, valueInput, item } = this.state;
-
-    if (!keyInput || !valueInput) {
-      return Alert.alert(
-        "Данные не заполнены!",
-        "Для того, чтобы добавить характеристику необходимо заполнить оба поля."
-      );
-    }
-
-    item.addCustomCharacteristics(keyInput, valueInput);
-    this.setState({
-      keyInput: null,
-      valueInput: null,
-    });
-    this.keyInputRef.current.clear();
-    this.valueInputRef.current.clear();
-  };
-
-  getCharacteristics = () => {
-    const customCharacteristics = this.state.item.getCustomCharacteristics();
-
-    return customCharacteristics.length ? (
-      <View>
-        <Text>Характеристики:</Text>
-        {customCharacteristics.map(({ name, value }, i) => (
-          <Text key={i}>
-            {name}: {value}
-          </Text>
-        ))}
-      </View>
-    ) : null;
-  };
 }
 
 const styles = StyleSheet.create({
   screen: {
-    margin: 8,
+    marginHorizontal: 8,
   },
   customCharacteristic: {
     display: "flex",

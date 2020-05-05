@@ -1,13 +1,18 @@
 import * as DeviceAPI from 'expo-device';
 
 export class Device {
+    name = null;
+    price = null;
+    photo = null;
+    user_id = null;
+    address = null;
+    description = null;
+    publication_date = null;
     osBuildId = DeviceAPI.osBuildId;
     modelName = DeviceAPI.modelName;
     brand = DeviceAPI.brand;
     deviceYearClass = DeviceAPI.deviceYearClass;
     osName = DeviceAPI.osName;
-    photo = null;
-    customCharacteristics = [];
 
     constructor(item) {
         if (item instanceof Device) {
@@ -15,14 +20,11 @@ export class Device {
         }
     }
 
-    addCustomCharacteristics(name, value) {
-        this.customCharacteristics.push({ name, value });
-    }
     /**
      * Возвращает данные для отображения 
      * @returns {Array<Array<string|number>>}
      */
-    getVisibleDeviceInfo() {
+    getFullInfo() {
         const excludedKeys = ['modelName', 'id', 'photo', 'customCharacteristics'];
         return Object
             .entries(this)
@@ -30,16 +32,14 @@ export class Device {
             .map(([name, value]) => ({ name, value }));
     }
 
-    getCustomCharacteristics() {
-        return this.customCharacteristics;
-    }
-
-    getFullInfo() {
-        return [...this.getVisibleDeviceInfo(), ...this.getCustomCharacteristics()];
-    }
-
     setPhoto(uri) {
         this.photo = uri;
+    }
+    /**
+     * Патчит значения свойств переданного объекта  и возвращает инстанс.
+     */
+    patch(val) {
+        return Object.assign(this, val);
     }
 
     getInfoForQR() {

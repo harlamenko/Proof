@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Text, Input, Button } from "react-native-elements";
+import { Form } from "../../shared/styles";
 
 export default ({ title, errorMessage, submitBtnText, onSubmit }) => {
     // TODO: убрать хардкод
@@ -11,7 +12,7 @@ export default ({ title, errorMessage, submitBtnText, onSubmit }) => {
         <View>
             <Text h3 style={[styles.title, styles.bounders]}>{title}</Text>
             <Input
-                containerStyle={styles.input}
+                containerStyle={Form.input}
                 label="Email"
                 value={email}
                 autoCapitalize='none'
@@ -19,7 +20,7 @@ export default ({ title, errorMessage, submitBtnText, onSubmit }) => {
                 onChangeText={value => setEmail(value)}
             />
             <Input
-                containerStyle={styles.input}
+                containerStyle={Form.input}
                 label="Пароль"
                 value={password}
                 autoCapitalize='none'
@@ -45,9 +46,6 @@ export default ({ title, errorMessage, submitBtnText, onSubmit }) => {
 }
 
 const styles = StyleSheet.create({
-    input: {
-        marginVertical: 8,
-    },
     title: {
         marginBottom: 22,
     },

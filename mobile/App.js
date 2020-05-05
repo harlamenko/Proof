@@ -48,8 +48,8 @@ class App extends React.Component {
                     ),
                   }}
                 />
-                <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
                 <Stack.Screen name="AddAdvert" component={AddAdvert} />
+                <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
               </>
           }
         </Stack.Navigator>
