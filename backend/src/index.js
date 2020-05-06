@@ -1,13 +1,13 @@
 // models
 require('./models/User');
+require('./models/Advert');
 // libs
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 // routes
 const authRoutes = require('./routes/authRoutes');
-// middlewares
-const requireAuth = require('./middlewares/requireAuth');
+const advertRoutes = require('./routes/advertRoutes');
 // vars
 const app = express();
 const port = 3000;
@@ -16,6 +16,7 @@ const mongoUri = 'mongodb+srv://proof:L6p4oFtOXePNfy75@cluster0-czjvw.mongodb.ne
 app.use(bodyParser.json());
 // paths
 app.use(authRoutes);
+app.use(advertRoutes);
 
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
@@ -31,11 +32,6 @@ mongoose.connection.on('error', (error) => {
     console.error(error);
 })
 
-// TODO убрать пример использования middleware
-// app.get('/', requireAuth, (req, res) => {
-//     res.send(`Good! Your email: ${req.user.email}`)
-// });
-
 app.listen(port, () => {
-    console.log(`Backend: localhost:${port}`);
+    console.log(`Backend: http://localhost:${port}`);
 })
