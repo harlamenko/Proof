@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-elements";
-import { Context as AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../../context';
 import { AuthForm } from '../../components';
 
 const SignUp = ({ navigation }) => {

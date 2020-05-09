@@ -2,15 +2,27 @@ import "react-native-gesture-handler";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Header } from "react-native-elements";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
-import { SignIn, SignUp, Adverts, AddAdvert, AdvertDetails } from './screens';
+import { SignIn, SignUp, AddAdvert, AdvertDetails, Profile, Chat, Adverts, Filter } from './screens';
 import { ScreenResolver } from './components';
-import { TouchableOpacity } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { Provider as AuthProvider, Context as AuthContext } from "./context/AuthContext";
+import { AuthProvider, AuthContext, AdvertsProvider } from "./context";
+import { YellowBox } from 'react-native';
 
+YellowBox.ignoreWarnings(['Remote debugger']);
+
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+const AdvertStack = () => (
+  <AdvertsProvider>
+    <Stack.Navigator>
+      <Stack.Screen name="Adverts" component={Adverts} />
+      <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
+      <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  </AdvertsProvider>
+)
 
 class App extends React.Component {
   render() {
@@ -18,41 +30,23 @@ class App extends React.Component {
 
     return (
       <NavigationContainer>
-        <Stack.Navigator>
-          {!initialyLoaded ?
-            <Stack.Screen name="ScreenResolver" component={ScreenResolver} options={{ headerShown: false }} /> :
+        {
+          !initialyLoaded ?
+            <Stack.Navigator>
+              <Stack.Screen name="ScreenResolver" component={ScreenResolver} options={{ headerShown: false }} />
+            </Stack.Navigator> :
             !token ?
-              <>
+              <Stack.Navigator>
                 <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
                 <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-              </> :
-              <>
-                <Stack.Screen
-                  name="Adverts"
-                  component={Adverts}
-                  options={{
-                    header: (props) => (
-                      <Header
-                        centerComponent={{
-                          text: "Объявления",
-                          style: { color: "#fff" },
-                        }}
-                        rightComponent={
-                          <TouchableOpacity
-                            onPress={() => props.navigation.navigate("AddAdvert")}
-                          >
-                            <AntDesign name="plus" size={28} color="white" />
-                          </TouchableOpacity>
-                        }
-                      />
-                    ),
-                  }}
-                />
-                <Stack.Screen name="AddAdvert" component={AddAdvert} />
-                <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
-              </>
-          }
-        </Stack.Navigator>
+              </Stack.Navigator> :
+              <Tab.Navigator tabBarOptions={{ keyboardHidesTabBar: true }}>
+                <Tab.Screen name="AdvertStack" component={AdvertStack} />
+                <Tab.Screen name="Chat" component={Chat} />
+                <Tab.Screen name="Profile" component={Profile} />
+                <Tab.Screen name="AddAdvert" component={AddAdvert} />
+              </Tab.Navigator>
+        }
       </NavigationContainer>
     );
   }
