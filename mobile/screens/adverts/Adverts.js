@@ -2,86 +2,128 @@ import React from "react";
 import {
   FlatList,
   StyleSheet,
-  Text,
   View,
+  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { Card, ThemeProvider, Image } from "react-native-elements";
-import { adverts } from "../../constants/mocks";
-import { advertsScreen } from "../../constants/theme";
+import { Card, Text } from "react-native-elements";
+import { AdvertsContext, } from '../../context';
+import { Layout } from "../../shared/styles";
+import { Feather } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
 
-export class Adverts extends React.Component {
+const { width: screenWidth } = Dimensions.get("window");
+
+export default class Adverts extends React.Component {
+  static contextType = AdvertsContext;
+  _prevContext = null;
+  _unsubscribe = null;
+
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.setHeader();
+      this.tryToLoadAdverts();
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+
   render() {
+    const { state: { adverts, paging } } = this.context;
+
+    if (!adverts.length) {
+      return (
+        <View style={Layout.centeringContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      )
+    }
+
     return (
-      <ThemeProvider theme={advertsScreen}>
-        <FlatList
-          data={adverts}
-          renderItem={this.renderItem}
-          keyExtractor={({ id }) => `${id}`}
-        />
-      </ThemeProvider>
+      <FlatList
+        data={adverts}
+        numColumns={2}
+        renderItem={this.renderItem}
+        ListFooterComponent={adverts.length < paging.total ? <ActivityIndicator /> : null}
+        ListFooterComponentStyle={{ marginVertical: 8 }}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => { this.tryToLoadAdverts() }}
+        keyExtractor={({ id }) => `${id}`}
+      />
     );
   }
 
   renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={this.redirectToDetails.bind(this, item.id)}
+      onPress={() => this.redirectToDetails(item.id)}
       activeOpacity={0.5}
+      style={{ width: "50%" }}
     >
-      <Card title={item.name} titleStyle={{ textAlign: "left" }}>
-        <View style={styles.card}>
-          <Image
-            style={{ width: 100, height: 180 }}
-            resizeMode="contain"
-            source={{ uri: item.photo }}
-          />
-          <View style={styles.characteristics}>
-            {item.getFullInfo().map(({ name, value }, i) => (
-              <Text key={i}>
-                {name}: {value}
-              </Text>
-            ))}
-          </View>
-        </View>
+      <Card
+        image={{ uri: item.photo }}
+        containerStyle={[Layout.roundedCorners, { overflow: "hidden" }]}
+      >
+        <Text style={styles.advertName}>{item.name}</Text>
+        <Text style={styles.advertPrice}>{item.price} ₽</Text>
+        <Text>г. {item.city}</Text>
+        <Text>{item.published_at}</Text>
       </Card>
     </TouchableOpacity>
   );
 
-  redirectToDetails = (id) => {
+  redirectToDetails(id) {
     this.props.navigation.navigate("AdvertDetails", { id });
   };
+
+  setHeader() {
+    const { state: { search } } = this.context;
+
+    this.props.navigation.setOptions({
+      title: () => null,
+      headerLeft: () => (
+        <Text style={styles.title}>
+          {
+            search.keyWords ?
+              `Результаты по запросу: "${search.keyWords}"` :
+              'Объявления'
+          }
+        </Text>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={() => {
+          this.props.navigation.navigate('Filter');
+        }}>
+          <Feather name="search" size={28} style={{ marginRight: 8 }} />
+        </TouchableOpacity>
+      )
+    });
+  }
+
+  tryToLoadAdverts() {
+    const { state: { adverts, paging, search }, getAdverts } = this.context;
+    const prevContextFilter = JSON.stringify(this._prevContext);
+    const newContextFilter = JSON.stringify(search);
+
+    if (!this._prevContext || prevContextFilter !== newContextFilter || adverts.length < paging.total) {
+      getAdverts({ paging, search });
+      this._prevContext = JSON.parse(newContextFilter);
+    }
+  }
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    flexDirection: "row",
-  },
-  cardImage: {
-    marginLeft: 8,
-  },
-  characteristics: {
-    marginLeft: 12,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-  },
-  characteristic: {
-    flex: 1,
-    flexDirection: "row",
-    maxHeight: 24,
-    maxWidth: "85%",
-    overflow: "hidden",
-  },
-  characteristicKey: {
-    marginRight: 4,
-    fontWeight: "bold",
-  },
-  text: {
+  advertName: { fontSize: 16, fontWeight: "bold", marginBottom: 8 },
+  advertPrice: { marginBottom: 6 },
+  title: {
+    width: screenWidth - 50,
     fontSize: 16,
-  },
+    marginLeft: 8
+  }
 });

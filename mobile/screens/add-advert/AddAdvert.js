@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { Image, Input, Button, Header } from "react-native-elements";
+import { Image, Input, Header } from "react-native-elements";
 import { adverts } from "../../constants/mocks";
 import * as ImagePicker from "expo-image-picker";
 import { Device } from "../../models/Device";
