@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { AdvertsContext, AdvertsProvider } from '../../context';
+import { AdvertsContext } from '../../context';
 import { SearchBar, CheckBox, Button } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
 
 export default ({ navigation }) => {
   const {
     state: { search },
     updateFilter,
+    dropFilter
   } = useContext(AdvertsContext);
 
   const [field, setField] = useState(search.field);
@@ -29,8 +32,13 @@ export default ({ navigation }) => {
     navigation.navigate('Adverts');
   };
 
+  const dropGlobalFilter = () => {
+    dropFilter();
+    navigation.navigate('Adverts');
+  };
+
   return (
-    <>
+    <SafeAreaView>
       <SearchBar
         autoFocus={true}
         platform="ios"
@@ -80,20 +88,26 @@ export default ({ navigation }) => {
       />
       <Button
         title="Найти"
-        containerStyle={{
-          marginTop: 14,
-          marginHorizontal: 10,
-        }}
+        containerStyle={styles.button}
         onPress={() => {
           changeGlobalFilter();
         }}
       />
-    </>
+      <Button
+        title="Очистить"
+        type="outline"
+        containerStyle={styles.button}
+        onPress={() => {
+          dropGlobalFilter();
+        }}
+      />
+    </SafeAreaView>
   );
 };
 
-// export default (props) => (
-//   <AdvertsProvider>
-//     <Filter {...props} />
-//   </AdvertsProvider>
-// );
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 14,
+    marginHorizontal: 10,
+  }
+})
