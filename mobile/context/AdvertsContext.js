@@ -9,8 +9,8 @@ const initialFilter = {
     total: 0
   },
   search: {
-    field: "price" || "publication_date",
-    keyWords: "Sumsung A400" || null,
+    field: "publication_date",
+    keyWords: null,
     direct: -1
   }
 }
@@ -33,6 +33,7 @@ const advertsReducer = (prevState, action) => {
           total
         }
       };
+    case 'DROP_FILTER':
     case 'UPDATE_FILTER':
       return {
         ...action.payload,
@@ -72,8 +73,12 @@ const updateFilter = dispatch => ({ search }) => {
   dispatch({ type: 'UPDATE_FILTER', payload: { search, paging } });
 }
 
+const dropFilter = dispatch => () => {
+  dispatch({ type: 'DROP_FILTER', payload: initialFilter });
+}
+
 export const { Provider, Context } = createDataContext(
   advertsReducer,
-  { getAdverts, updateFilter },
+  { getAdverts, updateFilter, dropFilter },
   { ...initialFilter, adverts: [] }
 );
