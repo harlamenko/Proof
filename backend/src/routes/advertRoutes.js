@@ -6,7 +6,7 @@ const requireAuth = require('../middlewares/requireAuth');
 advertRouter.use(requireAuth);
 
 advertRouter.route('/adverts')
-    .get(async (req, res) => {
+    .post(async (req, res) => {
         const { paging, search } = req.body;
         const keyWords = !search.keyWords ? {} : { name: new RegExp(search.keyWords) };
         const sorting = { [search.field]: search.direct }
@@ -18,21 +18,22 @@ advertRouter.route('/adverts')
             _id: { $nin: paging.seenIds }
         };
         const filter = { ...pagination, ...keyWords };
-
         try {
-            const adverts = await Advert
+            const filteredQuery = Advert.find(filter);
+            const total = await filteredQuery.count();
+            const adverts = await filteredQuery
                 .find(filter)
                 .select('name publication_date price city photos')
                 .sort(sorting)
-                .limit(15);
+                .limit(10);
 
-            res.send(adverts);
+            res.send({ adverts, total });
         } catch (err) {
             console.error(err);
             res.status(500).send('Не удалось получить данные.');
         }
     })
-    .post(async (req, res) => {
+    .put(async (req, res) => {
         const advert = new Advert(req.body);
         try {
             advert.user_id = req.user._id;
