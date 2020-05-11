@@ -37,8 +37,14 @@ const advertsReducer = (prevState, action) => {
     case 'UPDATE_FILTER':
       return {
         ...action.payload,
-        adverts: []
+        adverts: [],
+        currentAdvert: null
       };
+    case 'SET_CURRENT_ADVERT':
+      return {
+        ...prevState,
+        currentAdvert: action.payload
+      }
     default:
       return prevState;
   }
@@ -77,8 +83,22 @@ const dropFilter = dispatch => () => {
   dispatch({ type: 'DROP_FILTER', payload: initialFilter });
 }
 
+const getAdvertDetails = dispatch => async (id) => {
+  try {
+    const { data: advert } = await ProofAPI.get(`/adverts/${id}`);
+
+    dispatch({ type: 'SET_CURRENT_ADVERT', payload: new Advert(advert) })
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const dropCurrentAdvert = dispatch => () => {
+  dispatch({ type: 'SET_CURRENT_ADVERT', payload: null });
+}
+
 export const { Provider, Context } = createDataContext(
   advertsReducer,
-  { getAdverts, updateFilter, dropFilter },
-  { ...initialFilter, adverts: [] }
+  { getAdverts, updateFilter, dropFilter, getAdvertDetails, dropCurrentAdvert },
+  { ...initialFilter, adverts: [], currentAdvert: null }
 );

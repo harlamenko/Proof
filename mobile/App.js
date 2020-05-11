@@ -25,6 +25,8 @@ const AdvertStack = () => (
 )
 
 class App extends React.Component {
+  static contextType = AuthContext;
+
   render() {
     const { token, initialyLoaded } = this.context.state;
 
@@ -36,9 +38,9 @@ class App extends React.Component {
               <Stack.Screen name="ScreenResolver" component={ScreenResolver} options={{ headerShown: false }} />
             </Stack.Navigator> :
             !token ?
-              <Stack.Navigator>
-                <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
-                <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="SignIn" component={SignIn} />
+                <Stack.Screen name="SignUp" component={SignUp} />
               </Stack.Navigator> :
               <Tab.Navigator tabBarOptions={{ keyboardHidesTabBar: true }}>
                 <Tab.Screen name="AdvertStack" component={AdvertStack} />
@@ -51,8 +53,6 @@ class App extends React.Component {
     );
   }
 }
-
-App.contextType = AuthContext;
 
 export default () => (
   <AuthProvider>

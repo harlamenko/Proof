@@ -4,7 +4,7 @@ import Adverts from "./adverts/Adverts"
 import Chat from './chat/Chat';
 import Profile from './profile/Profile';
 import SignUp from "./sign-up/SingUp"
-import { AdvertDetails } from "./advert-details/AdvertDetails"
+import AdvertDetails from "./advert-details/AdvertDetails"
 import Filter from "./filter/Filter";
 
 export {

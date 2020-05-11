@@ -40,4 +40,13 @@ export class Advert {
             Object.assign(this, obj);
         }
     }
+
+    belongsTo(userId) {
+        return this.user_id === userId;
+    }
+
+    getInfoForQR() {
+        debugger;
+        return '';
+    }
 }

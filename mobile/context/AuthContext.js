@@ -11,7 +11,8 @@ const authReducer = (prevState, action) => {
       };
     case 'SIGN_IN':
       return {
-        token: action.payload,
+        token: action.payload.token,
+        user: action.payload.user,
         errorMessage: ''
       };
     case 'SIGN_OUT':
@@ -38,10 +39,11 @@ const signup = dispatch => async ({ email, password }) => {
   try {
     dispatch({ type: 'CLEAR_ERROR_MESSAGE' });
 
-    const res = await ProofAPI.post('/signup', { email, password });
-    await AsyncStorage.setItem('token', res.data.token);
+    const { data: { token, user } } = await ProofAPI.post('/signup', { email, password });
+    await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('user', JSON.stringify(user));
 
-    dispatch({ type: 'SIGN_IN', payload: res.data.token })
+    dispatch({ type: 'SIGN_IN', payload: { token, user } })
   } catch (err) {
     dispatch({ type: 'SET_ERROR_MESSAGE', payload: 'Ошибка регистрации.' });
   }
@@ -51,10 +53,11 @@ const signin = dispatch => async ({ email, password }) => {
   try {
     dispatch({ type: 'CLEAR_ERROR_MESSAGE' });
 
-    const res = await ProofAPI.post('/signin', { email, password });
-    await AsyncStorage.setItem('token', res.data.token);
+    const { data: { token, user } } = await ProofAPI.post('/signin', { email, password });
+    await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('user', JSON.stringify(user));
 
-    dispatch({ type: 'SIGN_IN', payload: res.data.token })
+    dispatch({ type: 'SIGN_IN', payload: { token, user } })
   } catch (err) {
     dispatch({ type: 'SET_ERROR_MESSAGE', payload: 'Ошибка входа.' });
   }
@@ -62,6 +65,7 @@ const signin = dispatch => async ({ email, password }) => {
 
 const signout = dispatch => async () => {
   await AsyncStorage.removeItem('token');
+  await AsyncStorage.removeItem('user');
 
   dispatch({ type: 'SIGN_OUT' })
 }
@@ -72,8 +76,9 @@ const clearErrorMessage = dispatch => () => {
 
 const tryLocalSignin = dispatch => async () => {
   const token = await AsyncStorage.getItem('token');
+  const user = await AsyncStorage.getItem('user');
 
-  dispatch({ type: 'SIGN_IN', payload: token });
+  dispatch({ type: 'SIGN_IN', payload: { token, user: JSON.parse(user) } });
   dispatch({ type: 'SET_INITIAL_LOADING' });
 }
 
