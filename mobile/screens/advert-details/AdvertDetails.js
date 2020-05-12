@@ -114,7 +114,7 @@ class AdvertDetails extends React.Component {
         {
           !currentAdvert.belongsTo(this.props.auth.state.user.id) ?
             <Button
-              containerStyle={[styles.horizontalGaps, { marginTop: 8 }]}
+              containerStyle={{ margin: 8 }}
               title="Написать продавцу"
             /> :
             null

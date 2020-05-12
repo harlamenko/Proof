@@ -34,7 +34,6 @@ export default class Adverts extends React.Component {
     this._unsubscribe();
   }
 
-
   render() {
     const { state: { adverts, paging } } = this.context;
 
@@ -68,7 +67,7 @@ export default class Adverts extends React.Component {
     >
       <Card
         image={{ uri: item.photo }}
-        containerStyle={[Layout.roundedCorners, { overflow: "hidden" }]}
+        containerStyle={[Layout.roundedCorners, { overflow: "hidden", margin: 6, marginVertical: 12 }]}
       >
         <Text style={styles.advertName}>{item.name}</Text>
         <Text style={styles.advertPrice}>{item.price} ₽</Text>
@@ -85,9 +84,16 @@ export default class Adverts extends React.Component {
   setHeader() {
     const { state: { search } } = this.context;
 
-    this.props.navigation.setOptions({
-      title: () => null,
+    this.props.navigation.dangerouslyGetParent().setOptions({
+      headerShown: true,
       headerLeft: () => (
+        <TouchableOpacity onPress={() => {
+          this.props.navigation.navigate('AddAdvert');
+        }}>
+          <Feather name="plus" size={28} style={{ marginLeft: 8 }} />
+        </TouchableOpacity>
+      ),
+      headerTitle: () => (
         <Text style={styles.title}>
           {
             search.keyWords ?

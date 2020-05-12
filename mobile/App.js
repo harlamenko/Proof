@@ -14,14 +14,12 @@ YellowBox.ignoreWarnings(['Remote debugger']);
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const AdvertStack = () => (
-  <AdvertsProvider>
-    <Stack.Navigator>
-      <Stack.Screen name="Adverts" component={Adverts} />
-      <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
-      <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  </AdvertsProvider>
+const Tabs = () => (
+  <Tab.Navigator tabBarOptions={{ keyboardHidesTabBar: true }}>
+    <Tab.Screen name="Adverts" component={Adverts} />
+    <Tab.Screen name="Chat" component={Chat} options={{ unmountOnBlur: true }} />
+    <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} />
+  </Tab.Navigator>
 )
 
 class App extends React.Component {
@@ -42,12 +40,14 @@ class App extends React.Component {
                 <Stack.Screen name="SignIn" component={SignIn} />
                 <Stack.Screen name="SignUp" component={SignUp} />
               </Stack.Navigator> :
-              <Tab.Navigator tabBarOptions={{ keyboardHidesTabBar: true }}>
-                <Tab.Screen name="AdvertStack" component={AdvertStack} />
-                <Tab.Screen name="Chat" component={Chat} />
-                <Tab.Screen name="Profile" component={Profile} />
-                <Tab.Screen name="AddAdvert" component={AddAdvert} />
-              </Tab.Navigator>
+              <AdvertsProvider>
+                <Stack.Navigator>
+                  <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+                  <Stack.Screen name="AddAdvert" component={AddAdvert} />
+                  <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
+                  <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
+                </Stack.Navigator>
+              </AdvertsProvider>
         }
       </NavigationContainer>
     );

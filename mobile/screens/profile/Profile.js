@@ -1,4 +1,25 @@
 import React from 'react';
 import { Text } from 'react-native-elements';
 
-export default () => <Text>Profile</Text>
+export default class Profile extends React.Component {
+    constructor(props) { super(props); }
+
+    componentDidMount() {
+        this.props.navigation.dangerouslyGetParent().setOptions({
+            headerShown: false,
+        });
+    }
+
+    componentWillUnmount() {
+        this.props.navigation.dangerouslyGetParent().setOptions({
+            headerShown: true,
+        });
+    }
+
+    render() {
+        this.props.navigation.dangerouslyGetParent().setOptions({
+            headerShown: false,
+        });
+        return <Text>Profile</Text>
+    }
+}
