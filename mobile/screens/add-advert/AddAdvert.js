@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import { Image, Input, Header } from "react-native-elements";
 import { adverts } from "../../constants/mocks";

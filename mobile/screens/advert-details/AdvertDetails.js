@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Dimensions, ActivityIndicator, StyleSheet } fro
 import { Image, Overlay, Text, Button } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BackBtn, QRScanner } from "../../components";
-import { AdvertsContext, AuthProvider, AuthContext } from "../../context";
+import { AdvertsContext, AuthContext } from "../../context";
 import { Layout } from "../../shared/styles";
 import { ScrollView } from "react-native-gesture-handler";
 
