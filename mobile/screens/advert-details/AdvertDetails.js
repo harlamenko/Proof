@@ -1,14 +1,15 @@
 import React from "react";
 import QRCode from "react-native-qrcode-generator";
-import { View, TouchableOpacity, Dimensions, ActivityIndicator, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Dimensions, ActivityIndicator, StyleSheet, Alert } from "react-native";
 import { Image, Overlay, Text, Button } from "react-native-elements";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { BackBtn, QRScanner } from "../../components";
 import { AdvertsContext, AuthContext } from "../../context";
 import { Layout } from "../../shared/styles";
 import { ScrollView } from "react-native-gesture-handler";
 
 const { width: screenWidth } = Dimensions.get("window");
+
 class AdvertDetails extends React.Component {
   static contextType = AdvertsContext;
 
@@ -21,6 +22,7 @@ class AdvertDetails extends React.Component {
       isOverlayVisible: false,
       hasPermission: false,
       scanned: true,
+      processing: false
     };
   }
 
@@ -129,37 +131,75 @@ class AdvertDetails extends React.Component {
     );
   }
 
+  handleDel = () => {
+    Alert.alert('Вы уверены, что хотите удалить объявление?', '', [
+      { text: 'Да', onPress: this.confirmDel },
+      { text: 'Нет', }
+    ]);
+  }
+
+  confirmDel = () => {
+    this.setState({ processing: true });
+    const { state: { currentAdvert }, dropFilter, deleteAdvert } = this.context;
+    deleteAdvert(currentAdvert.id);
+    dropFilter();
+    this.props.auth.setLocalInfo(null);
+    const { state: { paging, search }, getAdverts } = this.context;
+    getAdverts({ paging, search });
+    this.setState({ processing: false });
+
+    this.props.navigation.navigate('Adverts');
+  }
+
+  handleEdit = () => {
+    Alert.alert('Вы уверены, что хотите изменить объявление?', '', [
+      { text: 'Да', onPress: this.confirmEdit },
+      { text: 'Нет', }
+    ]);
+  }
+
+  confirmEdit = () => {
+    const { state: { currentAdvert } } = this.context;
+    this.props.navigation.navigate('EditAdvert', { advert: currentAdvert });
+  }
+
   setHeader = () => {
     const { state: { currentAdvert } } = this.context;
-    if (currentAdvert) {
 
+    if (currentAdvert) {
       this.props.navigation.setOptions({
         headerShown: true,
         headerLeft: () => <BackBtn {...this.props} style={{ marginLeft: 8 }} />,
         headerTitle: () => <Text style={{ fontSize: 16 }}>{currentAdvert.name}</Text>,
         headerRight: () => {
           if (!currentAdvert) { return null; }
+          if (this.state.processing) { return <ActivityIndicator style={{ marginRight: 8 }} /> }
 
           return (
-            <TouchableOpacity
-              onPress={this.toggleOverlayVisibility}
-              style={{ marginRight: 8 }}
-            >
-              <MaterialCommunityIcons
-                name={
-                  currentAdvert.belongsTo(this.props.auth.state.user._id) ?
-                    "qrcode" : "qrcode-scan"
-                }
-                size={32}
-              />
-            </TouchableOpacity>
+            currentAdvert.belongsTo(this.props.auth.state.user._id) ?
+              (
+                <View style={{ flex: 1, flexDirection: "row", alignItems: 'center' }}>
+                  <TouchableOpacity onPress={this.handleDel} >
+                    <MaterialCommunityIcons name="delete-outline" size={32} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.handleEdit} style={{ marginLeft: 12, marginRight: 18 }} >
+                    <Feather name="edit-2" size={28} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.toggleOverlayVisibility} style={{ marginRight: 8 }} >
+                    <MaterialCommunityIcons name="qrcode" size={32} />
+                  </TouchableOpacity>
+                </View>
+              ) :
+              (
+                <TouchableOpacity onPress={this.toggleOverlayVisibility} style={{ marginRight: 8 }} >
+                  <MaterialCommunityIcons name="qrcode-scan" size={32} />
+                </TouchableOpacity>
+              )
           )
         }
       });
     } else {
-      this.props.navigation.setOptions({
-        headerShown: false
-      });
+      this.props.navigation.setOptions({ headerShown: false });
     }
   };
 

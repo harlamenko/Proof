@@ -4,15 +4,12 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { Image, Input } from "react-native-elements";
-import * as ImagePicker from "expo-image-picker";
-import { BackBtn } from "../../components";
+import { BackBtn, AdvertForm } from "../../components";
 import { Feather } from "@expo/vector-icons";
-import { Form, Layout } from "../../shared/styles";
+import { Layout } from "../../shared/styles";
 import { AdvertsContext, AuthContext } from "../../context";
 import { Advert } from "../../models/Advert";
 import ProofAPI from '../../api/ProofAPI';
@@ -28,12 +25,6 @@ class AddAdvert extends Component {
       item: new Advert(this.props.auth.state.user._id),
       uploading: false
     };
-  }
-
-  componentWillMount() {
-    if (this.props.auth.state.myAdvert) {
-      this.props.navigation.navigate('Adverts');
-    }
   }
 
   setHeader = () => {
@@ -55,7 +46,7 @@ class AddAdvert extends Component {
     const validationMessage = item.validate();
 
     if (validationMessage) {
-      Alert.alert('Ошибка сохранения', validationMessage);
+      Alert.alert('Ошибка публикации', validationMessage);
       return;
     }
 
@@ -67,10 +58,10 @@ class AddAdvert extends Component {
       const { dropFilter } = this.context;
       dropFilter();
 
-      const { state: { adverts, paging, search }, getAdverts } = this.context;
-      getAdverts({ paging, search })
+      const { state: { paging, search }, getAdverts } = this.context;
+      getAdverts({ paging, search });
       Toast.showWithGravity('Публикация прошла успешно!', Toast.SHORT, Toast.CENTER);
-      this.props.navigation.navigate("Adverts", { advert });
+      this.props.navigation.navigate("Adverts");
     } else {
       Toast.showWithGravity('Ошибка публикации', Toast.SHORT, Toast.CENTER);
     }
@@ -78,34 +69,37 @@ class AddAdvert extends Component {
     this.setState({ ...this.state, ...{ uploading: false } });
   };
 
-  pickPhoto = async () => {
-    const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
-    if (!granted) { return; }
-
+  handlePhotoAdding = () => {
     const { item } = this.state;
     item.addPhoto();
-    const image = await ImagePicker.launchImageLibraryAsync();
-    item.changeLastPhoto(image.uri);
-    this.setState({ ...this.state, ...{ item } });
   }
 
-  getImage = () => (
-    <Image
-      containerStyle={styles.deviceImageContainer}
-      style={styles.deviceImage}
-      resizeMode="center"
-      source={{ uri: this.state.item.photo }}
-      PlaceholderContent={<ActivityIndicator />}
-    />
-  );
+  handlePhotoAdded = (uri) => {
+    const { item } = this.state;
+    // TODO: convert to base64
+    item.changeLastPhoto(uri);
+    this.setState({ ...this.state, item });
+  }
 
-  getImagePicker = () => (
-    <TouchableOpacity onPress={this.pickPhoto}>
-      <View style={styles.imagePicker}>
-        <Text>Нажмите, чтобы выбрать фото</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  handleNameChange = name => this.setState({
+    ...this.state,
+    ...this.state.item.patch({ name })
+  });
+
+  handlePriceChange = price => this.setState({
+    ...this.state,
+    ...this.state.item.patch({ price })
+  });
+
+  handleCityChange = city => this.setState({
+    ...this.state,
+    ...this.state.item.patch({ city })
+  });
+
+  handleDescriptionChange = description => this.setState({
+    ...this.state,
+    ...this.state.item.patch({ description })
+  });
 
   render() {
     this.setHeader();
@@ -119,72 +113,15 @@ class AddAdvert extends Component {
     }
 
     return (
-      <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
-        <View style={{ marginTop: 8 }} >
-          {this.state.item.photos.length ? this.getImage() : this.getImagePicker()}
-        </View>
-        <Input
-          containerStyle={Form.input}
-          label="Название"
-          placeholder="Введите название устройства"
-          maxLength={20}
-          value={this.state.item.name}
-          autoCorrect={false}
-          onChangeText={
-            name => this.setState({
-              ...this.state,
-              ...this.state.item.patch({ name })
-            })
-          }
-        />
-        <Input
-          containerStyle={Form.input}
-          keyboardType="numeric"
-          placeholder="Введите стоимость устройства"
-          maxLength={9}
-          label="Цена"
-          value={this.state.item.price}
-          autoCorrect={false}
-          onChangeText={
-            price => this.setState({
-              ...this.state,
-              ...this.state.item.patch({ price })
-            })
-          }
-        />
-        <Input
-          containerStyle={Form.input}
-          label="Город"
-          placeholder="Город, в котором состоится сделка"
-          maxLength={20}
-          textContentType="addressCity"
-          value={this.state.item.city}
-          autoCorrect={false}
-          onChangeText={
-            city => this.setState({
-              ...this.state,
-              ...this.state.item.patch({ city })
-            })
-          }
-        />
-        <Input
-          containerStyle={Form.input}
-          inputContainerStyle={Form.textarea}
-          placeholder="Опишите устройство"
-          label="Описание"
-          value={this.state.item.description}
-          autoCorrect={false}
-          maxLength={255}
-          spellCheck
-          multiline
-          onChangeText={
-            description => this.setState({
-              ...this.state,
-              ...this.state.item.patch({ description })
-            })
-          }
-        />
-      </ScrollView>
+      <AdvertForm
+        advert={this.state.item}
+        onPhotoAdding={this.handlePhotoAdding}
+        onPhotoAdded={this.handlePhotoAdded}
+        onNameChange={this.handleNameChange}
+        onPriceChange={this.handlePriceChange}
+        onCityChange={this.handleCityChange}
+        onDescriptionChange={this.handleDescriptionChange}
+      />
     );
   }
 }

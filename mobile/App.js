@@ -12,7 +12,8 @@ import {
   Profile,
   Chat,
   Adverts,
-  Filter
+  Filter,
+  EditAdvert
 } from './screens';
 import { ScreenResolver } from './components';
 import { AuthProvider, AuthContext, AdvertsProvider } from "./context";
@@ -53,6 +54,7 @@ class App extends React.Component {
                 <Stack.Navigator>
                   <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
                   <Stack.Screen name="AddAdvert" component={AddAdvert} unmountOnBlur={true} />
+                  <Stack.Screen name="EditAdvert" component={EditAdvert} unmountOnBlur={true} />
                   <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
                   <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
                 </Stack.Navigator>

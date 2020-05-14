@@ -88,8 +88,6 @@ const tryLocalSignin = dispatch => async () => {
   dispatch({ type: 'SET_INITIAL_LOADING' });
 }
 
-// TODO: доб метод на удаление при удалении объявления
-// TODO: доб метод на изменении при изменении объявления
 const getLocalInfo = dispatch => async () => {
   const myAdvert = await AsyncStorage.getItem('myAdvert');
   dispatch({ type: 'SET_LOCAL_INFO', payload: { myAdvert: JSON.parse(myAdvert) } });

@@ -1,6 +1,7 @@
 import createDataContext from "./createDataContext";
 import ProofAPI from '../api/ProofAPI';
 import { Advert } from "../models/Advert";
+import Toast from 'react-native-simple-toast';
 
 const initialFilter = {
   paging: {
@@ -101,8 +102,20 @@ const setCurrentAdvert = dispatch => advert => {
   dispatch({ type: 'SET_CURRENT_ADVERT', payload: new Advert(advert) })
 }
 
+const deleteAdvert = dispatch => async id => {
+  try {
+    await ProofAPI.delete(`/adverts/${id}`);
+    Toast.showWithGravity('Объявление успешно удалено!', Toast.SHORT, Toast.CENTER);
+
+  } catch (err) {
+    console.error(err);
+    Toast.showWithGravity('Произошла ошибка', Toast.SHORT, Toast.CENTER);
+  }
+
+}
+
 export const { Provider, Context } = createDataContext(
   advertsReducer,
-  { getAdverts, updateFilter, dropFilter, getAdvertDetails, dropCurrentAdvert, setCurrentAdvert },
+  { getAdverts, updateFilter, dropFilter, getAdvertDetails, dropCurrentAdvert, setCurrentAdvert, deleteAdvert },
   { ...initialFilter, adverts: [], currentAdvert: null }
 );
