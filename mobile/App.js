@@ -4,7 +4,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
-import { SignIn, SignUp, AddAdvert, AdvertDetails, Profile, Chat, Adverts, Filter } from './screens';
+import {
+  SignIn,
+  SignUp,
+  AddAdvert,
+  AdvertDetails,
+  Profile,
+  Chat,
+  Adverts,
+  Filter
+} from './screens';
 import { ScreenResolver } from './components';
 import { AuthProvider, AuthContext, AdvertsProvider } from "./context";
 import { YellowBox } from 'react-native';
@@ -43,7 +52,7 @@ class App extends React.Component {
               <AdvertsProvider>
                 <Stack.Navigator>
                   <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-                  <Stack.Screen name="AddAdvert" component={AddAdvert} />
+                  <Stack.Screen name="AddAdvert" component={AddAdvert} unmountOnBlur={true} />
                   <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
                   <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
                 </Stack.Navigator>

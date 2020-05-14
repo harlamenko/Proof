@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Card, Text } from "react-native-elements";
-import { AdvertsContext, } from '../../context';
+import { AdvertsContext, AuthContext, } from '../../context';
 import { Layout } from "../../shared/styles";
 import { Feather } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 
 const { width: screenWidth } = Dimensions.get("window");
 
-export default class Adverts extends React.Component {
+class Adverts extends React.Component {
   static contextType = AdvertsContext;
   _prevContext = null;
   _unsubscribe = null;
@@ -86,13 +86,15 @@ export default class Adverts extends React.Component {
 
     this.props.navigation.dangerouslyGetParent().setOptions({
       headerShown: true,
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => {
-          this.props.navigation.navigate('AddAdvert');
-        }}>
-          <Feather name="plus" size={28} style={{ marginLeft: 8 }} />
-        </TouchableOpacity>
-      ),
+      headerLeft: () => {
+        return this.props.auth.state.myAdvert ?
+          null :
+          <TouchableOpacity onPress={() => {
+            this.props.navigation.navigate('AddAdvert');
+          }}>
+            <Feather name="plus" size={28} style={{ marginLeft: 8 }} />
+          </TouchableOpacity>
+      },
       headerTitle: () => (
         <Text style={styles.title}>
           {
@@ -124,9 +126,21 @@ export default class Adverts extends React.Component {
   }
 }
 
+export default (props) => {
+  return (
+    <AuthContext.Consumer>
+      {value => <Adverts auth={value} {...props} />}
+    </AuthContext.Consumer>
+  )
+}
+
 const styles = StyleSheet.create({
-  advertName: { fontSize: 16, fontWeight: "bold", marginBottom: 8 },
   advertPrice: { marginBottom: 6 },
+  advertName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8
+  },
   title: {
     width: screenWidth - 50,
     fontSize: 16,

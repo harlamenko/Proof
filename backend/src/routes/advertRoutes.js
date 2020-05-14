@@ -35,8 +35,10 @@ advertRouter.route('/adverts')
     })
     .put(async (req, res) => {
         const advert = new Advert(req.body);
+
         try {
             advert.user_id = req.user._id;
+            advert.publication_date = Date.now();
             await advert.save();
             res.send(advert);
         } catch (err) {
@@ -81,6 +83,6 @@ advertRouter.route('/adverts/:id')
             console.error(err);
             res.status(500).send('Не удалось удалить объявление.');
         }
-    })
+    });
 
 module.exports = advertRouter;

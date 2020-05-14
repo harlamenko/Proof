@@ -1,4 +1,4 @@
-import { AddAdvert } from "./add-advert/AddAdvert"
+import AddAdvert from "./add-advert/AddAdvert"
 import SignIn from "./sing-in/SingIn"
 import Adverts from "./adverts/Adverts"
 import Chat from './chat/Chat';

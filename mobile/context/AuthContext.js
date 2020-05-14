@@ -11,6 +11,7 @@ const authReducer = (prevState, action) => {
       };
     case 'SIGN_IN':
       return {
+        ...prevState,
         token: action.payload.token,
         user: action.payload.user,
         errorMessage: ''
@@ -19,6 +20,11 @@ const authReducer = (prevState, action) => {
       return {
         ...prevState,
         token: null,
+      };
+    case 'SET_LOCAL_INFO':
+      return {
+        ...prevState,
+        ...action.payload
       };
     case 'CLEAR_ERROR_MESSAGE':
       return {
@@ -57,7 +63,7 @@ const signin = dispatch => async ({ email, password }) => {
     await AsyncStorage.setItem('token', token);
     await AsyncStorage.setItem('user', JSON.stringify(user));
 
-    dispatch({ type: 'SIGN_IN', payload: { token, user } })
+    dispatch({ type: 'SIGN_IN', payload: { token, user } });
   } catch (err) {
     dispatch({ type: 'SET_ERROR_MESSAGE', payload: 'Ошибка входа.' });
   }
@@ -82,8 +88,20 @@ const tryLocalSignin = dispatch => async () => {
   dispatch({ type: 'SET_INITIAL_LOADING' });
 }
 
+// TODO: доб метод на удаление при удалении объявления
+// TODO: доб метод на изменении при изменении объявления
+const getLocalInfo = dispatch => async () => {
+  const myAdvert = await AsyncStorage.getItem('myAdvert');
+  dispatch({ type: 'SET_LOCAL_INFO', payload: { myAdvert: JSON.parse(myAdvert) } });
+}
+
+const setLocalInfo = dispatch => async (myAdvert) => {
+  await AsyncStorage.setItem('myAdvert', JSON.stringify(myAdvert));
+  dispatch({ type: 'SET_LOCAL_INFO', payload: { myAdvert } });
+}
+
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signup, signout, clearErrorMessage, tryLocalSignin },
-  { token: null, errorMessage: '', initialyLoaded: false }
+  { signin, signup, signout, clearErrorMessage, tryLocalSignin, getLocalInfo, setLocalInfo },
+  { token: null, myAdvert: null, errorMessage: '', initialyLoaded: false }
 );

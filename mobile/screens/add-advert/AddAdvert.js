@@ -4,63 +4,89 @@ import {
   View,
   Text,
   StyleSheet,
-  KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { Image, Input, Header } from "react-native-elements";
-import { adverts } from "../../constants/mocks";
+import { Image, Input } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
-import { Device } from "../../models/Device";
 import { BackBtn } from "../../components";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Form } from "../../shared/styles";
+import { Feather } from "@expo/vector-icons";
+import { Form, Layout } from "../../shared/styles";
+import { AdvertsContext, AuthContext } from "../../context";
+import { Advert } from "../../models/Advert";
+import ProofAPI from '../../api/ProofAPI';
+import Toast from 'react-native-simple-toast';
 
-export class AddAdvert extends Component {
+class AddAdvert extends Component {
+  static contextType = AdvertsContext;
+
   constructor(props) {
     super(props);
 
     this.state = {
-      item: new Device(),
+      item: new Advert(this.props.auth.state.user._id),
+      uploading: false
     };
-
-    this.setHeader();
   }
+
+  componentWillMount() {
+    if (this.props.auth.state.myAdvert) {
+      this.props.navigation.navigate('Adverts');
+    }
+  }
+
   setHeader = () => {
-    // TODO вынести в свойство класса
     this.props.navigation.setOptions({
-      header: (props) => (
-        <Header
-          leftComponent={<BackBtn {...props} />}
-          centerComponent={{
-            text: "Добавление объявления",
-            style: { color: "#fff" },
-          }}
-          rightComponent={
-            <TouchableOpacity onPress={this.publishItem.bind(this)}>
-              <MaterialIcons name="done" size={28} color="white" />
-            </TouchableOpacity>
-          }
-        />
-      ),
+      headerLeft: () => <BackBtn {...this.props} style={{ marginLeft: 8 }} />,
+      headerTitle: () => <Text style={styles.title}>Добавление объявления</Text>,
+      headerRight: () => {
+        return this.state.uploading ?
+          <ActivityIndicator style={{ marginRight: 8 }} /> :
+          <TouchableOpacity onPress={() => { this.publishItem() }}>
+            <Feather name="check" size={28} style={{ marginRight: 8 }} />
+          </TouchableOpacity>
+      }
     });
   };
 
-  publishItem = () => {
+  publishItem = async () => {
     const { item } = this.state;
-    item.id = adverts.length + 1;
-    // TODO: send to BE
-    adverts.push(new Device(item));
-    this.props.navigation.navigate("Adverts");
+    const validationMessage = item.validate();
+
+    if (validationMessage) {
+      Alert.alert('Ошибка сохранения', validationMessage);
+      return;
+    }
+
+    this.setState({ ...this.state, ...{ uploading: true } });
+    const { data: advert } = await ProofAPI.put(`/adverts`, item);
+
+    if (advert) {
+      this.props.auth.setLocalInfo(advert);
+      const { dropFilter } = this.context;
+      dropFilter();
+
+      const { state: { adverts, paging, search }, getAdverts } = this.context;
+      getAdverts({ paging, search })
+      Toast.showWithGravity('Публикация прошла успешно!', Toast.SHORT, Toast.CENTER);
+      this.props.navigation.navigate("Adverts", { advert });
+    } else {
+      Toast.showWithGravity('Ошибка публикации', Toast.SHORT, Toast.CENTER);
+    }
+
+    this.setState({ ...this.state, ...{ uploading: false } });
   };
 
   pickPhoto = async () => {
     const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
     if (!granted) { return; }
-    const image = await ImagePicker.launchImageLibraryAsync();
+
     const { item } = this.state;
-    item.setPhoto(image.uri);
-    this.setState({ item });
+    item.addPhoto();
+    const image = await ImagePicker.launchImageLibraryAsync();
+    item.changeLastPhoto(image.uri);
+    this.setState({ ...this.state, ...{ item } });
   }
 
   getImage = () => (
@@ -81,11 +107,21 @@ export class AddAdvert extends Component {
     </TouchableOpacity>
   );
 
-  render = () => (
-    <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
+  render() {
+    this.setHeader();
+
+    if (this.state.uploading) {
+      return (
+        <View style={Layout.centeringContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      )
+    }
+
+    return (
       <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
         <View style={{ marginTop: 8 }} >
-          {this.state.item.photo ? this.getImage() : this.getImagePicker()}
+          {this.state.item.photos.length ? this.getImage() : this.getImagePicker()}
         </View>
         <Input
           containerStyle={Form.input}
@@ -94,7 +130,12 @@ export class AddAdvert extends Component {
           maxLength={20}
           value={this.state.item.name}
           autoCorrect={false}
-          onChangeText={name => this.setState(this.state.item.patch({ name }))}
+          onChangeText={
+            name => this.setState({
+              ...this.state,
+              ...this.state.item.patch({ name })
+            })
+          }
         />
         <Input
           containerStyle={Form.input}
@@ -104,7 +145,12 @@ export class AddAdvert extends Component {
           label="Цена"
           value={this.state.item.price}
           autoCorrect={false}
-          onChangeText={price => this.setState(this.state.item.patch({ price }))}
+          onChangeText={
+            price => this.setState({
+              ...this.state,
+              ...this.state.item.patch({ price })
+            })
+          }
         />
         <Input
           containerStyle={Form.input}
@@ -112,9 +158,14 @@ export class AddAdvert extends Component {
           placeholder="Город, в котором состоится сделка"
           maxLength={20}
           textContentType="addressCity"
-          value={this.state.item.address}
+          value={this.state.item.city}
           autoCorrect={false}
-          onChangeText={address => this.setState(this.state.item.patch({ address }))}
+          onChangeText={
+            city => this.setState({
+              ...this.state,
+              ...this.state.item.patch({ city })
+            })
+          }
         />
         <Input
           containerStyle={Form.input}
@@ -126,28 +177,29 @@ export class AddAdvert extends Component {
           maxLength={255}
           spellCheck
           multiline
-          onChangeText={description => this.setState(this.state.item.patch({ description }))}
+          onChangeText={
+            description => this.setState({
+              ...this.state,
+              ...this.state.item.patch({ description })
+            })
+          }
         />
       </ScrollView>
-    </KeyboardAvoidingView>
-  );
+    );
+  }
+}
+
+export default (props) => {
+  return (
+    <AuthContext.Consumer>
+      {value => <AddAdvert auth={value} {...props} />}
+    </AuthContext.Consumer>
+  )
 }
 
 const styles = StyleSheet.create({
   screen: {
     marginHorizontal: 8,
-  },
-  customCharacteristic: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  customCharacteristic_input: {
-    marginTop: 12,
-    width: "50%",
-  },
-  addCharacteristicBtn: {
-    marginTop: 12,
   },
   imagePicker: {
     display: "flex",
@@ -163,17 +215,8 @@ const styles = StyleSheet.create({
   deviceImageContainer: {
     height: 260,
   },
-  deviceInfo: {
-    marginBottom: 16,
-    marginTop: 16,
-  },
-  deviceInfoTitle: {
-    fontWeight: "bold",
+  title: {
     fontSize: 16,
-  },
-  deviceInfoTitleHint: {
-    fontSize: 16,
-    color: "gray",
-    marginBottom: 8,
-  },
+    marginLeft: 8
+  }
 });

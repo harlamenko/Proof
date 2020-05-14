@@ -26,11 +26,17 @@ class AdvertDetails extends React.Component {
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      const { setCurrentAdvert } = this.context;
+      const { advert } = this.props.route.params;
 
-      const { id } = this.props.route.params;
-      const { getAdvertDetails } = this.context;
+      if (advert) {
+        setCurrentAdvert(advert);
+      } else {
+        const { id } = this.props.route.params;
+        const { getAdvertDetails } = this.context;
 
-      getAdvertDetails(id);
+        getAdvertDetails(id);
+      }
     });
   }
 
@@ -54,7 +60,7 @@ class AdvertDetails extends React.Component {
 
     return (
       <>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Image
             style={{ width: "100%", height: 280 }}
             resizeMode="contain"
@@ -95,12 +101,12 @@ class AdvertDetails extends React.Component {
           <Overlay
             isVisible={this.state.isOverlayVisible}
             onBackdropPress={this.toggleOverlayVisibility}
-            fullScreen={!currentAdvert.belongsTo(this.props.auth.state.user.id)}
+            fullScreen={!currentAdvert.belongsTo(this.props.auth.state.user._id)}
             height="auto"
             width="auto"
           >
             {
-              currentAdvert.belongsTo(this.props.auth.state.user.id) ?
+              currentAdvert.belongsTo(this.props.auth.state.user._id) ?
                 <QRCode
                   value={currentAdvert.getInfoForQR()}
                   size={screenWidth - 80}
@@ -112,7 +118,7 @@ class AdvertDetails extends React.Component {
           </Overlay>
         </ScrollView>
         {
-          !currentAdvert.belongsTo(this.props.auth.state.user.id) ?
+          !currentAdvert.belongsTo(this.props.auth.state.user._id) ?
             <Button
               containerStyle={{ margin: 8 }}
               title="Написать продавцу"
@@ -141,7 +147,7 @@ class AdvertDetails extends React.Component {
             >
               <MaterialCommunityIcons
                 name={
-                  currentAdvert.belongsTo(this.props.auth.state.user.id) ?
+                  currentAdvert.belongsTo(this.props.auth.state.user._id) ?
                     "qrcode" : "qrcode-scan"
                 }
                 size={32}
