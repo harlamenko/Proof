@@ -13,7 +13,7 @@ router.post('/signup', async (req, res) => {
         await user.save();
         const token = jwt.sign({ userId: user._id }, /*TODO заменить на переменную окружения*/'SECRET_KEY');
 
-        res.send({ token, user: { id: user._id } });
+        res.send({ token, user: { id: user._id, email } });
     } catch (error) {
         return res.status(422).send(error.message);
     }
@@ -37,7 +37,7 @@ router.post('/signin', async (req, res) => {
         await user.comparePassword(password);
         const token = jwt.sign({ userId: user._id }, /*TODO заменить на переменную окружения*/'SECRET_KEY');
 
-        res.send({ token, user: { id: user._id } });
+        res.send({ token, user: { id: user._id, email } });
     } catch (err) {
         return res.status(422).send({ error: 'Неправильный email или пароль.' });
     }

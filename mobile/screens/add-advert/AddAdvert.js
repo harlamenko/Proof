@@ -22,7 +22,7 @@ class AddAdvert extends Component {
     super(props);
 
     this.state = {
-      item: new Advert(this.props.auth.state.user._id),
+      item: new Advert(this.props.auth.state.user.id),
       uploading: false
     };
   }

@@ -11,6 +11,7 @@ const SignUp = ({ navigation }) => {
     <View style={styles.container}>
       <AuthForm
         title="Зарегистрироваться"
+        loading={state.loading}
         errorMessage={state.errorMessage}
         submitBtnText="Зарегистрироваться"
         onSubmit={signup}

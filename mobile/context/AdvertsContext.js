@@ -41,6 +41,11 @@ const advertsReducer = (prevState, action) => {
         adverts: [],
         currentAdvert: null
       };
+    case 'SET_EMPTY_MESSAGE':
+      return {
+        ...prevState,
+        emptyMessage: action.payload
+      };
     case 'SET_CURRENT_ADVERT':
       return {
         ...prevState,
@@ -94,6 +99,24 @@ const getAdvertDetails = dispatch => async (id) => {
   }
 }
 
+const getMyAdvert = dispatch => async uid => {
+  try {
+    const a = new Advert(uid);
+    const { data: advert } = await ProofAPI.get(`/adverts/my/${a.build_id}`);
+    if (advert) {
+      dispatch({ type: 'SET_CURRENT_ADVERT', payload: new Advert(advert) })
+    } else {
+      dispatch({ type: 'SET_EMPTY_MESSAGE', payload: 'Ничего не найдено' })
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const clearEmptyMessage = dispatch => () => {
+  dispatch({ type: 'SET_EMPTY_MESSAGE', payload: null })
+}
+
 const dropCurrentAdvert = dispatch => () => {
   dispatch({ type: 'SET_CURRENT_ADVERT', payload: null });
 }
@@ -116,6 +139,16 @@ const deleteAdvert = dispatch => async id => {
 
 export const { Provider, Context } = createDataContext(
   advertsReducer,
-  { getAdverts, updateFilter, dropFilter, getAdvertDetails, dropCurrentAdvert, setCurrentAdvert, deleteAdvert },
-  { ...initialFilter, adverts: [], currentAdvert: null }
+  {
+    getAdverts,
+    updateFilter,
+    dropFilter,
+    getAdvertDetails,
+    dropCurrentAdvert,
+    setCurrentAdvert,
+    deleteAdvert,
+    getMyAdvert,
+    clearEmptyMessage
+  },
+  { ...initialFilter, adverts: [], currentAdvert: null, emptyMessage: null }
 );

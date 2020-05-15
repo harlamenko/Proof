@@ -12,6 +12,7 @@ const SignIn = ({ navigation }) => {
       <AuthForm
         title="Войти"
         errorMessage={state.errorMessage}
+        loading={state.loading}
         submitBtnText="Войти"
         onSubmit={signin}
       />

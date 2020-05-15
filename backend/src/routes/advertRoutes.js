@@ -85,4 +85,20 @@ advertRouter.route('/adverts/:id')
         }
     });
 
+advertRouter.route('/adverts/my/:build_id')
+    .get(async (req, res) => {
+        const { build_id } = req.params;
+
+        try {
+            const advert = await Advert
+                .findOne({ build_id, user_id: req.user._id })
+                .select('-__v');
+
+            res.send(advert);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Не удалось получить данные объявления.');
+        }
+    });
+
 module.exports = advertRouter;

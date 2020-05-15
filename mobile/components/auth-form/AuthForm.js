@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Text, Input, Button } from "react-native-elements";
 import { Form } from "../../shared/styles";
 
-export default ({ title, errorMessage, submitBtnText, onSubmit }) => {
+export default ({ title, errorMessage, submitBtnText, onSubmit, loading }) => {
     // TODO: убрать хардкод
     const [email, setEmail] = useState('admin');
     const [password, setPassword] = useState('admin');
@@ -37,6 +37,7 @@ export default ({ title, errorMessage, submitBtnText, onSubmit }) => {
             }
             <Button
                 testID="submitBtn"
+                loading={loading}
                 containerStyle={[styles.bounders, styles.submitBtn]}
                 title={submitBtnText}
                 onPress={() => onSubmit({ email, password })}

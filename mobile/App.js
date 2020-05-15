@@ -18,6 +18,7 @@ import {
 import { ScreenResolver } from './components';
 import { AuthProvider, AuthContext, AdvertsProvider } from "./context";
 import { YellowBox } from 'react-native';
+import { Feather } from "@expo/vector-icons";
 
 YellowBox.ignoreWarnings(['Remote debugger']);
 
@@ -25,7 +26,33 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Tabs = () => (
-  <Tab.Navigator tabBarOptions={{ keyboardHidesTabBar: true }}>
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName;
+
+        switch (route.name) {
+          case 'Adverts':
+            iconName = 'menu';
+            break;
+          case 'Chat':
+            iconName = 'message-square';
+            break;
+          case 'Profile':
+            iconName = 'user';
+            break;
+        }
+
+        return <Feather name={iconName} size={size} color={color} />;
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: 'black',
+      inactiveTintColor: 'gray',
+      keyboardHidesTabBar: true,
+      showLabel: false
+    }}
+  >
     <Tab.Screen name="Adverts" component={Adverts} />
     <Tab.Screen name="Chat" component={Chat} options={{ unmountOnBlur: true }} />
     <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} />
@@ -55,7 +82,7 @@ class App extends React.Component {
                   <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
                   <Stack.Screen name="AddAdvert" component={AddAdvert} unmountOnBlur={true} />
                   <Stack.Screen name="EditAdvert" component={EditAdvert} unmountOnBlur={true} />
-                  <Stack.Screen name="AdvertDetails" component={AdvertDetails} />
+                  <Stack.Screen name="AdvertDetails" component={AdvertDetails} unmountOnBlur={true} />
                   <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
                 </Stack.Navigator>
               </AdvertsProvider>

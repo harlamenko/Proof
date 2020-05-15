@@ -28,10 +28,16 @@ class AdvertDetails extends React.Component {
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      const { setCurrentAdvert } = this.context;
-      const { advert } = this.props.route.params;
+      const { my } = this.props.route.params;
 
-      if (advert) {
+      if (my) {
+        const { getMyAdvert } = this.context;
+
+        getMyAdvert(this.props.auth.state.user.id);
+      } else if (advert) {
+        const { setCurrentAdvert } = this.context;
+        const { advert } = this.props.route.params;
+
         setCurrentAdvert(advert);
       } else {
         const { id } = this.props.route.params;
@@ -45,17 +51,32 @@ class AdvertDetails extends React.Component {
   componentWillUnmount() {
     this._unsubscribe();
     this.context.dropCurrentAdvert();
+    this.context.clearEmptyMessage();
   }
 
   render() {
     this.setHeader();
 
-    const { state: { currentAdvert } } = this.context;
+    const { state: { currentAdvert, emptyMessage } } = this.context;
 
-    if (!currentAdvert) {
+    if (!currentAdvert && !emptyMessage) {
       return (
         <View style={Layout.centeringContainer}>
           <ActivityIndicator size="large" />
+        </View>
+      )
+    }
+
+    if (emptyMessage) {
+      this.props.navigation.setOptions({
+        headerShown: true,
+        title: '',
+        headerLeft: () => <BackBtn {...this.props} style={{ marginLeft: 8 }} />
+      });
+
+      return (
+        <View style={Layout.centeringContainer}>
+          <Text h4>{emptyMessage}</Text>
         </View>
       )
     }
@@ -103,12 +124,12 @@ class AdvertDetails extends React.Component {
           <Overlay
             isVisible={this.state.isOverlayVisible}
             onBackdropPress={this.toggleOverlayVisibility}
-            fullScreen={!currentAdvert.belongsTo(this.props.auth.state.user._id)}
+            fullScreen={!currentAdvert.belongsTo(this.props.auth.state.user.id)}
             height="auto"
             width="auto"
           >
             {
-              currentAdvert.belongsTo(this.props.auth.state.user._id) ?
+              currentAdvert.belongsTo(this.props.auth.state.user.id) ?
                 <QRCode
                   value={currentAdvert.getInfoForQR()}
                   size={screenWidth - 80}
@@ -120,7 +141,7 @@ class AdvertDetails extends React.Component {
           </Overlay>
         </ScrollView>
         {
-          !currentAdvert.belongsTo(this.props.auth.state.user._id) ?
+          !currentAdvert.belongsTo(this.props.auth.state.user.id) ?
             <Button
               containerStyle={{ margin: 8 }}
               title="Написать продавцу"
@@ -176,7 +197,7 @@ class AdvertDetails extends React.Component {
           if (this.state.processing) { return <ActivityIndicator style={{ marginRight: 8 }} /> }
 
           return (
-            currentAdvert.belongsTo(this.props.auth.state.user._id) ?
+            currentAdvert.belongsTo(this.props.auth.state.user.id) ?
               (
                 <View style={{ flex: 1, flexDirection: "row", alignItems: 'center' }}>
                   <TouchableOpacity onPress={this.handleDel} >
