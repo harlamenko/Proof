@@ -86,6 +86,13 @@ class EditAdvert extends Component {
     handlePhotoAdding = () => {
         const { item } = this.state;
         item.addPhoto();
+        this.setState({ ...this.state, item });
+    }
+
+    handlePickingCanceled = () => {
+        const { item } = this.state;
+        item.deleteLastPhoto();
+        this.setState({ ...this.state, item });
     }
 
     handlePhotoAdded = (uri) => {
@@ -120,6 +127,7 @@ class EditAdvert extends Component {
         return (
             <AdvertForm
                 advert={this.state.item}
+                onPickingCanceled={this.handlePickingCanceled}
                 onPhotoAdding={this.handlePhotoAdding}
                 onPhotoAdded={this.handlePhotoAdded}
                 onNameChange={this.handleNameChange}

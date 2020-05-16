@@ -73,6 +73,12 @@ export class Advert {
         this.photos[lalstIdx] = { photo };
     }
 
+    deleteLastPhoto() {
+        if (!this.photos.length) { return; }
+        const lalstIdx = this.photos.length - 1;
+        this.photos = this.photos.filter((p, i) => lalstIdx !== i);
+    }
+
     belongsTo(userId) {
         return this.user_id === userId;
     }

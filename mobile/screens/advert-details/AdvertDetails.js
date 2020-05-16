@@ -29,6 +29,7 @@ class AdvertDetails extends React.Component {
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       const { my } = this.props.route.params;
+      const { advert } = this.props.route.params;
 
       if (my) {
         const { getMyAdvert } = this.context;
@@ -36,7 +37,6 @@ class AdvertDetails extends React.Component {
         getMyAdvert(this.props.auth.state.user.id);
       } else if (advert) {
         const { setCurrentAdvert } = this.context;
-        const { advert } = this.props.route.params;
 
         setCurrentAdvert(advert);
       } else {
@@ -203,7 +203,7 @@ class AdvertDetails extends React.Component {
                   <TouchableOpacity onPress={this.handleDel} >
                     <MaterialCommunityIcons name="delete-outline" size={32} />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={this.handleEdit} style={{ marginLeft: 12, marginRight: 18 }} >
+                  <TouchableOpacity onPress={this.handleEdit} style={{ marginLeft: 12, marginRight: 12 }} >
                     <Feather name="edit-2" size={28} />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={this.toggleOverlayVisibility} style={{ marginRight: 8 }} >

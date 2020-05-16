@@ -72,11 +72,17 @@ class AddAdvert extends Component {
   handlePhotoAdding = () => {
     const { item } = this.state;
     item.addPhoto();
+    this.setState({ ...this.state, item });
+  }
+
+  handlePickingCanceled = () => {
+    const { item } = this.state;
+    item.deleteLastPhoto();
+    this.setState({ ...this.state, item });
   }
 
   handlePhotoAdded = (uri) => {
     const { item } = this.state;
-    // TODO: convert to base64
     item.changeLastPhoto(uri);
     this.setState({ ...this.state, item });
   }
@@ -115,6 +121,7 @@ class AddAdvert extends Component {
     return (
       <AdvertForm
         advert={this.state.item}
+        onPickingCanceled={this.handlePickingCanceled}
         onPhotoAdding={this.handlePhotoAdding}
         onPhotoAdded={this.handlePhotoAdded}
         onNameChange={this.handleNameChange}

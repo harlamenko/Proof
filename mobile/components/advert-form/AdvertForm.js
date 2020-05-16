@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import {
     ActivityIndicator,
     View,
-    Text,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
 } from "react-native";
-import { Image, Input } from "react-native-elements";
+import { Image, Input, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from 'expo-image-manipulator';
 import { Form } from "../../shared/styles";
 
 export default class AdvertForm extends Component {
@@ -17,18 +17,30 @@ export default class AdvertForm extends Component {
     pickPhoto = async () => {
         const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
         if (!granted) { return; }
-
         this.props.onPhotoAdding();
 
-        const image = await ImagePicker.launchImageLibraryAsync();
-        this.props.onPhotoAdded(image.uri);
+        const picker = await ImagePicker.launchImageLibraryAsync();
+        if (picker.cancelled) {
+            this.props.onPickingCanceled();
+        } else {
+            try {
+                const res = await ImageManipulator.manipulateAsync(
+                    picker.uri,
+                    [{ resize: { height: 400 } }],
+                    { compress: 0.6, base64: true }
+                );
+                this.props.onPhotoAdded(`data:image/jpeg;base64,${res.base64}`);
+            } catch (err) {
+                console.error(err);
+            }
+        }
     }
 
     getImage = () => (
         <Image
             containerStyle={styles.deviceImageContainer}
             style={styles.deviceImage}
-            resizeMode="center"
+            resizeMode="cover"
             source={{ uri: this.props.advert.photo }}
             PlaceholderContent={<ActivityIndicator />}
         />

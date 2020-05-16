@@ -3,7 +3,6 @@ import { Text, Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View } from 'react-native';
 import { AuthContext, AdvertsContext } from '../../context';
-import { Advert } from '../../models/Advert';
 
 class Profile extends React.Component {
     static contextType = AdvertsContext;
