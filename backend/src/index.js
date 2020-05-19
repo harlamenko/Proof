@@ -1,6 +1,8 @@
 // models
 require('./models/User');
 require('./models/Advert');
+require('./models/Message');
+require('./models/Conversation');
 // libs
 const express = require('express');
 const mongoose = require('mongoose');
@@ -8,6 +10,7 @@ const bodyParser = require('body-parser');
 // routes
 const authRoutes = require('./routes/authRoutes');
 const advertRoutes = require('./routes/advertRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 // vars
 const app = express();
 const port = 3000;
@@ -17,6 +20,7 @@ app.use(bodyParser.json());
 // paths
 app.use(authRoutes);
 app.use(advertRoutes);
+app.use(chatRoutes);
 
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
@@ -30,8 +34,8 @@ mongoose.connection.on('connected', () => {
 
 mongoose.connection.on('error', (error) => {
     console.error(error);
-})
+});
 
 app.listen(port, () => {
     console.log(`Backend: http://localhost:${port}`);
-})
+});
