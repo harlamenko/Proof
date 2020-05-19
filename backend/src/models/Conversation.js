@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const conversationSchema = new Schema({
-    /** Участники диалога */
-    // recipients: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     /** Продавец устройства */
     seller: { type: Schema.Types.ObjectId, ref: 'User' },
     /** Покупатель устройства */

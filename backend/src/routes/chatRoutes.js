@@ -48,16 +48,6 @@ const initConversation = async ({ user, body: { to, text, image, advert } }, res
 const pubMessage = async ({ user, params: { cid }, body: { text, image } }, res) => {
     try {
         const from = user._id.toString();
-        // const conversation = await Conversation.findOneAndUpdate(
-        //     { $or: [{ recipients: [from, to] }, { recipients: [to, from] }] },
-        //     {
-        //         recipients: [from, to],
-        //         lastMessage: body.text || 'Изображение',
-        //         updated_at: Date.now()
-        //     },
-        //     { upsert: true, new: true, setDefaultsOnInsert: true }
-        // );
-
         //TODO: req.io.sockets.emit('messages', body);
 
         // TODO: проверить нужно ли ждать Upd Conversation 
@@ -89,25 +79,6 @@ const getMessages = async ({ params: { cid } }, res) => {
         res.status(500).send('Не удалось получить сообщения.');
     }
 };
-
-// chatRouter.route('/conversations')
-//     /** Для получения всех диалогов */
-//     .get(async (req, res) => {
-//         const from = req.user._id.toString();
-
-//         try {
-//             const conversations = await Conversation.find(
-//                 { recipients: { $all: [from] } },
-//                 '-__v',
-//                 { populate: { path: 'recipients', select: '-__v -password' } }
-//             );
-
-//             res.send(conversations);
-//         } catch (err) {
-//             console.error(err);
-//             res.status(500).send('Не удалось получить все диалоги.');
-//         }
-//     });
 /** Диалоги */
 chatRouter.route('/conversations').get(async (req, res) => {
     const from = req.user._id.toString();
