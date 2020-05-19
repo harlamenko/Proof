@@ -11,14 +11,13 @@ router.post('/signup', async (req, res) => {
     try {
         const user = new User({ email, password });
         await user.save();
-        const token = jwt.sign({ userId: user._id }, /*TODO заменить на переменную окружения*/'SECRET_KEY');
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 
         res.send({ token, user: { id: user._id, email } });
     } catch (error) {
         return res.status(422).send(error.message);
     }
-})
-
+});
 
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body;
@@ -35,7 +34,7 @@ router.post('/signin', async (req, res) => {
 
     try {
         await user.comparePassword(password);
-        const token = jwt.sign({ userId: user._id }, /*TODO заменить на переменную окружения*/'SECRET_KEY');
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 
         res.send({ token, user: { id: user._id, email } });
     } catch (err) {
