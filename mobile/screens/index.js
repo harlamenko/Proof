@@ -7,6 +7,7 @@ import SignUp from "./sign-up/SingUp"
 import AdvertDetails from "./advert-details/AdvertDetails"
 import Filter from "./filter/Filter";
 import EditAdvert from "./edit-advert/EditAdvert";
+import ChatList from './chat-list/ChatList';
 
 export {
     AddAdvert,
@@ -15,6 +16,7 @@ export {
     SignUp,
     SignIn,
     Chat,
+    ChatList,
     Profile,
     Filter,
     EditAdvert

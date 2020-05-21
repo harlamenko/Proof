@@ -1,4 +1,5 @@
 import * as DeviceAPI from 'expo-device';
+import { format } from '../shared/day';
 
 export class Advert {
     /** Идентификатор устройства */
@@ -11,7 +12,7 @@ export class Advert {
     /** Дата публикации */
     publication_date = null;
     get published_at() {
-        return new Date(this.publication_date).toLocaleString();
+        return format(this.publication_date);
     }
     /** Цена */
     price = null;

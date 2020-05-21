@@ -4,9 +4,10 @@ import { View, TouchableOpacity, Dimensions, ActivityIndicator, StyleSheet, Aler
 import { Image, Overlay, Text, Button } from "react-native-elements";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { BackBtn, QRScanner } from "../../components";
-import { AdvertsContext, AuthContext } from "../../context";
+import { AdvertsContext, AuthContext, ChatContext } from "../../context";
 import { Layout } from "../../shared/styles";
 import { ScrollView } from "react-native-gesture-handler";
+import httpClient from "../../api/ProofAPI";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -28,23 +29,25 @@ class AdvertDetails extends React.Component {
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      const { my } = this.props.route.params;
-      const { advert } = this.props.route.params;
+      // TODO: раскомментить
+      // const { my } = this.props.route.params;
+      // const { advert } = this.props.route.params;
 
-      if (my) {
-        const { getMyAdvert } = this.context;
+      // if (my) {
+      //   const { getMyAdvert } = this.context;
 
-        getMyAdvert(this.props.auth.state.user.id);
-      } else if (advert) {
-        const { setCurrentAdvert } = this.context;
+      //   getMyAdvert(this.props.auth.state.user.id);
+      // } else if (advert) {
+      //   const { setCurrentAdvert } = this.context;
 
-        setCurrentAdvert(advert);
-      } else {
-        const { id } = this.props.route.params;
-        const { getAdvertDetails } = this.context;
+      //   setCurrentAdvert(advert);
+      // } else {
+      // const { id } = this.props.route.params;
+      const { getAdvertDetails } = this.context;
 
-        getAdvertDetails(id);
-      }
+      // getAdvertDetails(id);
+      getAdvertDetails("5ebfb6df44b6ec09200bd04e");
+      // }
     });
   }
 
@@ -145,11 +148,24 @@ class AdvertDetails extends React.Component {
             <Button
               containerStyle={{ margin: 8 }}
               title="Написать продавцу"
+              onPress={this.writeToSeller}
             /> :
             null
         }
       </>
     );
+  }
+
+  writeToSeller = () => {
+    const { state: { currentAdvert } } = this.context;
+    const info = {
+      seller: currentAdvert.user_id,
+      buyer: this.props.auth.state.user.id,
+      advert: currentAdvert.id
+    }
+
+    this.props.chat.tryGetConversation(info);
+    this.props.navigation.navigate('Chat');
   }
 
   handleDel = () => {
@@ -236,16 +252,18 @@ class AdvertDetails extends React.Component {
   };
 }
 
-export default (props) => {
-  return (
-    <AuthContext.Consumer>
-      {value => <AdvertDetails auth={value} {...props} />}
-    </AuthContext.Consumer>
-  )
-}
+export default (props) => (
+  <ChatContext.Consumer>
+    {chatVal => (
+      <AuthContext.Consumer>
+        {value => <AdvertDetails auth={value} chat={chatVal} {...props} />}
+      </AuthContext.Consumer>
+    )}
+  </ChatContext.Consumer>
+);
 
 const styles = StyleSheet.create({
   horizontalGaps: {
     marginHorizontal: 8
   }
-})
+});
