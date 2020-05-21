@@ -6,80 +6,6 @@ const requireAuth = require('../middlewares/requireAuth');
 
 chatRouter.use(requireAuth);
 
-const saveMesssage = async (body, res) => {
-    const message = new Message(body);
-
-    try {
-        await message.save();
-        res.send({ message: 'Сообщение сохранено!', conversationId: body.conversation });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Не удалось сохранить сообщение.');
-    }
-}
-/**
- * Для инициализации диалога. 
- * Вызывается при отправке первого сообщения, чтобы определить роли.
- */
-const initConversation = async ({ user, body: { to, text, image, advert } }, res) => {
-    try {
-        const from = user._id.toString();
-        const c = new Conversation({
-            advert,
-            seller: to,
-            buyer: from,
-            last_message: text || 'Изображение'
-        });
-
-        await c.save();
-
-        // TODO: req.io.sockets.emit('messages', body);
-
-        saveMesssage({ user: from, conversation: c._id, text, image, advert }, res);
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Не удалось создать диалог.');
-    }
-}
-/**
- * Публикует сообщение и обновляет состояние диалога
- */
-const pubMessage = async ({ user, params: { cid }, body: { text, image } }, res) => {
-    try {
-        const from = user._id.toString();
-        //TODO: req.io.sockets.emit('messages', body);
-
-        // TODO: проверить нужно ли ждать Upd Conversation 
-        await Conversation.findByIdAndUpdate(
-            cid,
-            {
-                lastMessage: text || 'Изображение',
-                updated_at: Date.now()
-            },
-            { new: true }
-        );
-
-        saveMesssage({ user: from, conversation: cid, text, image, }, res);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Не удалось обновить диалог.');
-    }
-}
-/**
- * Для получения всех cообщений
- */
-const getMessages = async ({ params: { cid } }, res) => {
-    try {
-        // TODO: добавиль lazy loading
-        const messages = await Message.find({ conversation: cid }).select('-__v').sort({ createdAt: -1 });
-        res.send({ messages });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Не удалось получить сообщения.');
-    }
-};
-/** Диалоги */
 chatRouter.route('/conversations').get(async (req, res) => {
     const from = req.user._id.toString();
 
@@ -104,19 +30,119 @@ chatRouter.route('/conversations').get(async (req, res) => {
     }
 });
 /**
- * Инициация диалога
+ * Диалог
  * 
- * @param {uid} - идентификатор продавца
- */
-chatRouter.route('/conversation/init').post(initConversation);
-/**
- * API диалога
- * 
- * @param {uid} - идентификатор диалога
+ * @param {cid} - идентификатор диалога
  */
 chatRouter.route('/conversation/:cid')
-    .post(pubMessage) // Публикация сообщения
-    .get(getMessages);// Получение всех cообщений
+    .post(async (req, res) => { // Публикует сообщение и обновляет состояние диалога
+        const {
+            user, io,
+            body: {
+                seller, buyer, advert,
+                msg: { text, conversation, image }
+            },
+            params: { cid }
+        } = req;
+
+        try {
+            const from = user._id.toString();
+
+            if (`${conversation}` !== 'null' || cid !== 'null') {
+                const room = `${conversation || cid}${seller === from ? buyer : seller}`
+
+                // io.to(room).emit('messages', { text, conversation, image });
+
+                await Conversation.findByIdAndUpdate(
+                    conversation || cid,
+                    {
+                        last_message: text || 'Изображение',
+                        updated_at: Date.now()
+                    },
+                    { new: true }
+                );
+
+                await Message.create({ user: from, conversation, text, image });
+
+                res.send({ message: 'Сообщение сохранено!', conversationId: conversation });
+            } else {
+                const c = await Conversation.findOneAndUpdate(
+                    { seller, buyer, advert },
+                    {
+                        seller,
+                        buyer,
+                        advert,
+                        last_message: text || 'Изображение',
+                        updated_at: Date.now()
+                    },
+                    { new: true, upsert: true }
+                );
+
+                const room = `${c._id}${seller === from ? buyer : seller}`
+
+                // io.to(room).emit('messages', { text, conversation, image });
+
+                await Message.create({
+                    user: from,
+                    conversation: c._id,
+                    text, image,
+                });
+
+                res.send({ message: 'Сообщение сохранено!', conversationId: c._id });
+            }
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Не удалось обновить диалог.');
+        }
+    })
+    .get(async (req, res) => { // Для получения всех cообщений
+        const { io, user, params: { cid } } = req;
+
+        // io.join(`${cid}${user._id.toString()}`);
+
+        try {
+            // TODO: добавиль lazy loading
+            const messages = await Message.find(
+                { conversation: cid },
+                '-__v',
+                {
+                    sort: { 'createdAt': -1 },
+                    populate: [
+                        { path: 'user', select: '-__v -password' }
+                    ]
+                }
+            );
+
+            res.send({ messages });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Не удалось получить сообщения.');
+        }
+    });
+
+// для получения диалога при переходе с детализации
+chatRouter.route('/conversation/:seller/:advert/:buyer').get(async (req, res) => {
+    const { params: { seller, advert, buyer } } = req;
+
+    try {
+        const conversation = await Conversation.findOne(
+            { seller, advert, buyer },
+            '-__v',
+            {
+                populate: [
+                    { path: 'seller', select: '-__v -password' },
+                    { path: 'buyer', select: '-__v -password' },
+                    { path: 'advert', select: '-__v' }
+                ]
+            }
+        );
+
+        res.send(conversation);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Ошибка получения информации о диалоге.');
+    }
+});
 
 
 module.exports = chatRouter;
