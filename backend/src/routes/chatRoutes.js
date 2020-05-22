@@ -66,9 +66,7 @@ chatRouter.route('/conversation/:cid')
                 // публикация в список диалогов
                 io.emit(myCompanion, { _id: conversationId, ...convUpdate, ...advertInfo });
 
-                await Conversation.findByIdAndUpdate(
-                    conversationId, convUpdate, { new: true }
-                );
+                await Conversation.findByIdAndUpdate(conversationId, convUpdate);
 
                 await Message.create(msgBody);
                 res.send({ message: 'Сообщение сохранено!', conversationId });
