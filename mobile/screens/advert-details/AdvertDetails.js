@@ -113,7 +113,7 @@ class AdvertDetails extends React.Component {
             Год производства: {currentAdvert.year_class}
           </Text>
           <Text style={styles.horizontalGaps}>
-            Название операционной системы: {currentAdvert.os_name}
+            Операционная система: {currentAdvert.os_name}
           </Text>
           <Text style={[styles.horizontalGaps, { fontSize: 18, marginTop: 8, marginBottom: 4 }]}>
             Описание
