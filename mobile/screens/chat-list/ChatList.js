@@ -4,6 +4,8 @@ import { Text, ListItem } from 'react-native-elements';
 import { Layout } from '../../shared/styles';
 import { ChatContext, AuthContext } from '../../context';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import httpClient from '../../api/ProofAPI';
+import io from 'socket.io-client';
 
 class ChatList extends React.Component {
     static contextType = ChatContext;
@@ -13,6 +15,13 @@ class ChatList extends React.Component {
     componentDidMount() {
         this._hideHeader();
         this.context.getConversations();
+        this.socket = io(httpClient.defaults.baseURL);
+        const { updateConversations } = this.context;
+        const { auth: { state: user } } = this.props;
+
+        this.socket.on(user._id, conversation => {
+            updateConversations(conversation);
+        });
     }
 
     componentWillUnmount() {
@@ -51,7 +60,8 @@ class ChatList extends React.Component {
         }
 
         const { navigation, auth: { state: user } } = this.props;
-
+        // TODO: зафиксить клаву мб в прод моде
+        // TODO: попробывать добавить возможность устанавливать текст/компонент кнопки
         return (
             <SafeAreaView>
                 <FlatList
@@ -59,12 +69,13 @@ class ChatList extends React.Component {
                     data={conversations}
                     renderItem={({ item }) => (
                         <ListItem
-                            title={item.user_id === user.id ? item.buyer.email : item.seller.email}
-                            containerStyle={{ paddingVertical: 18 }}
+                            title={item.advert.user_id === user.id ? item.buyer.email : item.seller.email}
+                            containerStyle={{ paddingVertical: 12 }}
                             subtitle={item.last_message}
                             titleProps={{ numberOfLines: 1 }}
                             subtitleProps={{ numberOfLines: 1 }}
                             leftAvatar={{
+                                size: "medium",
                                 rounded: false,
                                 source: { uri: item.advert.photo },
                                 icon: { name: 'camera', type: 'feather' },

@@ -5,11 +5,15 @@ import { View, ActivityIndicator } from 'react-native';
 import { Layout } from '../../shared/styles';
 import { AuthContext, ChatContext } from '../../context';
 import { Message } from '../../models/Message';
-import locale_ru from 'dayjs/locale/ru'
+import locale_ru from 'dayjs/locale/ru';
 import { BackBtn } from '../../components';
+import httpClient from '../../api/ProofAPI';
+import io from 'socket.io-client';
+import { Conversation } from '../../models/Conversation';
 
 class Chat extends React.Component {
     static contextType = ChatContext;
+
     state = {
         messages: [],
     }
@@ -17,12 +21,32 @@ class Chat extends React.Component {
     constructor(props) { super(props); }
 
     componentDidMount() {
+        const { state: { currentConversation: { seller, buyer } } } = this.context;
+
+        this.myCompanion = this.props.auth.state.user.id === seller._id ? buyer : seller;
+
         this._setHeader();
+        this._connectToSocket();
+    }
+
+    _connectToSocket() {
+        this.socket = io(httpClient.defaults.baseURL);
+        const { state: { currentConversation: { _id: cid } } } = this.context;
+
+        this.socket.on(`${this.myCompanion._id}${cid}`, msg => {
+            this.setState(previousState => ({
+                messages: GiftedChat.append(previousState.messages, [msg]),
+            }));
+        });
     }
 
     _onSend(messages = []) {
         messages.forEach(m => {
-            const { state: { currentConversation }, sendMessage } = this.context;
+            const {
+                state: { currentConversation },
+                sendMessage,
+                updateConversations
+            } = this.context;
             const {
                 _id: conversation = null,
                 buyer = this.props.auth.state.user.id,
@@ -34,7 +58,12 @@ class Chat extends React.Component {
                 seller, buyer, advert,
                 msg: new Message({ ...m, conversation })
             });
-        })
+            updateConversations(new Conversation({
+                _id: conversation,
+                updated_at: m.createdAt,
+                last_message: m.text || 'Изображение',
+            }));
+        });
 
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
@@ -42,11 +71,7 @@ class Chat extends React.Component {
     }
 
     _setHeader = () => {
-        const { state: { currentConversation } } = this.context;
-        const {
-            photo = null,
-            email = null
-        } = currentConversation.seller;
+        const { photo = null, email = null } = this.myCompanion;
 
         this.props.navigation.setOptions({
             headerTitle: () => <Text style={{ fontSize: 16 }}>{email}</Text>,
@@ -96,25 +121,25 @@ class Chat extends React.Component {
 
         return (
             <>
-                <View>
-                    <ListItem
-                        leftAvatar={{
-                            rounded: false,
-                            source: { uri: advert.photos[0].photo },
-                            icon: { name: 'camera', type: 'feather' },
-                            onPress: () => {
-                                this.props.navigation.navigate("AdvertDetails", { advert: item.advert });
-                            }
-                        }}
-                        title={advert.name}
-                        subtitle={`${advert.price} ₽`}
-                        rightIcon={{ containerStyle: { display: "none" } }}
-                        rightContentContainerStyle={{ backgroundColor: 'red' }}
-                        rightElement={
-                            <Button title="Открыть сделку" />
-                        }
-                    />
-                </View>
+                {
+                    /*TODO: изм при доб логики сделок*/
+                    advert.user_id === this.myCompanion._id ?
+                        <View>
+                            <ListItem
+                                leftAvatar={{
+                                    rounded: false,
+                                    source: { uri: advert.photo },
+                                    icon: { name: 'camera', type: 'feather' },
+                                    onPress: () => {
+                                        this.props.navigation.navigate("AdvertDetails", { advert });
+                                    }
+                                }}
+                                title={advert.name}
+                                subtitle={`${advert.price} ₽`}
+                                rightElement={<Button title="Открыть сделку" />}
+                            />
+                        </View> : null
+                }
                 <GiftedChat
                     messages={this.state.messages}
                     onSend={messages => this._onSend(messages)}

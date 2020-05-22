@@ -29,25 +29,23 @@ class AdvertDetails extends React.Component {
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      // TODO: раскомментить
-      // const { my } = this.props.route.params;
-      // const { advert } = this.props.route.params;
+      const { my } = this.props.route.params;
+      const { advert } = this.props.route.params;
 
-      // if (my) {
-      //   const { getMyAdvert } = this.context;
+      if (my) {
+        const { getMyAdvert } = this.context;
 
-      //   getMyAdvert(this.props.auth.state.user.id);
-      // } else if (advert) {
-      //   const { setCurrentAdvert } = this.context;
+        getMyAdvert(this.props.auth.state.user.id);
+      } else if (advert) {
+        const { setCurrentAdvert } = this.context;
 
-      //   setCurrentAdvert(advert);
-      // } else {
-      // const { id } = this.props.route.params;
-      const { getAdvertDetails } = this.context;
+        setCurrentAdvert(advert);
+      } else {
+        const { id } = this.props.route.params;
+        const { getAdvertDetails } = this.context;
 
-      // getAdvertDetails(id);
-      getAdvertDetails("5ebfb6df44b6ec09200bd04e");
-      // }
+        getAdvertDetails(id);
+      }
     });
   }
 
