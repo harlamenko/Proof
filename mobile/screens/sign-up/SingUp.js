@@ -7,14 +7,23 @@ import { AuthForm } from '../../components';
 const SignUp = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
 
+  const submit = async data => {
+    try {
+      await signup(data);
+      navigation.navigate('ProfileInfo');
+    } catch (e) { }
+  }
+
   return (
     <View style={styles.container}>
       <AuthForm
+        isSingIn={true}
         title="Зарегистрироваться"
         loading={state.loading}
         errorMessage={state.errorMessage}
+        onClearErrorMessage={clearErrorMessage}
         submitBtnText="Зарегистрироваться"
-        onSubmit={signup}
+        onSubmit={submit}
       />
       <Button
         containerStyle={styles.toggleBtn}

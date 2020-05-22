@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Text, Input, Button } from "react-native-elements";
+import { Text, Input, Button, Icon } from "react-native-elements";
 import { Form } from "../../shared/styles";
 
-export default ({ title, errorMessage, submitBtnText, onSubmit, loading }) => {
-    // TODO: убрать хардкод
+export default ({
+    title,
+    errorMessage,
+    submitBtnText,
+    onSubmit,
+    loading,
+    isSingIn,
+    onClearErrorMessage
+}) => {
     const [email, setEmail] = useState('admin');
     const [password, setPassword] = useState('admin');
+    const [password2, setPassword2] = useState('admin');
 
     return (
         <View>
@@ -28,19 +36,37 @@ export default ({ title, errorMessage, submitBtnText, onSubmit, loading }) => {
                 secureTextEntry
                 onChangeText={value => setPassword(value)}
             />
-            {
-                errorMessage ?
+            {isSingIn ?
+                <Input
+                    containerStyle={Form.input}
+                    label="Повторите пароль"
+                    value={password2}
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    secureTextEntry
+                    onChangeText={value => setPassword2(value)}
+                /> : null
+            }
+            {errorMessage ?
+                <View style={{ position: "relative" }}>
+                    <Icon
+                        name='x'
+                        type="feather"
+                        containerStyle={{ position: "absolute", right: 4, zIndex: 10, }}
+                        iconStyle={{ zIndex: 10 }}
+                        onPress={() => { onClearErrorMessage(); }}
+                    />
                     <Text testID="errMsg" style={[styles.errorMessage, styles.bounders]}>
                         {errorMessage}
-                    </Text> :
-                    null
+                    </Text>
+                </View> : null
             }
             <Button
                 testID="submitBtn"
                 loading={loading}
                 containerStyle={[styles.bounders, styles.submitBtn]}
                 title={submitBtnText}
-                onPress={() => onSubmit({ email, password })}
+                onPress={() => onSubmit({ email, password, password2 })}
             />
         </View>
     )

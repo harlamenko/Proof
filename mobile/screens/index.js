@@ -8,8 +8,10 @@ import AdvertDetails from "./advert-details/AdvertDetails"
 import Filter from "./filter/Filter";
 import EditAdvert from "./edit-advert/EditAdvert";
 import ChatList from './chat-list/ChatList';
+import ProfileInfo from "./profile/ProfileInfo";
 
 export {
+    ProfileInfo,
     AddAdvert,
     AdvertDetails,
     Adverts,

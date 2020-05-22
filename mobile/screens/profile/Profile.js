@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, Button } from 'react-native-elements';
+import { Text, Button, Avatar } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View } from 'react-native';
 import { AuthContext, AdvertsContext } from '../../context';
+import { Layout } from '../../shared/styles';
 
 class Profile extends React.Component {
     static contextType = AdvertsContext;
@@ -25,13 +26,20 @@ class Profile extends React.Component {
         this.props.navigation.dangerouslyGetParent().setOptions({
             headerShown: false,
         });
-
+        const { user } = this.props.auth.state;
         return (
             <SafeAreaView>
                 <View style={{ height: '50%' }}>
                     <View style={{ flex: 1, justifyContent: "space-between", marginHorizontal: 8 }}>
-                        {/* TODO заменить на имя после расширения модели пользователя */}
-                        <Text h3 >{this.props.auth.state.user.email}</Text>
+                        <View style={Layout.centeringContainer}>
+                            <Avatar
+                                rounded={true}
+                                size="xlarge"
+                                icon={{ name: 'user', type: 'feather' }}
+                                source={user.image ? { uri: user.image } : null}
+                            />
+                            <Text h3 >{user.name || user.email}</Text>
+                        </View>
                         <Text h4 >Баланс: 0 ₽</Text>
                     </View>
                 </View>

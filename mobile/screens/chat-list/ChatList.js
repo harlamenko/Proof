@@ -69,7 +69,11 @@ class ChatList extends React.Component {
                     data={conversations}
                     renderItem={({ item }) => (
                         <ListItem
-                            title={item.advert.user_id === user.id ? item.buyer.email : item.seller.email}
+                            title={
+                                item.advert.user_id === user.id ?
+                                    item.buyer.name || item.buyer.email :
+                                    item.seller.name || item.seller.email
+                            }
                             containerStyle={{ paddingVertical: 12 }}
                             subtitle={item.last_message}
                             titleProps={{ numberOfLines: 1 }}

@@ -71,10 +71,10 @@ class Chat extends React.Component {
     }
 
     _setHeader = () => {
-        const { photo = null, email = null } = this.myCompanion;
+        const { photo = null, name = null, email = null } = this.myCompanion;
 
         this.props.navigation.setOptions({
-            headerTitle: () => <Text style={{ fontSize: 16 }}>{email}</Text>,
+            headerTitle: () => <Text style={{ fontSize: 16 }}>{name || email}</Text>,
             headerLeft: () => <BackBtn {...this.props} style={{ marginLeft: 8 }} />,
             headerRight: () => (
                 <Avatar

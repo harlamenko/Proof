@@ -14,7 +14,8 @@ import {
   Adverts,
   Filter,
   EditAdvert,
-  Chat
+  Chat,
+  ProfileInfo
 } from './screens';
 import { ScreenResolver } from './components';
 import { AuthProvider, AuthContext, AdvertsProvider, ChatProvider } from "./context";
@@ -54,7 +55,7 @@ const Tabs = () => (
       showLabel: false
     }}
   >
-    {/* <Tab.Screen name="Adverts" component={Adverts} /> */}
+    <Tab.Screen name="Adverts" component={Adverts} />
     <Tab.Screen name="ChatList" component={ChatList} options={{ unmountOnBlur: true }} />
     <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} />
   </Tab.Navigator>
@@ -64,7 +65,7 @@ class App extends React.Component {
   static contextType = AuthContext;
 
   render() {
-    const { token, initialyLoaded } = this.context.state;
+    const { token, initialyLoaded, registering } = this.context.state;
 
     return (
       <NavigationContainer>
@@ -73,10 +74,11 @@ class App extends React.Component {
             <Stack.Navigator>
               <Stack.Screen name="ScreenResolver" component={ScreenResolver} options={{ headerShown: false }} />
             </Stack.Navigator> :
-            !token ?
+            registering || !token ?
               <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="SignIn" component={SignIn} />
                 <Stack.Screen name="SignUp" component={SignUp} />
+                <Stack.Screen name="ProfileInfo" component={ProfileInfo} />
               </Stack.Navigator> :
               <ChatProvider>
                 <AdvertsProvider>
