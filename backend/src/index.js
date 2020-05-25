@@ -10,6 +10,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 // routes
 const authRoutes = require('./routes/authRoutes');
 const advertRoutes = require('./routes/advertRoutes');
@@ -19,6 +20,7 @@ const host = process.env.HOST;
 const port = +process.env.PORT;
 const mongoUri = process.env.DB_URI;
 // utils
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // middlewares
