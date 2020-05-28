@@ -45,6 +45,7 @@
     "babel-preset-expo": "^8.0.0",
     "jest-expo": "^36.0.0",
     "ngrok": "^3.2.7",
+    "prettier": "^2.0.5",
     "react-native-testing-library": "^1.13.2",
     "react-test-renderer": "^16.12.0"
   },

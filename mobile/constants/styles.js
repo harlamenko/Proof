@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet } from 'react-native';
 
 export const globalStyles = StyleSheet.create({
-    screen: {
-        backgroundColor: '#FBFCFC',
-        padding: 10
-    }
-})
+  screen: {
+    backgroundColor: '#FBFCFC',
+    padding: 10,
+  },
+});

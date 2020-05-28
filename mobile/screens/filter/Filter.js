@@ -8,7 +8,7 @@ export default ({ navigation }) => {
   const {
     state: { search },
     updateFilter,
-    dropFilter
+    dropFilter,
   } = useContext(AdvertsContext);
 
   const [field, setField] = useState(search.field);
@@ -109,5 +109,5 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 14,
     marginHorizontal: 10,
-  }
-})
+  },
+});

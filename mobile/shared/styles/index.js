@@ -1,6 +1,3 @@
-import { Form } from "./Form";
-import { Layout } from "./Layout";
-export {
-    Form,
-    Layout
-}
+import { Form } from './Form';
+import { Layout } from './Layout';
+export { Form, Layout };

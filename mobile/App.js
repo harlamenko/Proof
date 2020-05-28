@@ -1,26 +1,14 @@
-import "react-native-gesture-handler";
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
-import {
-  SignIn,
-  SignUp,
-  AddAdvert,
-  AdvertDetails,
-  Profile,
-  ChatList,
-  Adverts,
-  Filter,
-  EditAdvert,
-  Chat,
-  ProfileInfo
-} from './screens';
-import { ScreenResolver } from './components';
-import { AuthProvider, AuthContext, AdvertsProvider, ChatProvider } from "./context";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 import { YellowBox } from 'react-native';
-import { Feather } from "@expo/vector-icons";
+import 'react-native-gesture-handler';
+import { ScreenResolver } from './components';
+import { AdvertsProvider, AuthContext, AuthProvider, ChatProvider } from './context';
+// TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
+import { AddAdvert, AdvertDetails, Chat, ChatList, EditAdvert, Filter, Profile, ProfileInfo, SignIn, SignUp } from './screens';
 
 YellowBox.ignoreWarnings(['Remote ', 'Warning:']);
 
@@ -52,14 +40,14 @@ const Tabs = () => (
       activeTintColor: 'black',
       inactiveTintColor: 'gray',
       keyboardHidesTabBar: true,
-      showLabel: false
+      showLabel: false,
     }}
   >
     <Tab.Screen name="Adverts" component={Adverts} />
     <Tab.Screen name="ChatList" component={ChatList} options={{ unmountOnBlur: true }} />
     <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} />
   </Tab.Navigator>
-)
+);
 
 class App extends React.Component {
   static contextType = AuthContext;
@@ -69,17 +57,21 @@ class App extends React.Component {
 
     return (
       <NavigationContainer>
-        {
-          !initialyLoaded ?
-            <Stack.Navigator>
-              <Stack.Screen name="ScreenResolver" component={ScreenResolver} options={{ headerShown: false }} />
-            </Stack.Navigator> :
-            registering || !token ?
-              <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="SignIn" component={SignIn} />
-                <Stack.Screen name="SignUp" component={SignUp} />
-                <Stack.Screen name="ProfileInfo" component={ProfileInfo} />
-              </Stack.Navigator> :
+        {!initialyLoaded ? (
+          <Stack.Navigator>
+            <Stack.Screen
+              name="ScreenResolver"
+              component={ScreenResolver}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        ) : registering || !token ? (
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="ProfileInfo" component={ProfileInfo} />
+          </Stack.Navigator>
+        ) : (
               <ChatProvider>
                 <AdvertsProvider>
                   <Stack.Navigator>
@@ -92,7 +84,7 @@ class App extends React.Component {
                   </Stack.Navigator>
                 </AdvertsProvider>
               </ChatProvider>
-        }
+            )}
       </NavigationContainer>
     );
   }
