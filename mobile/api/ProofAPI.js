@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 
 const httpClient = axios.create({
-  baseURL: 'https://45ad8cf2a1fc.ngrok.io',
+  baseURL: 'https://da037a611b10.ngrok.io', // 'https://polar-tor-80847.herokuapp.com',
 });
 
 httpClient.interceptors.request.use(

@@ -8,7 +8,19 @@ import 'react-native-gesture-handler';
 import { ScreenResolver } from './components';
 import { AdvertsProvider, AuthContext, AuthProvider, ChatProvider } from './context';
 // TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
-import { AddAdvert, AdvertDetails, Chat, ChatList, EditAdvert, Filter, Profile, ProfileInfo, SignIn, SignUp } from './screens';
+import {
+  AddAdvert,
+  AdvertDetails,
+  Chat,
+  ChatList,
+  EditAdvert,
+  Filter,
+  Profile,
+  ProfileInfo,
+  ProfileInfoEdit,
+  SignIn,
+  SignUp,
+} from './screens';
 
 YellowBox.ignoreWarnings(['Remote ', 'Warning:']);
 
@@ -43,9 +55,9 @@ const Tabs = () => (
       showLabel: false,
     }}
   >
-    <Tab.Screen name="Adverts" component={Adverts} />
+    {/* <Tab.Screen name="Adverts" component={Adverts} /> */}
     <Tab.Screen name="ChatList" component={ChatList} options={{ unmountOnBlur: true }} />
-    <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} />
+    <Tab.Screen name="Profile" component={Profile} />
   </Tab.Navigator>
 );
 
@@ -72,19 +84,24 @@ class App extends React.Component {
             <Stack.Screen name="ProfileInfo" component={ProfileInfo} />
           </Stack.Navigator>
         ) : (
-              <ChatProvider>
-                <AdvertsProvider>
-                  <Stack.Navigator>
-                    <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-                    <Stack.Screen name="AddAdvert" component={AddAdvert} unmountOnBlur={true} />
-                    <Stack.Screen name="EditAdvert" component={EditAdvert} unmountOnBlur={true} />
-                    <Stack.Screen name="AdvertDetails" component={AdvertDetails} unmountOnBlur={true} />
-                    <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
-                    <Stack.Screen name="Chat" component={Chat} unmountOnBlur={true} />
-                  </Stack.Navigator>
-                </AdvertsProvider>
-              </ChatProvider>
-            )}
+          <ChatProvider>
+            <AdvertsProvider>
+              <Stack.Navigator>
+                <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="ProfileInfoEdit"
+                  component={ProfileInfoEdit}
+                  unmountOnBlur={true}
+                />
+                <Stack.Screen name="AddAdvert" component={AddAdvert} unmountOnBlur={true} />
+                <Stack.Screen name="EditAdvert" component={EditAdvert} unmountOnBlur={true} />
+                <Stack.Screen name="AdvertDetails" component={AdvertDetails} unmountOnBlur={true} />
+                <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
+                <Stack.Screen name="Chat" component={Chat} unmountOnBlur={true} />
+              </Stack.Navigator>
+            </AdvertsProvider>
+          </ChatProvider>
+        )}
       </NavigationContainer>
     );
   }

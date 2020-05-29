@@ -1,12 +1,13 @@
 import React from 'react';
-import { Text, Button, Avatar } from 'react-native-elements';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View } from 'react-native';
-import { AuthContext, AdvertsContext } from '../../context';
+import { Avatar, Button, Icon, Text, Tooltip } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AdvertsContext, AuthContext } from '../../context';
 import { Layout } from '../../shared/styles';
 
 class Profile extends React.Component {
   static contextType = AdvertsContext;
+  tooltip = React.createRef();
 
   constructor(props) {
     super(props);
@@ -28,10 +29,35 @@ class Profile extends React.Component {
     this.props.navigation.dangerouslyGetParent().setOptions({
       headerShown: false,
     });
+
     const { user } = this.props.auth.state;
+
     return (
       <SafeAreaView>
-        <View style={{ height: '50%' }}>
+        <View style={{ height: '65%' }}>
+          <View style={{ position: 'absolute', right: 12, top: 12 }}>
+            <Tooltip
+              ref={this.tooltip}
+              containerStyle={{ flex: 1 }}
+              width={158}
+              backgroundColor="lightgrey"
+              height={60}
+              popover={
+                <View>
+                  <Button
+                    title="Редактировать"
+                    onPress={() => {
+                      this.tooltip.current.toggleTooltip();
+                      this.props.navigation.navigate('ProfileInfoEdit');
+                    }}
+                  />
+                </View>
+              }
+            >
+              <Icon name="more-vertical" type="feather" />
+            </Tooltip>
+          </View>
+
           <View style={{ flex: 1, justifyContent: 'space-between', marginHorizontal: 8 }}>
             <View style={Layout.centeringContainer}>
               <Avatar
@@ -39,18 +65,13 @@ class Profile extends React.Component {
                 size="xlarge"
                 icon={{ name: 'user', type: 'feather' }}
                 source={user.image ? { uri: user.image } : null}
+                containerStyle={{ marginBottom: 22 }}
               />
               <Text h3>{user.name || user.email}</Text>
             </View>
-            <Text h4>Баланс: 0 ₽</Text>
           </View>
         </View>
-        <View style={{ height: '50%' }}>
-          <Button
-            disabled={true}
-            containerStyle={[styles.button, styles.btnWithDivider, styles.topButton]}
-            title="Пополнить"
-          />
+        <View style={{ height: '35%' }}>
           <Button
             containerStyle={[styles.button, styles.btnWithDivider]}
             title="Показать мое объявление"

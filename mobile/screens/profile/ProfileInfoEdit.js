@@ -2,31 +2,41 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ProfileForm } from '../../components';
+import { BackBtn, ProfileForm } from '../../components';
 import { AuthContext } from '../../context';
 import { Layout } from '../../shared/styles';
 
-export default class ProfileInfo extends React.Component {
+export default class ProfileInfoEdit extends React.Component {
   static contextType = AuthContext;
-
-  state = {
-    image: null,
-    name: null,
-  };
 
   constructor(props) {
     super(props);
   }
 
+  state = { image: null, name: null };
+
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      headerLeft: () => <BackBtn {...this.props} style={{ marginLeft: 8 }} />,
+      title: '',
+    });
+
+    let {
+      state: {
+        user: { image, name },
+      },
+    } = this.context;
+
+    this.setState({ image, name });
+  }
+
   render() {
-    let { image, name } = this.state;
-    const {
+    let {
       updateProfile,
-      changeRegistering,
       state: { loading },
     } = this.context;
 
-    this.props.navigation.setOptions({ headerShown: false });
+    const { image, name } = this.state;
 
     return (
       <SafeAreaView style={[Layout.centeringContainer, { height: '80%' }]}>
@@ -42,28 +52,13 @@ export default class ProfileInfo extends React.Component {
             title="СОХРАНИТЬ"
             loading={loading}
             onPress={() => {
-              updateProfile({ name, image });
-            }}
-          />
-          <Button
-            containerStyle={{ marginTop: 30 }}
-            title="Пропустить"
-            disabled={loading}
-            type="clear"
-            onPress={() => {
-              changeRegistering(true);
+              updateProfile({ name, image }, () => {
+                this.props.navigation.goBack();
+              });
             }}
           />
         </View>
       </SafeAreaView>
     );
-  }
-
-  componentDidMount() {
-    this.props.navigation.setOptions({ headerShown: false });
-  }
-
-  componentWillUnmount() {
-    this.props.navigation.setOptions({ headerShown: true });
   }
 }
