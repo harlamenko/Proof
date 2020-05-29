@@ -1,2 +1,2 @@
-cd ../backend
-npm run dev
+cd ../../HeroProof
+set __DEV__=true && npm run dev
