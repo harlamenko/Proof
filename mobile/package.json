@@ -10,6 +10,11 @@
     "test:debug": "jest -o --watch --coverage=false",
     "test:final": "jest"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.5",
     "@react-navigation/bottom-tabs": "^5.3.4",
@@ -43,9 +48,12 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "babel-preset-expo": "^8.0.0",
+    "husky": "^4.2.5",
     "jest-expo": "^36.0.0",
+    "lint-staged": "^10.2.7",
     "ngrok": "^3.2.7",
     "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "react-native-testing-library": "^1.13.2",
     "react-test-renderer": "^16.12.0"
   },

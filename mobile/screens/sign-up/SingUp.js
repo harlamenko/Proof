@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { AuthContext } from '../../context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthForm } from '../../components';
+import { AuthContext } from '../../context';
 
 const SignUp = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
@@ -15,7 +16,7 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <AuthForm
         isSingIn={true}
         title="Зарегистрироваться"
@@ -34,20 +35,13 @@ const SignUp = ({ navigation }) => {
           navigation.navigate('SignIn');
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingTop: 150,
-  },
-  toggleBtn: {
-    marginBottom: 20,
-    marginHorizontal: 10,
-  },
+  container: { flex: 1, justifyContent: 'center' },
+  toggleBtn: { marginTop: 40, marginBottom: -40 },
 });
 
 export default SignUp;

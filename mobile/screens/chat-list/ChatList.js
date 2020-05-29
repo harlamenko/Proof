@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import { Text, ListItem } from 'react-native-elements';
-import { Layout } from '../../shared/styles';
-import { ChatContext, AuthContext } from '../../context';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { ListItem, Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import httpClient from '../../api/ProofAPI';
 import io from 'socket.io-client';
+import httpClient from '../../api/ProofAPI';
+import { AuthContext, ChatContext } from '../../context';
+import { Layout } from '../../shared/styles';
 
 class ChatList extends React.Component {
   static contextType = ChatContext;
@@ -67,10 +67,11 @@ class ChatList extends React.Component {
 
     const {
       navigation,
-      auth: { state: user },
+      auth: {
+        state: { user },
+      },
     } = this.props;
-    // TODO: зафиксить клаву мб в прод моде
-    // TODO: попробывать добавить возможность устанавливать текст/компонент кнопки
+
     return (
       <SafeAreaView>
         <FlatList

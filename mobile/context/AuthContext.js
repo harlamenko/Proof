@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
-import createDataContext from './createDataContext';
 import Toast from 'react-native-simple-toast';
 import ProofAPI from '../api/ProofAPI';
+import createDataContext from './createDataContext';
 
 const CHANGE_REGISTERING = 'CHANGE_REGISTERING';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
@@ -169,12 +169,16 @@ const changeRegistering = (dispatch) => (payload) => {
   dispatch({ type: CHANGE_REGISTERING, payload });
 };
 
-const updateProfile = (dispatch) => async (payload) => {
+const updateProfile = (dispatch) => async (payload, cb = null) => {
   dispatch({ type: CHANGE_LOADING, payload: true });
 
   try {
     const { data: user } = await ProofAPI.post('/profile', payload);
     await AsyncStorage.setItem('user', JSON.stringify(user));
+
+    if (cb) {
+      cb();
+    }
 
     dispatch({ type: SIGN_IN, payload: { user } });
     Toast.showWithGravity('Данные успешно сохранены!', Toast.SHORT, Toast.CENTER);

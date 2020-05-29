@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Input, Button, Icon } from 'react-native-elements';
+import { Button, Icon, Input, Text } from 'react-native-elements';
 import { Form } from '../../shared/styles';
 
 export default ({
@@ -17,7 +17,7 @@ export default ({
   const [password2, setPassword2] = useState('admin');
 
   return (
-    <View>
+    <>
       <Text h3 style={[styles.title, styles.bounders]}>
         {title}
       </Text>
@@ -72,7 +72,7 @@ export default ({
         title={submitBtnText}
         onPress={() => onSubmit({ email, password, password2 })}
       />
-    </View>
+    </>
   );
 };
 
