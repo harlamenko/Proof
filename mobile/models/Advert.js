@@ -114,6 +114,21 @@ export class Advert {
   }
 
   getInfoForQR() {
-    return '';
+    const info = {
+      build_id: DeviceAPI.osBuildId,
+      model_name: DeviceAPI.modelName,
+      brand_name: DeviceAPI.brand,
+      year_class: DeviceAPI.deviceYearClass,
+      os_name: DeviceAPI.osName,
+    };
+
+    return JSON.stringify(info);
+  }
+
+  checkQRInfo(info) {
+    const { build_id, model_name, brand_name, year_class, os_name } = this;
+    const deviceInfo = { build_id, model_name, brand_name, year_class, os_name };
+
+    return JSON.stringify(deviceInfo) === info;
   }
 }

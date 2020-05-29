@@ -11,6 +11,7 @@ import { AdvertsProvider, AuthContext, AuthProvider, ChatProvider } from './cont
 import {
   AddAdvert,
   AdvertDetails,
+  Adverts,
   Chat,
   ChatList,
   EditAdvert,
@@ -55,9 +56,9 @@ const Tabs = () => (
       showLabel: false,
     }}
   >
-    {/* <Tab.Screen name="Adverts" component={Adverts} /> */}
+    <Tab.Screen name="Adverts" component={Adverts} />
     <Tab.Screen name="ChatList" component={ChatList} options={{ unmountOnBlur: true }} />
-    <Tab.Screen name="Profile" component={Profile} />
+    <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} />
   </Tab.Navigator>
 );
 

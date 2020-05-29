@@ -1,20 +1,19 @@
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
-import QRCode from 'react-native-qrcode-generator';
 import {
-  View,
-  TouchableOpacity,
-  Dimensions,
   ActivityIndicator,
-  StyleSheet,
   Alert,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Image, Overlay, Text, Button } from 'react-native-elements';
-import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { Button, Image, Overlay, Text } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
+import QRCode from 'react-native-qrcode-generator';
 import { BackBtn, QRScanner } from '../../components';
 import { AdvertsContext, AuthContext, ChatContext } from '../../context';
 import { Layout } from '../../shared/styles';
-import { ScrollView } from 'react-native-gesture-handler';
-import httpClient from '../../api/ProofAPI';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -257,9 +256,14 @@ class AdvertDetails extends React.Component {
     const {
       state: { currentAdvert },
     } = this.context;
-    // TODO: обработать уведомление о результате проверки
-    console.log(data === currentAdvert.getInfoForQR());
+    const verified = currentAdvert.checkQRInfo(data);
     this.toggleOverlayVisibility();
+    Alert.alert(
+      verified ? ':)' : ':(',
+      verified
+        ? 'Характеристики соответствуют заявленным'
+        : 'Характеристики не соответствуют заявленным'
+    );
   };
 }
 
