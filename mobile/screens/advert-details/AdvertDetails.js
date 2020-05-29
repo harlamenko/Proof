@@ -94,6 +94,7 @@ class AdvertDetails extends React.Component {
       <>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Image
+            transition={false}
             style={{ width: '100%', height: 280 }}
             resizeMode="contain"
             source={{ uri: currentAdvert.photo }}

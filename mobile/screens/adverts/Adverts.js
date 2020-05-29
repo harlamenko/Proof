@@ -1,10 +1,16 @@
+import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import { FlatList, StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Card, Text } from 'react-native-elements';
 import { AdvertsContext, AuthContext } from '../../context';
 import { Layout } from '../../shared/styles';
-import { Feather } from '@expo/vector-icons';
-import { Dimensions } from 'react-native';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -60,11 +66,12 @@ class Adverts extends React.Component {
   renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => this.redirectToDetails(item.id)}
-      activeOpacity={0.5}
+      activeOpacity={0.9}
       style={{ width: '50%' }}
     >
       <Card
         image={{ uri: item.photo }}
+        imageProps={{ transition: false }}
         containerStyle={[
           Layout.roundedCorners,
           { overflow: 'hidden', margin: 6, marginVertical: 12 },
