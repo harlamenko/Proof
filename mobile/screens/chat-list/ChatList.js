@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
-import { Badge, ListItem, Text } from 'react-native-elements';
+import { ListItem, Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
 import httpClient from '../../api/ProofAPI';
@@ -97,15 +97,16 @@ class ChatList extends React.Component {
                 },
               }}
               leftIcon={{ name: 'user', type: 'feather' }}
-              rightIcon={
-                item.unread_count ? (
-                  <Badge
-                    status="primary"
-                    value={item.unread_count}
-                    containerStyle={{ marginRight: -26 }}
-                  />
-                ) : null
-              }
+              // TODO: TODO раскомментить при неализации логики "почтения"
+              // rightIcon={
+              //   item.unread_count ? (
+              //     <Badge
+              //       status="primary"
+              //       value={item.unread_count}
+              //       containerStyle={{ marginRight: -26 }}
+              //     />
+              //   ) : null
+              // }
               rightElement={<Text style={styles.date}>{item.updated_at}</Text>}
               bottomDivider
               onPress={() => {

@@ -3,8 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { View, YellowBox } from 'react-native';
-import { Badge } from 'react-native-elements';
+import { YellowBox } from 'react-native';
 import 'react-native-gesture-handler';
 import { ScreenResolver } from './components';
 import {
@@ -54,28 +53,29 @@ const Tabs = () => (
                 break;
             }
 
-            if (
-              route.name === 'ChatList' &&
-              conversations &&
-              conversations.length &&
-              conversations.find((c) => !!c.unread_count)
-            ) {
-              return (
-                <View>
-                  <Feather name={iconName} size={size} color={color} />
-                  <Badge
-                    status="primary"
-                    containerStyle={{
-                      position: 'absolute',
-                      top: -4,
-                      right: -4,
-                    }}
-                  />
-                </View>
-              );
-            } else {
-              return <Feather name={iconName} size={size} color={color} />;
-            }
+            // TODO: TODO раскомментить при неализации логики "почтения"
+            // if (
+            //   route.name === 'ChatList' &&
+            //   conversations &&
+            //   conversations.length &&
+            //   conversations.find((c) => !!c.unread_count)
+            // ) {
+            //   return (
+            //     <View>
+            //       <Feather name={iconName} size={size} color={color} />
+            //       <Badge
+            //         status="primary"
+            //         containerStyle={{
+            //           position: 'absolute',
+            //           top: -4,
+            //           right: -4,
+            //         }}
+            //       />
+            //     </View>
+            //   );
+            // } else {
+            return <Feather name={iconName} size={size} color={color} />;
+            // }
           },
         })}
         tabBarOptions={{
