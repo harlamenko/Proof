@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
-import { ListItem, Text } from 'react-native-elements';
+import { Badge, ListItem, Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
 import httpClient from '../../api/ProofAPI';
@@ -30,7 +30,6 @@ class ChatList extends React.Component {
 
   componentWillUnmount() {
     this.context.clearEmptyMessage();
-
     this.props.navigation.dangerouslyGetParent().setOptions({
       headerShown: true,
     });
@@ -98,6 +97,15 @@ class ChatList extends React.Component {
                 },
               }}
               leftIcon={{ name: 'user', type: 'feather' }}
+              rightIcon={
+                item.unread_count ? (
+                  <Badge
+                    status="primary"
+                    value={item.unread_count}
+                    containerStyle={{ marginRight: -26 }}
+                  />
+                ) : null
+              }
               rightElement={<Text style={styles.date}>{item.updated_at}</Text>}
               bottomDivider
               onPress={() => {
@@ -113,7 +121,9 @@ class ChatList extends React.Component {
 }
 
 export default (props) => (
-  <AuthContext.Consumer>{(value) => <ChatList auth={value} {...props} />}</AuthContext.Consumer>
+  <AuthContext.Consumer>
+    {(value) => <ChatList auth={value} {...props} />}
+  </AuthContext.Consumer>
 );
 
 const styles = StyleSheet.create({

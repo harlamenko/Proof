@@ -29,7 +29,8 @@ class Chat extends React.Component {
       },
     } = this.context;
 
-    this.myCompanion = this.props.auth.state.user.id === seller._id ? buyer : seller;
+    this.myId = this.props.auth.state.user.id;
+    this.myCompanion = this.myId === seller._id ? buyer : seller;
 
     this._setHeader();
     this._connectToSocket();
@@ -59,7 +60,7 @@ class Chat extends React.Component {
       } = this.context;
       const {
         _id: conversation = null,
-        buyer = this.props.auth.state.user.id,
+        buyer = this.myId,
         seller = null,
         advert = null,
       } = currentConversation || {};
@@ -163,7 +164,7 @@ class Chat extends React.Component {
           locale={locale_ru}
           placeholder="Напишите сообщение..."
           user={{
-            _id: this.props.auth.state.user.id,
+            _id: this.myId,
           }}
         />
       </>
@@ -172,5 +173,7 @@ class Chat extends React.Component {
 }
 
 export default (props) => (
-  <AuthContext.Consumer>{(value) => <Chat auth={value} {...props} />}</AuthContext.Consumer>
+  <AuthContext.Consumer>
+    {(value) => <Chat auth={value} {...props} />}
+  </AuthContext.Consumer>
 );

@@ -3,20 +3,25 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { YellowBox } from 'react-native';
+import { View, YellowBox } from 'react-native';
+import { Badge } from 'react-native-elements';
 import 'react-native-gesture-handler';
 import { ScreenResolver } from './components';
-import { AdvertsProvider, AuthContext, AuthProvider, ChatProvider } from './context';
+import {
+  AdvertsProvider,
+  AuthContext,
+  AuthProvider,
+  ChatContext,
+  ChatProvider,
+} from './context';
 // TODO: заменить на react lazy (https://ru.reactjs.org/docs/code-splitting.html)
 import {
   AddAdvert,
   AdvertDetails,
-  Adverts,
   Chat,
   ChatList,
   EditAdvert,
   Filter,
-  Profile,
   ProfileInfo,
   ProfileInfoEdit,
   SignIn,
@@ -29,37 +34,67 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Tabs = () => (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ color, size }) => {
-        let iconName;
+  <ChatContext.Consumer>
+    {(chatCtx) => (
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            let iconName;
+            const { conversations } = chatCtx.state;
 
-        switch (route.name) {
-          case 'Adverts':
-            iconName = 'menu';
-            break;
-          case 'ChatList':
-            iconName = 'message-square';
-            break;
-          case 'Profile':
-            iconName = 'user';
-            break;
-        }
+            switch (route.name) {
+              case 'Adverts':
+                iconName = 'menu';
+                break;
+              case 'ChatList':
+                iconName = 'message-square';
+                break;
+              case 'Profile':
+                iconName = 'user';
+                break;
+            }
 
-        return <Feather name={iconName} size={size} color={color} />;
-      },
-    })}
-    tabBarOptions={{
-      activeTintColor: 'black',
-      inactiveTintColor: 'gray',
-      keyboardHidesTabBar: true,
-      showLabel: false,
-    }}
-  >
-    <Tab.Screen name="Adverts" component={Adverts} />
-    <Tab.Screen name="ChatList" component={ChatList} options={{ unmountOnBlur: true }} />
-    <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} />
-  </Tab.Navigator>
+            if (
+              route.name === 'ChatList' &&
+              conversations &&
+              conversations.length &&
+              conversations.find((c) => !!c.unread_count)
+            ) {
+              return (
+                <View>
+                  <Feather name={iconName} size={size} color={color} />
+                  <Badge
+                    status="primary"
+                    containerStyle={{
+                      position: 'absolute',
+                      top: -4,
+                      right: -4,
+                    }}
+                  />
+                </View>
+              );
+            } else {
+              return <Feather name={iconName} size={size} color={color} />;
+            }
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'black',
+          inactiveTintColor: 'gray',
+          keyboardHidesTabBar: true,
+          showLabel: false,
+        }}
+      >
+        {/* <Tab.Screen name="Adverts" component={Adverts} /> */}
+        <Tab.Screen
+          name="ChatList"
+          component={ChatList}
+          options={{ unmountOnBlur: true }}
+        />
+        {/* <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} /> */}
+      </Tab.Navigator>
+    )}
+  </ChatContext.Consumer>
 );
 
 class App extends React.Component {
@@ -88,17 +123,41 @@ class App extends React.Component {
           <ChatProvider>
             <AdvertsProvider>
               <Stack.Navigator>
-                <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="Tabs"
+                  component={Tabs}
+                  options={{ headerShown: false }}
+                />
                 <Stack.Screen
                   name="ProfileInfoEdit"
                   component={ProfileInfoEdit}
                   unmountOnBlur={true}
                 />
-                <Stack.Screen name="AddAdvert" component={AddAdvert} unmountOnBlur={true} />
-                <Stack.Screen name="EditAdvert" component={EditAdvert} unmountOnBlur={true} />
-                <Stack.Screen name="AdvertDetails" component={AdvertDetails} unmountOnBlur={true} />
-                <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
-                <Stack.Screen name="Chat" component={Chat} unmountOnBlur={true} />
+                <Stack.Screen
+                  name="AddAdvert"
+                  component={AddAdvert}
+                  unmountOnBlur={true}
+                />
+                <Stack.Screen
+                  name="EditAdvert"
+                  component={EditAdvert}
+                  unmountOnBlur={true}
+                />
+                <Stack.Screen
+                  name="AdvertDetails"
+                  component={AdvertDetails}
+                  unmountOnBlur={true}
+                />
+                <Stack.Screen
+                  name="Filter"
+                  component={Filter}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Chat"
+                  component={Chat}
+                  unmountOnBlur={true}
+                />
               </Stack.Navigator>
             </AdvertsProvider>
           </ChatProvider>
