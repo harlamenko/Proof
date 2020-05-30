@@ -1,8 +1,8 @@
 import locale_ru from 'dayjs/locale/ru';
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { Avatar, Button, ListItem, Text } from 'react-native-elements';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { Avatar, Button, Icon, ListItem, Text } from 'react-native-elements';
+import { GiftedChat, Send } from 'react-native-gifted-chat';
 import io from 'socket.io-client';
 import httpClient from '../../api/ProofAPI';
 import { BackBtn } from '../../components';
@@ -163,6 +163,13 @@ class Chat extends React.Component {
           timeFormat="LLL"
           locale={locale_ru}
           placeholder="Напишите сообщение..."
+          renderSend={(props) => (
+            <Send {...props}>
+              <View style={{ marginRight: 4, marginBottom: 5 }}>
+                <Icon name="send" type="feather" size={30} />
+              </View>
+            </Send>
+          )}
           user={{
             _id: this.myId,
           }}
