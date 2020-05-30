@@ -130,7 +130,11 @@ const setCurrentAdvert = (dispatch) => (advert) => {
 const deleteAdvert = (dispatch) => async (id) => {
   try {
     await ProofAPI.delete(`/adverts/${id}`);
-    Toast.showWithGravity('Объявление успешно удалено!', Toast.SHORT, Toast.CENTER);
+    Toast.showWithGravity(
+      'Объявление успешно удалено!',
+      Toast.SHORT,
+      Toast.CENTER
+    );
   } catch (err) {
     console.error(err);
     Toast.showWithGravity('Произошла ошибка', Toast.SHORT, Toast.CENTER);

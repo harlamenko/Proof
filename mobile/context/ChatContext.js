@@ -69,7 +69,10 @@ const getConversations = (dispatch) => async () => {
     const { data } = await httpClient.get('/conversations');
 
     if (data && data.length) {
-      dispatch({ type: ADD_CONVERSATION, payload: data.map((el) => new Conversation(el)) });
+      dispatch({
+        type: ADD_CONVERSATION,
+        payload: data.map((el) => new Conversation(el)),
+      });
     } else {
       dispatch({ type: SET_EMPTY_MESSAGE, payload: 'Список диалогов пуст.' });
     }
@@ -89,7 +92,10 @@ const clearEmptyMessage = (dispatch) => () => {
 
 const sendMessage = (dispatch) => async (info) => {
   try {
-    const { data } = await httpClient.post(`/conversation/${info.msg.conversation}`, info);
+    const { data } = await httpClient.post(
+      `/conversation/${info.msg.conversation}`,
+      info
+    );
 
     if (!data) {
       return;
@@ -118,7 +124,9 @@ const tryGetConversation = (dispatch) => async (conv) => {
       return;
     }
 
-    const { data } = await httpClient.get(`/conversation/${seller}/${advert}/${buyer}`);
+    const { data } = await httpClient.get(
+      `/conversation/${seller}/${advert}/${buyer}`
+    );
     dispatch({ type: SET_CONVERSATION, payload: new Conversation(data) });
 
     if (!data || !data._id) {

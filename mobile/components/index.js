@@ -5,4 +5,11 @@ import ProfileForm from './profile-form/ProfileForm';
 import { QRScanner } from './qr-scanner/QRScanner';
 import ScreenResolver from './screen-resolver/ScreenResolver';
 
-export { AuthForm, BackBtn, QRScanner, ScreenResolver, AdvertForm, ProfileForm };
+export {
+  AuthForm,
+  BackBtn,
+  QRScanner,
+  ScreenResolver,
+  AdvertForm,
+  ProfileForm,
+};

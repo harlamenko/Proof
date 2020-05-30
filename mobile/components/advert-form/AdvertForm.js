@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { Image, Input, Text } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -56,7 +62,9 @@ export default class AdvertForm extends Component {
     return (
       <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
         <View style={{ marginTop: 8 }}>
-          {this.props.advert.photos.length ? this.getImage() : this.getImagePicker()}
+          {this.props.advert.photos.length
+            ? this.getImage()
+            : this.getImagePicker()}
         </View>
         <Input
           containerStyle={Form.input}

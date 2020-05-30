@@ -7,7 +7,9 @@ describe('Auth form', () => {
 
   it('when error message exists - display it', () => {
     let errorMessage = '';
-    const { getByTestId, update } = render(<AuthForm errorMessage={errorMessage} />);
+    const { getByTestId, update } = render(
+      <AuthForm errorMessage={errorMessage} />
+    );
     expect(() => getByTestId('errMsg')).toThrow('No instances found');
 
     errorMessage = 'error';

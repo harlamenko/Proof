@@ -58,7 +58,13 @@ class Profile extends React.Component {
             </Tooltip>
           </View>
 
-          <View style={{ flex: 1, justifyContent: 'space-between', marginHorizontal: 8 }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'space-between',
+              marginHorizontal: 8,
+            }}
+          >
             <View style={Layout.centeringContainer}>
               <Avatar
                 rounded={true}
@@ -93,7 +99,9 @@ class Profile extends React.Component {
 
 export default (props) => {
   return (
-    <AuthContext.Consumer>{(value) => <Profile auth={value} {...props} />}</AuthContext.Consumer>
+    <AuthContext.Consumer>
+      {(value) => <Profile auth={value} {...props} />}
+    </AuthContext.Consumer>
   );
 };
 

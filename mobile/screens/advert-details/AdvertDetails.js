@@ -100,21 +100,48 @@ class AdvertDetails extends React.Component {
             source={{ uri: currentAdvert.photo }}
           />
 
-          <Text style={[styles.horizontalGaps, { fontSize: 20, marginVertical: 8 }]}>
+          <Text
+            style={[styles.horizontalGaps, { fontSize: 20, marginVertical: 8 }]}
+          >
             {currentAdvert.name}
           </Text>
-          <Text style={[styles.horizontalGaps, { fontSize: 18, fontWeight: 'bold' }]}>
+          <Text
+            style={[
+              styles.horizontalGaps,
+              { fontSize: 18, fontWeight: 'bold' },
+            ]}
+          >
             {currentAdvert.price} ₽
           </Text>
-          <Text style={[styles.horizontalGaps, { marginTop: 4 }]}>г. {currentAdvert.city}</Text>
-          <Text style={[styles.horizontalGaps, { fontSize: 18, marginTop: 8, marginBottom: 4 }]}>
+          <Text style={[styles.horizontalGaps, { marginTop: 4 }]}>
+            г. {currentAdvert.city}
+          </Text>
+          <Text
+            style={[
+              styles.horizontalGaps,
+              { fontSize: 18, marginTop: 8, marginBottom: 4 },
+            ]}
+          >
             Характеристики
           </Text>
-          <Text style={styles.horizontalGaps}>Модель телефона: {currentAdvert.model_name}</Text>
-          <Text style={styles.horizontalGaps}>Производитель: {currentAdvert.brand_name}</Text>
-          <Text style={styles.horizontalGaps}>Год производства: {currentAdvert.year_class}</Text>
-          <Text style={styles.horizontalGaps}>Операционная система: {currentAdvert.os_name}</Text>
-          <Text style={[styles.horizontalGaps, { fontSize: 18, marginTop: 8, marginBottom: 4 }]}>
+          <Text style={styles.horizontalGaps}>
+            Модель телефона: {currentAdvert.model_name}
+          </Text>
+          <Text style={styles.horizontalGaps}>
+            Производитель: {currentAdvert.brand_name}
+          </Text>
+          <Text style={styles.horizontalGaps}>
+            Год производства: {currentAdvert.year_class}
+          </Text>
+          <Text style={styles.horizontalGaps}>
+            Операционная система: {currentAdvert.os_name}
+          </Text>
+          <Text
+            style={[
+              styles.horizontalGaps,
+              { fontSize: 18, marginTop: 8, marginBottom: 4 },
+            ]}
+          >
             Описание
           </Text>
           <Text style={styles.horizontalGaps}>{currentAdvert.description}</Text>
@@ -213,7 +240,9 @@ class AdvertDetails extends React.Component {
       this.props.navigation.setOptions({
         headerShown: true,
         headerLeft: () => <BackBtn {...this.props} style={{ marginLeft: 8 }} />,
-        headerTitle: () => <Text style={{ fontSize: 16 }}>{currentAdvert.name}</Text>,
+        headerTitle: () => (
+          <Text style={{ fontSize: 16 }}>{currentAdvert.name}</Text>
+        ),
         headerRight: () => {
           if (!currentAdvert) {
             return null;
@@ -223,7 +252,9 @@ class AdvertDetails extends React.Component {
           }
 
           return currentAdvert.belongsTo(this.props.auth.state.user.id) ? (
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View
+              style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+            >
               <TouchableOpacity onPress={this.handleDel}>
                 <MaterialCommunityIcons name="delete-outline" size={32} />
               </TouchableOpacity>
@@ -233,12 +264,18 @@ class AdvertDetails extends React.Component {
               >
                 <Feather name="edit-2" size={28} />
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.toggleOverlayVisibility} style={{ marginRight: 8 }}>
+              <TouchableOpacity
+                onPress={this.toggleOverlayVisibility}
+                style={{ marginRight: 8 }}
+              >
                 <MaterialCommunityIcons name="qrcode" size={32} />
               </TouchableOpacity>
             </View>
           ) : (
-            <TouchableOpacity onPress={this.toggleOverlayVisibility} style={{ marginRight: 8 }}>
+            <TouchableOpacity
+              onPress={this.toggleOverlayVisibility}
+              style={{ marginRight: 8 }}
+            >
               <MaterialCommunityIcons name="qrcode-scan" size={32} />
             </TouchableOpacity>
           );

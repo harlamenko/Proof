@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { BackBtn, AdvertForm } from '../../components';
 import { Feather } from '@expo/vector-icons';
 import { Layout } from '../../shared/styles';
@@ -23,7 +30,9 @@ class AddAdvert extends Component {
   setHeader = () => {
     this.props.navigation.setOptions({
       headerLeft: () => <BackBtn {...this.props} style={{ marginLeft: 8 }} />,
-      headerTitle: () => <Text style={styles.title}>Добавление объявления</Text>,
+      headerTitle: () => (
+        <Text style={styles.title}>Добавление объявления</Text>
+      ),
       headerRight: () => {
         return this.state.uploading ? (
           <ActivityIndicator style={{ marginRight: 8 }} />
@@ -62,7 +71,11 @@ class AddAdvert extends Component {
         getAdverts,
       } = this.context;
       getAdverts({ paging, search });
-      Toast.showWithGravity('Публикация прошла успешно!', Toast.SHORT, Toast.CENTER);
+      Toast.showWithGravity(
+        'Публикация прошла успешно!',
+        Toast.SHORT,
+        Toast.CENTER
+      );
       this.props.navigation.navigate('Adverts');
     } else {
       Toast.showWithGravity('Ошибка публикации', Toast.SHORT, Toast.CENTER);
@@ -141,7 +154,9 @@ class AddAdvert extends Component {
 
 export default (props) => {
   return (
-    <AuthContext.Consumer>{(value) => <AddAdvert auth={value} {...props} />}</AuthContext.Consumer>
+    <AuthContext.Consumer>
+      {(value) => <AddAdvert auth={value} {...props} />}
+    </AuthContext.Consumer>
   );
 };
 

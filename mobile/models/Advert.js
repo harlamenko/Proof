@@ -127,7 +127,13 @@ export class Advert {
 
   checkQRInfo(info) {
     const { build_id, model_name, brand_name, year_class, os_name } = this;
-    const deviceInfo = { build_id, model_name, brand_name, year_class, os_name };
+    const deviceInfo = {
+      build_id,
+      model_name,
+      brand_name,
+      year_class,
+      os_name,
+    };
 
     return JSON.stringify(deviceInfo) === info;
   }

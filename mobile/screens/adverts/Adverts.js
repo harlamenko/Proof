@@ -52,7 +52,9 @@ class Adverts extends React.Component {
         data={adverts}
         numColumns={2}
         renderItem={this.renderItem}
-        ListFooterComponent={adverts.length < paging.total ? <ActivityIndicator /> : null}
+        ListFooterComponent={
+          adverts.length < paging.total ? <ActivityIndicator /> : null
+        }
         ListFooterComponentStyle={{ marginVertical: 8 }}
         onEndReachedThreshold={0.5}
         onEndReached={() => {
@@ -109,7 +111,9 @@ class Adverts extends React.Component {
       },
       headerTitle: () => (
         <Text style={styles.title}>
-          {search.keyWords ? `Результаты по запросу: "${search.keyWords}"` : 'Объявления'}
+          {search.keyWords
+            ? `Результаты по запросу: "${search.keyWords}"`
+            : 'Объявления'}
         </Text>
       ),
       headerRight: () => (
@@ -145,7 +149,9 @@ class Adverts extends React.Component {
 
 export default (props) => {
   return (
-    <AuthContext.Consumer>{(value) => <Adverts auth={value} {...props} />}</AuthContext.Consumer>
+    <AuthContext.Consumer>
+      {(value) => <Adverts auth={value} {...props} />}
+    </AuthContext.Consumer>
   );
 };
 

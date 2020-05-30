@@ -107,7 +107,11 @@ const signup = (dispatch) => ({ email, password, password2 }) => {
 
       resolve();
 
-      Toast.showWithGravity('Вы зарегистрировались!', Toast.SHORT, Toast.CENTER);
+      Toast.showWithGravity(
+        'Вы зарегистрировались!',
+        Toast.SHORT,
+        Toast.CENTER
+      );
       dispatch({ type: SIGN_IN, payload: { token, user } });
     } catch (err) {
       dispatch({ type: SET_ERROR_MESSAGE, payload: 'Ошибка регистрации.' });
@@ -157,7 +161,10 @@ const tryLocalSignin = (dispatch) => async () => {
 
 const getLocalInfo = (dispatch) => async () => {
   const myAdvert = await AsyncStorage.getItem('myAdvert');
-  dispatch({ type: SET_LOCAL_INFO, payload: { myAdvert: JSON.parse(myAdvert) } });
+  dispatch({
+    type: SET_LOCAL_INFO,
+    payload: { myAdvert: JSON.parse(myAdvert) },
+  });
 };
 
 const setLocalInfo = (dispatch) => async (myAdvert) => {
@@ -181,7 +188,11 @@ const updateProfile = (dispatch) => async (payload, cb = null) => {
     }
 
     dispatch({ type: SIGN_IN, payload: { user } });
-    Toast.showWithGravity('Данные успешно сохранены!', Toast.SHORT, Toast.CENTER);
+    Toast.showWithGravity(
+      'Данные успешно сохранены!',
+      Toast.SHORT,
+      Toast.CENTER
+    );
   } catch (err) {
     console.error(err);
   }
