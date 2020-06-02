@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Button, Icon, Text, Tooltip } from 'react-native-elements';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import SafeAreaView from 'react-native-safe-area-view';
 import { AdvertsContext, AuthContext } from '../../context';
 import { Layout } from '../../shared/styles';
 
