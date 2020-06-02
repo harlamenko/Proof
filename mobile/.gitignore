@@ -13,6 +13,3 @@ coverage/
 
 # macOS
 .DS_Store
-
-# Jest
-__snapshots__
