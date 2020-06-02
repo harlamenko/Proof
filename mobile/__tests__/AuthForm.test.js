@@ -1,6 +1,9 @@
+jest.mock('react-native-simple-toast', () => ({
+  SHORT: jest.fn(),
+}));
 import React from 'react';
-import { cleanup, render, fireEvent } from 'react-native-testing-library';
-import AuthForm from './AuthForm';
+import { cleanup, fireEvent, render } from 'react-native-testing-library';
+import { AuthForm } from '../components';
 
 describe('Auth form', () => {
   afterEach(cleanup);

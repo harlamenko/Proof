@@ -1,19 +1,19 @@
+import { Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { BackBtn, AdvertForm } from '../../components';
-import { Feather } from '@expo/vector-icons';
-import { Layout } from '../../shared/styles';
-import { AdvertsContext, AuthContext } from '../../context';
-import { Advert } from '../../models/Advert';
-import ProofAPI from '../../api/ProofAPI';
 import Toast from 'react-native-simple-toast';
+import ProofAPI from '../api/ProofAPI';
+import { AdvertForm, BackBtn } from '../components';
+import { AdvertsContext, AuthContext } from '../context';
+import { Advert } from '../models/Advert';
+import { Layout } from '../shared/styles';
 
 class AddAdvert extends Component {
   static contextType = AdvertsContext;

@@ -2,37 +2,29 @@ import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
-import { AuthForm } from '../../components';
-import { AuthContext } from '../../context';
+import { AuthForm } from '../components';
+import { AuthContext } from '../context';
 
-const SignUp = ({ navigation }) => {
-  const { state, signup, clearErrorMessage } = useContext(AuthContext);
-
-  const submit = async (data) => {
-    try {
-      await signup(data);
-      navigation.navigate('ProfileInfo');
-    } catch (e) {}
-  };
+const SignIn = ({ navigation }) => {
+  const { state, signin, clearErrorMessage } = useContext(AuthContext);
 
   return (
     <SafeAreaView style={styles.container}>
       <AuthForm
-        isSingIn={true}
-        title="Зарегистрироваться"
-        loading={state.loading}
+        title="Войти"
         errorMessage={state.errorMessage}
         onClearErrorMessage={clearErrorMessage}
-        submitBtnText="Зарегистрироваться"
-        onSubmit={submit}
+        loading={state.loading}
+        submitBtnText="Войти"
+        onSubmit={signin}
       />
       <Button
         containerStyle={styles.toggleBtn}
-        title="ВХОД"
+        title="РЕГИСТРАЦИЯ"
         type="clear"
         onPress={() => {
           clearErrorMessage();
-          navigation.navigate('SignIn');
+          navigation.navigate('SignUp');
         }}
       />
     </SafeAreaView>
@@ -44,4 +36,4 @@ const styles = StyleSheet.create({
   toggleBtn: { marginTop: 40, marginBottom: -40 },
 });
 
-export default SignUp;
+export default SignIn;

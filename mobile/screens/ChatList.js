@@ -3,9 +3,9 @@ import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import { ListItem, Text } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 import io from 'socket.io-client';
-import httpClient from '../../api/ProofAPI';
-import { AuthContext, ChatContext } from '../../context';
-import { Layout } from '../../shared/styles';
+import httpClient from '../api/ProofAPI';
+import { AuthContext, ChatContext } from '../context';
+import { Layout } from '../shared/styles';
 
 class ChatList extends React.Component {
   static contextType = ChatContext;

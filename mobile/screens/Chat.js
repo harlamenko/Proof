@@ -4,12 +4,12 @@ import { ActivityIndicator, View } from 'react-native';
 import { Avatar, Button, Icon, ListItem, Text } from 'react-native-elements';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import io from 'socket.io-client';
-import httpClient from '../../api/ProofAPI';
-import { BackBtn } from '../../components';
-import { AuthContext, ChatContext } from '../../context';
-import { Conversation } from '../../models/Conversation';
-import { Message } from '../../models/Message';
-import { Layout } from '../../shared/styles';
+import httpClient from '../api/ProofAPI';
+import { BackBtn } from '../components';
+import { AuthContext, ChatContext } from '../context';
+import { Conversation } from '../models/Conversation';
+import { Message } from '../models/Message';
+import { Layout } from '../shared/styles';
 
 class Chat extends React.Component {
   static contextType = ChatContext;

@@ -1,11 +1,11 @@
 import React from 'react';
 import { cleanup, render } from 'react-native-testing-library';
-import { QRScanner } from './QRScanner';
+import { BackBtn } from '../components/BackBtn';
 
-describe('QRScanner', () => {
+describe('BackBtn', () => {
   afterEach(cleanup);
 
   it('should render', () => {
-    expect(render(<QRScanner />)).not.toBeNull();
+    expect(render(<BackBtn />)).not.toBeNull();
   });
 });

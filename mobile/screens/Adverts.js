@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native';
 import { Card, Text } from 'react-native-elements';
-import { AdvertsContext, AuthContext } from '../../context';
-import { Layout } from '../../shared/styles';
+import { AdvertsContext, AuthContext } from '../context';
+import { Layout } from '../shared/styles';
 
 const { width: screenWidth } = Dimensions.get('window');
 

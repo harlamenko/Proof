@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon, Input, Text } from 'react-native-elements';
-import { Form } from '../../shared/styles';
+import { Form } from '../shared/styles';
 
 export default ({
   title,

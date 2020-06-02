@@ -11,9 +11,9 @@ import {
 import { Button, Image, Overlay, Text } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import QRCode from 'react-native-qrcode-generator';
-import { BackBtn, QRScanner } from '../../components';
-import { AdvertsContext, AuthContext, ChatContext } from '../../context';
-import { Layout } from '../../shared/styles';
+import { BackBtn, QRScanner } from '../components';
+import { AdvertsContext, AuthContext, ChatContext } from '../context';
+import { Layout } from '../shared/styles';
 
 const { width: screenWidth } = Dimensions.get('window');
 

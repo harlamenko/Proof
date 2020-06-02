@@ -1,9 +1,9 @@
-import AdvertForm from './advert-form/AdvertForm';
-import AuthForm from './auth-form/AuthForm';
-import { BackBtn } from './back-btn/BackBtn';
-import ProfileForm from './profile-form/ProfileForm';
-import { QRScanner } from './qr-scanner/QRScanner';
-import ScreenResolver from './screen-resolver/ScreenResolver';
+import AdvertForm from './AdvertForm';
+import AuthForm from './AuthForm';
+import { BackBtn } from './BackBtn';
+import ProfileForm from './ProfileForm';
+import { QRScanner } from './QRScanner';
+import ScreenResolver from './ScreenResolver';
 
 export {
   AuthForm,

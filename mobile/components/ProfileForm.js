@@ -5,7 +5,7 @@ import * as Permissions from 'expo-permissions';
 import React from 'react';
 import { View } from 'react-native';
 import { Avatar, Input } from 'react-native-elements';
-import { Layout } from '../../shared/styles';
+import { Layout } from '../shared/styles';
 
 export default class ProfileForm extends React.Component {
   constructor(props) {

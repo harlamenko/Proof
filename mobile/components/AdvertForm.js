@@ -1,15 +1,15 @@
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as ImagePicker from 'expo-image-picker';
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
-  View,
-  StyleSheet,
   ScrollView,
+  StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { Image, Input, Text } from 'react-native-elements';
-import * as ImagePicker from 'expo-image-picker';
-import * as ImageManipulator from 'expo-image-manipulator';
-import { Form } from '../../shared/styles';
+import { Form } from '../shared/styles';
 
 export default class AdvertForm extends Component {
   constructor(props) {

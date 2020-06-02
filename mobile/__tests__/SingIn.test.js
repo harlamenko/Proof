@@ -3,8 +3,8 @@ jest.mock('react-native-simple-toast', () => ({
 }));
 import React from 'react';
 import { render } from 'react-native-testing-library';
-import { AuthProvider } from '../../context';
-import SignIn from './SingIn';
+import { AuthProvider } from '../context';
+import SignIn from '../screens/SingIn';
 
 const TestComponent = () => (
   <AuthProvider>
