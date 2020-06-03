@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 export function QRScanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -18,7 +18,7 @@ export function QRScanner(props) {
 
   const getViewData = () => {
     if (hasPermission === null) {
-      return <ActivityIndicator />;
+      return <ActivityIndicator testID="loader" />;
     }
 
     if (hasPermission === false) {
