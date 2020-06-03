@@ -56,6 +56,7 @@ export default class ProfileForm extends React.Component {
     return (
       <View style={Layout.centeringContainer}>
         <Avatar
+          testID={'Avatar'}
           rounded={true}
           size="xlarge"
           icon={{ name: 'user', type: 'feather' }}
@@ -65,6 +66,7 @@ export default class ProfileForm extends React.Component {
           onPress={!image ? this._pickImage : () => {}}
         />
         <Input
+          testID={'Name'}
           containerStyle={{ width: 200, marginVertical: 22 }}
           placeholder="Ваше имя"
           value={name}
