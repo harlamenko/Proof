@@ -9,7 +9,7 @@
     "test": "jest --watch --coverage=false --changedSince=origin/master",
     "test:debug": "jest -o --watch --coverage=false",
     "prettify": "prettier --write --config .prettierrc .",
-    "test:final": "jest"
+    "test:final": "jest --verbose --collectCoverage"
   },
   "husky": {
     "hooks": {
