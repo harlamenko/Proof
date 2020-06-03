@@ -42,6 +42,7 @@ export default class AdvertForm extends Component {
 
   getImage = () => (
     <Image
+      testID="AdvertImage"
       containerStyle={styles.deviceImageContainer}
       style={styles.deviceImage}
       resizeMode="cover"
@@ -51,7 +52,7 @@ export default class AdvertForm extends Component {
   );
 
   getImagePicker = () => (
-    <TouchableOpacity onPress={this.pickPhoto}>
+    <TouchableOpacity testID="ImagePicker" onPress={this.pickPhoto}>
       <View style={styles.imagePicker}>
         <Text>Нажмите, чтобы выбрать фото</Text>
       </View>
@@ -67,6 +68,7 @@ export default class AdvertForm extends Component {
             : this.getImagePicker()}
         </View>
         <Input
+          testID="AdvertName"
           containerStyle={Form.input}
           label="Название"
           placeholder="Введите название устройства"
@@ -76,6 +78,7 @@ export default class AdvertForm extends Component {
           onChangeText={this.props.onNameChange}
         />
         <Input
+          testID="AdvertPrice"
           containerStyle={Form.input}
           keyboardType="numeric"
           placeholder="Введите стоимость устройства"
@@ -86,6 +89,7 @@ export default class AdvertForm extends Component {
           onChangeText={this.props.onPriceChange}
         />
         <Input
+          testID="AdvertCity"
           containerStyle={Form.input}
           label="Город"
           placeholder="Город, в котором состоится сделка"
@@ -96,6 +100,7 @@ export default class AdvertForm extends Component {
           onChangeText={this.props.onCityChange}
         />
         <Input
+          testID="AdvertDescription"
           containerStyle={Form.input}
           inputContainerStyle={Form.textarea}
           placeholder="Опишите устройство"
