@@ -40,6 +40,7 @@ export default ({
       />
       {isSingIn ? (
         <Input
+          testID="password2"
           containerStyle={Form.input}
           label="Повторите пароль"
           value={password2}
@@ -52,6 +53,7 @@ export default ({
       {errorMessage ? (
         <View style={{ position: 'relative' }}>
           <Icon
+            testID="X"
             name="x"
             type="feather"
             containerStyle={{ position: 'absolute', right: 4, zIndex: 10 }}
