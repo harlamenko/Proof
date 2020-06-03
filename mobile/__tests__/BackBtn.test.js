@@ -5,7 +5,7 @@ import { BackBtn } from '../components/BackBtn';
 describe('BackBtn', () => {
   afterEach(cleanup);
 
-  it('should render', () => {
+  it('Должен рендерится', () => {
     expect(render(<BackBtn />)).not.toBeNull();
   });
 });
