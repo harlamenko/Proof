@@ -38,7 +38,7 @@ describe('AdvertForm', () => {
     expect(() => getByTestId('ImagePicker')).not.toBeNull();
   });
 
-  it('Вызывается проп-функция onNameChange при изменении названия', () => {
+  it('Вызывается onNameChange при изменении названия', () => {
     const onEventMock = jest.fn();
     const { getByTestId } = render(
       <AdvertForm advert={new Advert()} onNameChange={onEventMock} />
@@ -47,7 +47,7 @@ describe('AdvertForm', () => {
     expect(onEventMock).toHaveBeenCalledWith('a');
   });
 
-  it('Вызывается проп-функция onPriceChange при изменении цены', () => {
+  it('Вызывается onPriceChange при изменении цены', () => {
     const onEventMock = jest.fn();
     const { getByTestId } = render(
       <AdvertForm advert={new Advert()} onPriceChange={onEventMock} />
@@ -56,7 +56,7 @@ describe('AdvertForm', () => {
     expect(onEventMock).toHaveBeenCalledWith('a');
   });
 
-  it('Вызывается проп-функция onCityChange при изменении города', () => {
+  it('Вызывается onCityChange при изменении города', () => {
     const onEventMock = jest.fn();
     const { getByTestId } = render(
       <AdvertForm advert={new Advert()} onCityChange={onEventMock} />
@@ -65,7 +65,7 @@ describe('AdvertForm', () => {
     expect(onEventMock).toHaveBeenCalledWith('a');
   });
 
-  it('Вызывается проп-функция onDescriptionChange при изменении описания', () => {
+  it('Вызывается onDescriptionChange при изменении описания', () => {
     const onEventMock = jest.fn();
     const { getByTestId } = render(
       <AdvertForm advert={new Advert()} onDescriptionChange={onEventMock} />
@@ -74,7 +74,7 @@ describe('AdvertForm', () => {
     expect(onEventMock).toHaveBeenCalledWith('a');
   });
 
-  it('Вызывается проп-функция onPhotoAdding при начале выбора фото', async () => {
+  it('Вызывается onPhotoAdding при начале выбора фото', async () => {
     const onEventMock = jest.fn();
     const { getByTestId } = render(
       <AdvertForm
@@ -88,7 +88,7 @@ describe('AdvertForm', () => {
     expect(onEventMock).toHaveBeenCalled();
   });
 
-  it('Вызывается проп-функция onPickingCanceled при отмене выбора фото', async () => {
+  it('Вызывается onPickingCanceled при отмене выбора фото', async () => {
     const onEventMock = jest.fn();
     const { getByTestId } = render(
       <AdvertForm
@@ -102,7 +102,7 @@ describe('AdvertForm', () => {
     expect(onEventMock).toHaveBeenCalled();
   });
 
-  it('Вызывается проп-функция onPhotoAdded при окончании выбора фото', async () => {
+  it('Вызывается onPhotoAdded при окончании выбора фото', async () => {
     const onEventMock = jest.fn();
     const { getByTestId } = render(
       <AdvertForm
