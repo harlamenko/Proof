@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SingIn screen Должен рендерится корректно 1`] = `
+exports[`SingUp Должен рендерится корректно 1`] = `
 <View
   onLayout={[Function]}
   pointerEvents="box-none"
@@ -61,7 +61,7 @@ exports[`SingIn screen Должен рендерится корректно 1`] 
       }
     }
   >
-    Войти
+    Зарегистрироваться
   </Text>
   <View
     style={
@@ -199,6 +199,73 @@ exports[`SingIn screen Должен рендерится корректно 1`] 
   <View
     style={
       Object {
+        "marginVertical": 8,
+        "paddingHorizontal": 10,
+        "width": "100%",
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#86939e",
+          "fontSize": 16,
+          "fontWeight": "bold",
+        }
+      }
+    >
+      Повторите пароль
+    </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "borderBottomWidth": 1,
+          "borderColor": "#86939e",
+          "flexDirection": "row",
+          "transform": Array [
+            Object {
+              "translateX": 0,
+            },
+          ],
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCapitalize="none"
+        autoCorrect={false}
+        editable={true}
+        onChangeText={[Function]}
+        rejectResponderTermination={true}
+        secureTextEntry={true}
+        style={
+          Object {
+            "alignSelf": "center",
+            "color": "black",
+            "flex": 1,
+            "fontSize": 18,
+            "minHeight": 40,
+          }
+        }
+        testID="password2"
+        underlineColorAndroid="transparent"
+        value="admin"
+      />
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#ff190c",
+          "fontSize": 12,
+          "margin": 5,
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      Object {
         "borderRadius": 3,
         "marginHorizontal": 10,
         "marginTop": 8,
@@ -256,7 +323,7 @@ exports[`SingIn screen Должен рендерится корректно 1`] 
             }
           }
         >
-          Войти
+          Зарегистрироваться
         </Text>
       </View>
     </View>
@@ -320,7 +387,7 @@ exports[`SingIn screen Должен рендерится корректно 1`] 
             }
           }
         >
-          РЕГИСТРАЦИЯ
+          ВХОД
         </Text>
       </View>
     </View>
