@@ -1,9 +1,9 @@
-import createDataContext from './createDataContext';
+import Toast from 'react-native-simple-toast';
 import ProofAPI from '../api/ProofAPI';
 import { Advert } from '../models/Advert';
-import Toast from 'react-native-simple-toast';
+import createDataContext from './createDataContext';
 
-const initialFilter = {
+export const initialFilter = {
   paging: {
     lastAdvert: null,
     seenIds: [],
@@ -15,15 +15,28 @@ const initialFilter = {
     direct: -1,
   },
 };
+export const initialState = {
+  ...initialFilter,
+  adverts: [],
+  currentAdvert: null,
+  emptyMessage: null,
+};
+// types
+export const ADD_ADVERTS = 'ADD_ADVERTS';
+export const UPDATE_PAGING_STATE = 'UPDATE_PAGING_STATE';
+export const DROP_FILTER = 'DROP_FILTER';
+export const UPDATE_FILTER = 'UPDATE_FILTER';
+export const SET_CURRENT_ADVERT = 'SET_CURRENT_ADVERT';
+export const SET_EMPTY_MESSAGE = 'SET_EMPTY_MESSAGE';
 
-const advertsReducer = (prevState, action) => {
+export const advertsReducer = (prevState, action) => {
   switch (action.type) {
-    case 'ADD_ADVERTS':
+    case ADD_ADVERTS:
       return {
         ...prevState,
         adverts: [...prevState.adverts, ...action.payload],
       };
-    case 'UPDATE_PAGING_STATE':
+    case UPDATE_PAGING_STATE:
       const { lastAdvert, seenIds, total } = action.payload;
 
       return {
@@ -34,19 +47,20 @@ const advertsReducer = (prevState, action) => {
           total,
         },
       };
-    case 'DROP_FILTER':
-    case 'UPDATE_FILTER':
+    case DROP_FILTER:
+    case UPDATE_FILTER:
       return {
         ...action.payload,
         adverts: [],
         currentAdvert: null,
+        emptyMessage: null,
       };
-    case 'SET_EMPTY_MESSAGE':
+    case SET_EMPTY_MESSAGE:
       return {
         ...prevState,
         emptyMessage: action.payload,
       };
-    case 'SET_CURRENT_ADVERT':
+    case SET_CURRENT_ADVERT:
       return {
         ...prevState,
         currentAdvert: action.payload,
@@ -68,9 +82,9 @@ const getAdverts = (dispatch) => async ({ paging, search }) => {
     const { total } = res.data;
     const { publication_date, price } = adverts[adverts.length - 1];
 
-    dispatch({ type: 'ADD_ADVERTS', payload: adverts });
+    dispatch({ type: ADD_ADVERTS, payload: adverts });
     dispatch({
-      type: 'UPDATE_PAGING_STATE',
+      type: UPDATE_PAGING_STATE,
       payload: {
         lastAdvert: { publication_date, price },
         seenIds: adverts.map((ad) => ad.id),
@@ -78,24 +92,24 @@ const getAdverts = (dispatch) => async ({ paging, search }) => {
       },
     });
   } catch (err) {
-    console.error(err);
+    // console.error(err);
   }
 };
 
 const updateFilter = (dispatch) => ({ search }) => {
   const { paging } = initialFilter;
-  dispatch({ type: 'UPDATE_FILTER', payload: { search, paging } });
+  dispatch({ type: UPDATE_FILTER, payload: { search, paging } });
 };
 
 const dropFilter = (dispatch) => () => {
-  dispatch({ type: 'DROP_FILTER', payload: initialFilter });
+  dispatch({ type: DROP_FILTER, payload: initialFilter });
 };
 
 const getAdvertDetails = (dispatch) => async (id) => {
   try {
     const { data: advert } = await ProofAPI.get(`/adverts/${id}`);
 
-    dispatch({ type: 'SET_CURRENT_ADVERT', payload: new Advert(advert) });
+    dispatch({ type: SET_CURRENT_ADVERT, payload: new Advert(advert) });
   } catch (err) {
     console.error(err);
   }
@@ -106,9 +120,9 @@ const getMyAdvert = (dispatch) => async (uid) => {
     const a = new Advert(uid);
     const { data: advert } = await ProofAPI.get(`/adverts/my/${a.build_id}`);
     if (advert) {
-      dispatch({ type: 'SET_CURRENT_ADVERT', payload: new Advert(advert) });
+      dispatch({ type: SET_CURRENT_ADVERT, payload: new Advert(advert) });
     } else {
-      dispatch({ type: 'SET_EMPTY_MESSAGE', payload: 'Ничего не найдено' });
+      dispatch({ type: SET_EMPTY_MESSAGE, payload: 'Ничего не найдено' });
     }
   } catch (err) {
     console.error(err);
@@ -116,15 +130,15 @@ const getMyAdvert = (dispatch) => async (uid) => {
 };
 
 const clearEmptyMessage = (dispatch) => () => {
-  dispatch({ type: 'SET_EMPTY_MESSAGE', payload: null });
+  dispatch({ type: SET_EMPTY_MESSAGE, payload: null });
 };
 
 const dropCurrentAdvert = (dispatch) => () => {
-  dispatch({ type: 'SET_CURRENT_ADVERT', payload: null });
+  dispatch({ type: SET_CURRENT_ADVERT, payload: null });
 };
 
 const setCurrentAdvert = (dispatch) => (advert) => {
-  dispatch({ type: 'SET_CURRENT_ADVERT', payload: new Advert(advert) });
+  dispatch({ type: SET_CURRENT_ADVERT, payload: new Advert(advert) });
 };
 
 const deleteAdvert = (dispatch) => async (id) => {
@@ -154,5 +168,5 @@ export const { Provider, Context } = createDataContext(
     getMyAdvert,
     clearEmptyMessage,
   },
-  { ...initialFilter, adverts: [], currentAdvert: null, emptyMessage: null }
+  initialState
 );
