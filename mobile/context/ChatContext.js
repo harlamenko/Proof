@@ -1,16 +1,21 @@
 import httpClient from '../api/ProofAPI';
-import createDataContext from './createDataContext';
-import io from 'socket.io-client';
 import { Conversation } from '../models/Conversation';
+import createDataContext from './createDataContext';
+export const initialState = {
+  conversations: null,
+  emptyMessage: null,
+  currentConversation: null,
+  messages: null,
+  loading: false,
+};
+export const ADD_CONVERSATION = 'ADD_CONVERSATION';
+export const UPDATE_CONVERSATIONS = 'UPDATE_CONVERSATIONS';
+export const SET_EMPTY_MESSAGE = 'SET_EMPTY_MESSAGE';
+export const SET_CONVERSATION = 'SET_CONVERSATION';
+export const CHANGE_LOADING = 'CHANGE_LOADING';
+export const SET_MESSAGES = 'SET_MESSAGES';
 
-const ADD_CONVERSATION = 'ADD_CONVERSATION';
-const UPDATE_CONVERSATIONS = 'UPDATE_CONVERSATIONS';
-const SET_EMPTY_MESSAGE = 'SET_EMPTY_MESSAGE';
-const SET_CONVERSATION = 'SET_CONVERSATION';
-const CHANGE_LOADING = 'CHANGE_LOADING';
-const SET_MESSAGES = 'SET_MESSAGES';
-
-const reducer = (prevState, action) => {
+export const reducer = (prevState, action) => {
   switch (action.type) {
     case ADD_CONVERSATION:
       return {
@@ -174,11 +179,5 @@ export const { Provider, Context } = createDataContext(
     tryGetConversation,
     updateConversations,
   },
-  {
-    conversations: null,
-    emptyMessage: null,
-    currentConversation: null,
-    messages: null,
-    loading: false,
-  }
+  initialState
 );
