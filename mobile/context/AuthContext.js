@@ -3,24 +3,34 @@ import Toast from 'react-native-simple-toast';
 import ProofAPI from '../api/ProofAPI';
 import createDataContext from './createDataContext';
 
-const CHANGE_REGISTERING = 'CHANGE_REGISTERING';
-const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
-const SIGN_IN = 'SIGN_IN';
-const SIGN_OUT = 'SIGN_OUT';
-const SET_LOCAL_INFO = 'SET_LOCAL_INFO';
-const CLEAR_ERROR_MESSAGE = 'CLEAR_ERROR_MESSAGE';
-const SET_INITIAL_LOADING = 'SET_INITIAL_LOADING';
-const CHANGE_LOADING = 'CHANGE_LOADING';
+export const initialState = {
+  token: null,
+  myAdvert: null,
+  errorMessage: '',
+  initialyLoaded: false,
+  loading: false,
+  registering: false,
+  user: null,
+};
 
-const validateEmail = (email) => {
+export const CHANGE_REGISTERING = 'CHANGE_REGISTERING';
+export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
+export const SIGN_IN = 'SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';
+export const SET_LOCAL_INFO = 'SET_LOCAL_INFO';
+export const CLEAR_ERROR_MESSAGE = 'CLEAR_ERROR_MESSAGE';
+export const SET_INITIAL_LOADING = 'SET_INITIAL_LOADING';
+export const CHANGE_LOADING = 'CHANGE_LOADING';
+
+export const validateEmail = (email) => {
   return /\S+@\S+\.\S+/.test(String(email).toLowerCase());
 };
 
-const validatePassword = (pwd) => {
+export const validatePassword = (pwd) => {
   return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(String(pwd));
 };
 
-const authReducer = (prevState, action) => {
+export const authReducer = (prevState, action) => {
   switch (action.type) {
     case SET_ERROR_MESSAGE:
       return {
@@ -214,13 +224,5 @@ export const { Provider, Context } = createDataContext(
     changeRegistering,
     updateProfile,
   },
-  {
-    token: null,
-    myAdvert: null,
-    errorMessage: '',
-    initialyLoaded: false,
-    loading: false,
-    registering: false,
-    user: null,
-  }
+  initialState
 );
