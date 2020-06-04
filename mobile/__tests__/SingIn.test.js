@@ -13,11 +13,11 @@ const TestComponent = () => (
 );
 
 describe('SingIn screen', () => {
-  it('should render', () => {
+  it('Должен рендерится', () => {
     expect(render(<TestComponent />)).not.toBeNull();
   });
 
-  it('should render correctly', () => {
+  it('Должен рендерится корректно', () => {
     const SignInScreen = render(<TestComponent />).toJSON();
     expect(SignInScreen).toMatchSnapshot();
   });
