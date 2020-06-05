@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthForm } from '../components';
 import { AuthContext } from '../context';
 
@@ -10,8 +10,11 @@ const SignUp = ({ navigation }) => {
 
   const submit = async (data) => {
     try {
-      await signup(data);
-      navigation.navigate('ProfileInfo');
+      const res = signup(data);
+      if (res) {
+        await res;
+        navigation.navigate('ProfileInfo');
+      }
     } catch (e) {}
   };
 

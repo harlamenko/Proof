@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, CheckBox, SearchBar } from 'react-native-elements';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AdvertsContext } from '../context';
 
 export default ({ navigation }) => {

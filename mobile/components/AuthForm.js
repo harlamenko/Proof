@@ -12,9 +12,9 @@ export default ({
   isSingIn,
   onClearErrorMessage,
 }) => {
-  const [email, setEmail] = useState('admin');
-  const [password, setPassword] = useState('admin');
-  const [password2, setPassword2] = useState('admin');
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [password2, setPassword2] = useState(null);
 
   return (
     <>

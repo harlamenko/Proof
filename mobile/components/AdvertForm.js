@@ -62,7 +62,7 @@ export default class AdvertForm extends Component {
   render() {
     return (
       <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
-        <View style={{ marginTop: 8 }}>
+        <View style={{ marginVertical: 8 }}>
           {this.props.advert.photos.length
             ? this.getImage()
             : this.getImagePicker()}

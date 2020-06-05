@@ -79,9 +79,14 @@ export const authReducer = (prevState, action) => {
 };
 
 const signup = (dispatch) => ({ email, password, password2 }) => {
+  if (!email || !password2 || !password) {
+    dispatch({ type: SET_ERROR_MESSAGE, payload: 'Не все поля заполнены!' });
+    return false;
+  }
+
   if (!validateEmail(email)) {
     dispatch({ type: SET_ERROR_MESSAGE, payload: 'Email введён неправильно.' });
-    return;
+    return false;
   }
 
   if (!validatePassword(password)) {
@@ -94,12 +99,12 @@ const signup = (dispatch) => ({ email, password, password2 }) => {
 - 1 букву в верхнем регистре.
 Минимальная длинна пароля - 8 символов.`,
     });
-    return;
+    return false;
   }
 
   if (password !== password2) {
     dispatch({ type: SET_ERROR_MESSAGE, payload: 'Пароли не совпадают.' });
-    return;
+    return false;
   }
 
   return new Promise(async (resolve) => {

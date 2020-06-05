@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import { ListItem, Text } from 'react-native-elements';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
 import httpClient from '../api/ProofAPI';
 import { AuthContext, ChatContext } from '../context';

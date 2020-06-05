@@ -50,8 +50,14 @@ chatRouter
         sort: { createdAt: -1 },
         populate: [{ path: "user", select: "-__v -password" }],
       });
-
-      res.send({ messages });
+      const conversation = await Conversation.findById(cid, null, {
+        populate: [
+          { path: "seller", select: "-__v -password" },
+          { path: "buyer", select: "-__v -password" },
+          { path: "advert", select: "-__v" },
+        ],
+      });
+      res.send({ messages, conversation });
     } catch (err) {
       console.error(err);
       res.status(500).send("Не удалось получить сообщения.");

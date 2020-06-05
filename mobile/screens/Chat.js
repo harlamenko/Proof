@@ -1,7 +1,7 @@
 import locale_ru from 'dayjs/locale/ru';
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { Avatar, Button, Icon, ListItem, Text } from 'react-native-elements';
+import { Avatar, Icon, Text } from 'react-native-elements';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import io from 'socket.io-client';
 import httpClient from '../api/ProofAPI';
@@ -31,7 +31,6 @@ class Chat extends React.Component {
 
     this.myId = this.props.auth.state.user.id;
     this.myCompanion = this.myId === seller._id ? buyer : seller;
-
     this._setHeader();
     this._connectToSocket();
   }
@@ -86,7 +85,7 @@ class Chat extends React.Component {
   }
 
   _setHeader = () => {
-    const { photo = null, name = null, email = null } = this.myCompanion;
+    const { image = null, name = null, email = null } = this.myCompanion;
 
     this.props.navigation.setOptions({
       headerTitle: () => <Text style={{ fontSize: 16 }}>{name || email}</Text>,
@@ -94,7 +93,7 @@ class Chat extends React.Component {
       headerRight: () => (
         <Avatar
           rounded
-          source={{ uri: photo }}
+          source={{ uri: image }}
           icon={{ name: 'user', type: 'feather' }}
           containerStyle={{ marginRight: 8 }}
         />
@@ -132,29 +131,29 @@ class Chat extends React.Component {
       );
     }
 
-    const { advert = {} } = currentConversation;
+    // const { advert = {} } = currentConversation;
 
     return (
       <>
         {
           /*TODO: изм при доб логики сделок*/
-          advert.user_id === this.myCompanion._id ? (
-            <View>
-              <ListItem
-                leftAvatar={{
-                  rounded: false,
-                  source: { uri: advert.photo },
-                  icon: { name: 'camera', type: 'feather' },
-                  onPress: () => {
-                    this.props.navigation.navigate('AdvertDetails', { advert });
-                  },
-                }}
-                title={advert.name}
-                subtitle={`${advert.price} ₽`}
-                rightElement={<Button title="Открыть сделку" />}
-              />
-            </View>
-          ) : null
+          // advert.user_id && advert.user_id === this.myCompanion._id ? (
+          //   <View>
+          //     <ListItem
+          //       leftAvatar={{
+          //         rounded: false,
+          //         source: { uri: advert.photo },
+          //         icon: { name: 'camera', type: 'feather' },
+          //         onPress: () => {
+          //           this.props.navigation.navigate('AdvertDetails', { advert });
+          //         },
+          //       }}
+          //       title={advert.name}
+          //       subtitle={`${advert.price} ₽`}
+          //       rightElement={<Button title="Открыть сделку" />}
+          //     />
+          //   </View>
+          // ) : null
         }
         <GiftedChat
           renderAvatar={null}

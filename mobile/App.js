@@ -17,10 +17,12 @@ import {
 import {
   AddAdvert,
   AdvertDetails,
+  Adverts,
   Chat,
   ChatList,
   EditAdvert,
   Filter,
+  Profile,
   ProfileInfo,
   ProfileInfoEdit,
   SignIn,
@@ -85,13 +87,17 @@ const Tabs = () => (
           showLabel: false,
         }}
       >
-        {/* <Tab.Screen name="Adverts" component={Adverts} /> */}
+        <Tab.Screen name="Adverts" component={Adverts} />
         <Tab.Screen
           name="ChatList"
           component={ChatList}
           options={{ unmountOnBlur: true }}
         />
-        {/* <Tab.Screen name="Profile" component={Profile} options={{ unmountOnBlur: true }} /> */}
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{ unmountOnBlur: true }}
+        />
       </Tab.Navigator>
     )}
   </ChatContext.Consumer>

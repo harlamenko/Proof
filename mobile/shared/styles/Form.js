@@ -1,9 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const Form = StyleSheet.create({
-  input: {
-    marginVertical: 8,
-  },
+  input: {},
   textarea: {
     maxHeight: 200,
   },

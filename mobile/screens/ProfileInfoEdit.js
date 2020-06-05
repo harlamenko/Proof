@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { BackBtn, ProfileForm } from '../components';
 import { AuthContext } from '../context';
 import { Layout } from '../shared/styles';

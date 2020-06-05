@@ -44,18 +44,21 @@ export const reducer = (prevState, action) => {
         messages: action.payload,
       };
     case UPDATE_CONVERSATIONS:
-      const { conversations } = prevState;
+      let { conversations } = prevState;
       const { _id, updated_at, last_message } = action.payload;
-      const c = conversations.find((c) => c._id === _id);
+      if (conversations) {
+        const c = conversations.find((c) => c._id === _id);
 
-      if (c) {
-        c.updated_at = updated_at;
-        c.last_message = last_message;
+        if (c) {
+          c.updated_at = updated_at;
+          c.last_message = last_message;
+        } else {
+          conversations.push(new Conversation(action.payload));
+          conversations.sort((a, b) => b.updated_at - a.updated_at);
+        }
       } else {
-        conversations.push(new Conversation(action.payload));
+        conversations = [new Conversation(action.payload)];
       }
-
-      conversations.sort((a, b) => b.updated_at - a.updated_at);
 
       return {
         ...prevState,
@@ -113,17 +116,25 @@ const sendMessage = (dispatch) => async (info) => {
 };
 
 const tryGetConversation = (dispatch) => async (conv) => {
+  dispatch({ type: CHANGE_LOADING, payload: true });
   const { seller, advert, buyer, _id: cid = null } = conv;
 
-  dispatch({ type: CHANGE_LOADING, payload: true });
-  dispatch({ type: SET_CONVERSATION, payload: new Conversation(conv) });
+  if (cid) {
+    dispatch({ type: SET_CONVERSATION, payload: new Conversation(conv) });
+  } else {
+    dispatch({ type: SET_CONVERSATION, payload: conv });
+  }
 
   try {
     if (cid) {
       const {
-        data: { messages },
+        data: { messages, conversation },
       } = await httpClient.get(`/conversation/${cid}`);
 
+      dispatch({
+        type: SET_CONVERSATION,
+        payload: new Conversation(conversation),
+      });
       dispatch({ type: SET_MESSAGES, payload: messages });
       dispatch({ type: CHANGE_LOADING, payload: false });
       return;
@@ -132,19 +143,18 @@ const tryGetConversation = (dispatch) => async (conv) => {
     const { data } = await httpClient.get(
       `/conversation/${seller}/${advert}/${buyer}`
     );
-    dispatch({ type: SET_CONVERSATION, payload: new Conversation(data) });
 
     if (!data || !data._id) {
+      dispatch({ type: CHANGE_LOADING, payload: false });
       return;
     }
 
-    // TODO добавить кэширование
+    dispatch({ type: SET_CONVERSATION, payload: new Conversation(data) });
     const {
       data: { messages },
     } = await httpClient.get(`/conversation/${data._id}`);
 
     dispatch({ type: SET_MESSAGES, payload: messages });
-    dispatch({ type: CHANGE_LOADING, payload: false });
   } catch (err) {
     console.error(err);
   }
