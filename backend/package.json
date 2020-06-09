@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
-    "dev:debug": "nodemon --inspect ./src/index.js"
+    "dev:debug": "nodemon --inspect ./src/index.js",
+    "test": "jest"
   },
   "engines": {
     "node": "12.x"
@@ -24,5 +25,16 @@
     "mongoose": "^5.9.10",
     "nodemon": "^2.0.3",
     "socket.io": "^2.3.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "devDependencies": {
+    "@shelf/jest-mongodb": "^1.1.5",
+    "jest": "^26.0.1",
+    "supertest": "^4.0.2"
   }
 }

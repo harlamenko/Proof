@@ -17,3 +17,4 @@ const conversationSchema = new Schema({
 });
 
 mongoose.model("Conversation", conversationSchema);
+module.exports = conversationSchema;
