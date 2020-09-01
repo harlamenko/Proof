@@ -72,8 +72,6 @@ export const reducer = (prevState, action) => {
 const getConversations = (dispatch) => async () => {
   dispatch({ type: CHANGE_LOADING, payload: true });
   try {
-    // TODO добавить кэширование
-    // const data = JSON.parse('[{"_id":"5ec453fa7198462087a459d9","advert":{"_id":"5ebfb6df44b6ec09200bd04e","user_id":"5ead94a6ef25f930080cb561","name":"qwer","publication_date":"2020-05-16T09:48:15.093Z","price":1234,"city":"qwert","model_name":"Android SDK built for x86","build_id":"QSR1.190920.001","brand_name":"google","year_class":2013,"os_name":"Android","description":"qwert fghj","photos":[{"_id":"5ebfb6df44b6ec09200bd04d","photo":"blya"}]},"buyer":{"_id":"5eab0126b8121445a47ba7c5","email":"mail1@mail.com"},"seller":{"_id":"5ead94a6ef25f930080cb561","email":"admin"},"last_message":"testing for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my momtesting for my mom","updated_at":"2020-05-21T15:46:07.838Z"}]');
     const { data } = await httpClient.get('/conversations');
 
     if (data && data.length) {
@@ -163,7 +161,6 @@ const tryGetConversation = (dispatch) => async (conv) => {
 };
 
 const getMessages = (dispatch) => async (cid) => {
-  // TODO добавить кэширование
   dispatch({ type: CHANGE_LOADING, payload: true });
   try {
     dispatch({ type: SET_MESSAGES, payload: [] });

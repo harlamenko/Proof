@@ -50,7 +50,6 @@ export class Advert {
     }
   }
 
-  // TODO проверить сопоставимость с платформами
   _initNewDevice(user_id) {
     this.user_id = user_id;
     this.build_id = DeviceAPI.osBuildId;

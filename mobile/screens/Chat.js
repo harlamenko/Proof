@@ -131,30 +131,8 @@ class Chat extends React.Component {
       );
     }
 
-    // const { advert = {} } = currentConversation;
-
     return (
       <>
-        {
-          /*TODO: изм при доб логики сделок*/
-          // advert.user_id && advert.user_id === this.myCompanion._id ? (
-          //   <View>
-          //     <ListItem
-          //       leftAvatar={{
-          //         rounded: false,
-          //         source: { uri: advert.photo },
-          //         icon: { name: 'camera', type: 'feather' },
-          //         onPress: () => {
-          //           this.props.navigation.navigate('AdvertDetails', { advert });
-          //         },
-          //       }}
-          //       title={advert.name}
-          //       subtitle={`${advert.price} ₽`}
-          //       rightElement={<Button title="Открыть сделку" />}
-          //     />
-          //   </View>
-          // ) : null
-        }
         <GiftedChat
           renderAvatar={null}
           messages={this.state.messages}

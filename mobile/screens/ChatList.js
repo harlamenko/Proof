@@ -97,16 +97,6 @@ class ChatList extends React.Component {
                 },
               }}
               leftIcon={{ name: 'user', type: 'feather' }}
-              // TODO: TODO раскомментить при неализации логики "почтения"
-              // rightIcon={
-              //   item.unread_count ? (
-              //     <Badge
-              //       status="primary"
-              //       value={item.unread_count}
-              //       containerStyle={{ marginRight: -26 }}
-              //     />
-              //   ) : null
-              // }
               rightElement={<Text style={styles.date}>{item.updated_at}</Text>}
               bottomDivider
               onPress={() => {
